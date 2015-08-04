@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 /**
  * @author Irina
  * Paquete para utilidades varias
