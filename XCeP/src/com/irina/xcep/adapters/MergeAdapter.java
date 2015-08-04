@@ -38,7 +38,6 @@ public class MergeAdapter extends BaseAdapter {
         if(total == 0 && noItemsText != null){
             total = 1;
         }
-
         return (total);
     }
 
@@ -50,10 +49,8 @@ public class MergeAdapter extends BaseAdapter {
             if (position < size) {
                 return (adapter.getItem(position));
             }
-
             position -= size;
         }
-
         return (null);
     }
 
@@ -64,10 +61,8 @@ public class MergeAdapter extends BaseAdapter {
             if (position < size) {
                 return (adapter);
             }
-
             position -= size;
         }
-
         return (null);
     }
 
@@ -78,9 +73,7 @@ public class MergeAdapter extends BaseAdapter {
         for (BaseAdapter adapter : adapters) {
             total += adapter.getViewTypeCount();
         }
-
         return (Math.max(total, 1)); // needed for setListAdapter() before
-        // content add'
     }
 
     @Override
@@ -95,11 +88,9 @@ public class MergeAdapter extends BaseAdapter {
                 result = typeOffset + adapter.getItemViewType(position);
                 break;
             }
-
             position -= size;
             typeOffset += adapter.getViewTypeCount();
         }
-
         return (result);
     }
 
@@ -116,10 +107,8 @@ public class MergeAdapter extends BaseAdapter {
             if (position < size) {
                 return (adapter.isEnabled(position));
             }
-
             position -= size;
         }
-
         return (false);
     }
 
@@ -131,7 +120,6 @@ public class MergeAdapter extends BaseAdapter {
 
                 return (adapter.getView(position, convertView, parent));
             }
-
             position -= size;
         }
 
@@ -140,7 +128,6 @@ public class MergeAdapter extends BaseAdapter {
             text.setText(noItemsText);
             return text;
         }
-
         return (null);
     }
 
@@ -151,10 +138,8 @@ public class MergeAdapter extends BaseAdapter {
             if (position < size) {
                 return (adapter.getItemId(position));
             }
-
             position -= size;
         }
-
         return (-1);
     }
 

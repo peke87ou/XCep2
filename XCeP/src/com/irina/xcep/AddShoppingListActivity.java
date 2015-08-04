@@ -65,8 +65,11 @@ public class AddShoppingListActivity extends Activity{
 				engadirLista();
 			}
 		});
-		
+		reloadAddshoppingList();
+	}
+		protected void reloadAddshoppingList() {
 			
+		
 		adapter = new AdapterGridAddShoppingList(AddShoppingListActivity.this, supermercados);
 		
 		grid=(GridView)findViewById(R.id.grid_logo_market);
@@ -112,6 +115,12 @@ public class AddShoppingListActivity extends Activity{
          });
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		reloadAddshoppingList();
+	}
+	
 	protected void engadirLista() {
 			
 		Lista addlist = new Lista();

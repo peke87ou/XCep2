@@ -3,7 +3,6 @@ package com.irina.xcep;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -39,7 +38,6 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
-import com.irina.xcep.model.Lista;
 import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Supermercado;
 import com.parse.FindCallback;

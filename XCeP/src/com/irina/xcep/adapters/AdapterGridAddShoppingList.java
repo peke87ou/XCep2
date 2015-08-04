@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso;
 public class AdapterGridAddShoppingList extends ArrayAdapter<Supermercado>{
 	 Context mContext;
 	 List<Supermercado> listaSuper;
-	 private Supermercado addSuper;
+	 //private Supermercado addSuper;
 	 
       public AdapterGridAddShoppingList(Context context, List<Supermercado> lista) {
 		super(context,0, lista);
@@ -29,32 +29,26 @@ public class AdapterGridAddShoppingList extends ArrayAdapter<Supermercado>{
 
 	@Override
       public View getView(int position, View convertView, ViewGroup parent) {
+		
           View grid;
           LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             
-          
-        	  
           if (convertView == null) {
-        	  
               grid = new View(mContext);
               grid = inflater.inflate(R.layout.item_grid_add_shopping_list, null);
               TextView textView = (TextView) grid.findViewById(R.id.title_market_add_list);
               ImageView imageView = (ImageView)grid.findViewById(R.id.image_market_add_list);
               
               if (listaSuper.size() == position){ //ultima
-            	
-            	  
                   textView.setText("Novo");
                   imageView.setBackgroundResource(R.drawable.ic_content_add_circle);
               }else{
-            	  
             	  final Supermercado market = getItem(position);
             	  textView.setText(market.getNome());
 
                   final ParseFile fileObject = market.getUrlLogo(); 
                   String urlBitmap = fileObject.getUrl(); 
                   Picasso.with(getContext()).load(urlBitmap).into(imageView);
-                  
               }
           
           } else {
@@ -66,7 +60,6 @@ public class AdapterGridAddShoppingList extends ArrayAdapter<Supermercado>{
 
 	@Override
 	public int getCount() {
-		
 		//return super.getCount();
 		return listaSuper.size() + 1;
 	}
@@ -82,7 +75,5 @@ public class AdapterGridAddShoppingList extends ArrayAdapter<Supermercado>{
 		// TODO Auto-generated method stub
 		super.addAll(items);
 	}
-	
-	
 
 }

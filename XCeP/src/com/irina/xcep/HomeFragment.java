@@ -101,7 +101,7 @@ public class HomeFragment extends Fragment {
 		//Filtramos as lista para cada usuario logueado na app
 		query.include("User");
 		query.whereEqualTo("idUser", currentUser);
-		//query.include("Products");
+		query.include("Products");
 		query.findInBackground(new FindCallback<Lista>() {
 			@Override
 			public void done(List<Lista> objects, ParseException e) {

@@ -3,7 +3,7 @@
  */
 /**
  * @author Irina
- * Paquete para adaptadores de listas
+ * Paquete para adaptadores
  *
  */
 package com.irina.xcep.adapters;

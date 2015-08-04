@@ -3,8 +3,10 @@ package com.irina.xcep.parse;
 import android.app.Application;
 
 import com.irina.xcep.model.Lista;
+import com.irina.xcep.model.Prezo;
 import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Supermercado;
+import com.irina.xcep.model.Tag;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseObject;
@@ -23,6 +25,8 @@ public class ParseApplication extends Application {
         ParseObject.registerSubclass(Supermercado.class);
         ParseObject.registerSubclass(Lista.class);
         ParseObject.registerSubclass(Produto.class);
+        ParseObject.registerSubclass(Prezo.class);
+        ParseObject.registerSubclass(Tag.class);
         
         ParseUser.enableAutomaticUser();
         ParseACL defaultACL = new ParseACL();

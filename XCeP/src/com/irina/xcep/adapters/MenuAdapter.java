@@ -16,12 +16,11 @@ import com.irina.xcep.menu.navitems.NavMenuItem;
 import com.irina.xcep.menu.navitems.NavTitleItem;
 
 /**
- * 
+ * Adapatador do menu
  */
 public class MenuAdapter extends ArrayAdapter<NavDrawerItem> implements View.OnClickListener {
 
     private static final int NUM_TYPE_ITEMS = 3;
-
     private Context context;
     private NavDrawerItem[] items;
     private SelectedListButton listener;
@@ -29,12 +28,12 @@ public class MenuAdapter extends ArrayAdapter<NavDrawerItem> implements View.OnC
     public interface SelectedListButton{
         void onSelectedButton(int type);
     }
+    
     public MenuAdapter(Context context, int resource, NavDrawerItem[] objects, SelectedListButton listener) {
         super(context, resource, objects);
         this.context = context;
         items = objects;
         context.getResources();
-
         this.listener = listener;
     }
 
@@ -57,7 +56,6 @@ public class MenuAdapter extends ArrayAdapter<NavDrawerItem> implements View.OnC
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View view = null;
-
         NavDrawerItem menuItem = getItem(position);
 
         switch (menuItem.getType()){
@@ -94,7 +92,6 @@ public class MenuAdapter extends ArrayAdapter<NavDrawerItem> implements View.OnC
         }
 
         navMenuItemHolder.labelView.setText(context.getString(menuSection.getLabel()));
-
 
         convertView.setEnabled(false);
         convertView.setOnClickListener(null);
@@ -164,7 +161,6 @@ public class MenuAdapter extends ArrayAdapter<NavDrawerItem> implements View.OnC
             /*Para que no haga nada*/
             navMenuListHolder.iconView.setOnClickListener(null);
         }
-
         return convertView ;
     }
 
@@ -192,7 +188,6 @@ public class MenuAdapter extends ArrayAdapter<NavDrawerItem> implements View.OnC
                 break;
         }
     }
-
 
     private static class NavMenuItemHolder {
         private TextView labelView;

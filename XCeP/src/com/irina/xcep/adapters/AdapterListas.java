@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.irina.xcep.R;
 import com.irina.xcep.model.Lista;
+import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Supermercado;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -29,16 +30,12 @@ public class AdapterListas extends ArrayAdapter<Lista> {
 	
 	private static Map<String, Bitmap> mImagenes = new HashMap<String, Bitmap>();
     
-	//private Context contexto;
-	
 	public AdapterListas(Context context, ArrayList<Lista> lista) {
        super(context, 0, lista);
-      // contexto = context;
     }
 
     @Override
     public View getView(int position, View celdaView, ViewGroup parent) {
-       
        //Recuperar o elemento de datos para esta posición
        final Lista lista = getItem(position);    
        
@@ -61,21 +58,34 @@ public class AdapterListas extends ArrayAdapter<Lista> {
        }else{
     	   downloadBitmap(relation, imageView);
        }
-       
-     
+       int i = 0;
+       //Buscar Vista para recheo de datos
+        try {
+			 i = lista.getIdProducts().getQuery().count();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        String productos = "";
+        if(i == 1){
+        	productos = i + "Producto";
+        }else{
+        	productos = i + " Productos";
+        }
+        	
+		((TextView) celdaView.findViewById(R.id.products_list)).setText(productos);
+	
        
        return celdaView;
    }
     
-    
     public void downloadBitmap(ParseRelation<ParseObject> relation, final ImageView imageView){
+    	
     	ParseQuery<ParseObject> query = relation.getQuery();
-        
         query.findInBackground(new FindCallback<ParseObject>() {
      	   public void done(List<ParseObject> list, ParseException e) {
      	       if (e == null) {
      	           for (ParseObject object : list) {
-
      	             final Supermercado superRelacionado = ((Supermercado)object);
      	             System.out.println(R.string.text_adapter_list_market + superRelacionado.getNome());
      	              
@@ -84,13 +94,9 @@ public class AdapterListas extends ArrayAdapter<Lista> {
      	               
      	             Picasso.with(getContext()).load(urlBitmap).into(imageView);
      	             //new AsyncTaskDownloadImage(imageView).execute(urlBitmap,superRelacionado);
-     	             
      	           }
      	       } 
      	   }
      	});
     }
-    
-    
-    
 }

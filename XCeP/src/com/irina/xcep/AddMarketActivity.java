@@ -163,47 +163,49 @@ public class AddMarketActivity extends Activity{
 
 	}
 	
-
-	
 	//Métodos empregados nesta clase
-			/**
-			 * Engade un supermercado a BD
-			 * @param market: supermercado que se engade a BD
-			 */
-			public void engadirmarket(){
-				
-				
-				Supermercado addmarket = new Supermercado();
-				
-								
-				//Nome
-				 addmarket.setNome(nameMarket.getText().toString());
-							
-				
-				//foto
-				 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-				 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-				 byte[] byteArray = stream.toByteArray();
-				 ParseFile imagenSupermercado = new ParseFile("camper2.png", byteArray);
-				 addmarket.setUrlLogo(imagenSupermercado);
-			 
-				 addmarket.saveInBackground(new SaveCallback() {
-					
-					@Override
-					public void done(ParseException arg0) {
-						if (arg0 == null){
-							Toast.makeText(AddMarketActivity.this, "Engadimos O supermercado a BD ", Toast.LENGTH_SHORT).show();
-							Log.i("market", "Engadimos O supermercado a BD ");
-							finish();
-							
-						}else{
-							Toast.makeText(AddMarketActivity.this, R.string.error_add_list+" " + arg0.getMessage(), Toast.LENGTH_SHORT).show();
-							Log.e("market", "ERROR O ENGADIR NA BD ");
-						}
-					}
-				});
-			}
+	/**
+	 * Engade un supermercado a BD
+	 * @param market: supermercado que se engade a BD
+	 */
+	public void engadirmarket(){
+			
+		Supermercado addmarket = new Supermercado();
 						
+		//Nome
+		addmarket.setNome(nameMarket.getText().toString());
+					
+		//foto
+		 ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		 byte[] byteArray = stream.toByteArray();
+		 if(byteArray == null){
+			 Toast.makeText(this, "Error al adjuntar imagen", Toast.LENGTH_SHORT).show();
+			 return;
+		 }
+		 //FIXME Error en imagenes al rotar
+		 //http://www.chinabtp.com/how-to-save-rotated-photos-in-parse-android/
+		 
+		 ParseFile imagenSupermercado = new ParseFile(nameMarket.getText().toString() +".png", byteArray);
+		 imagenSupermercado.saveInBackground();
+		 
+		 addmarket.setUrlLogo(imagenSupermercado);
+		 
+		 addmarket.saveInBackground(new SaveCallback() {
+		@Override
+		public void done(ParseException arg0) {
+			if (arg0 == null){
+				Toast.makeText(AddMarketActivity.this, "Engadimos O supermercado a BD ", Toast.LENGTH_SHORT).show();
+				Log.i("market", "Engadimos O supermercado a BD ");
+				finish();
+				
+			}else{
+				Toast.makeText(AddMarketActivity.this, R.string.error_add_list+" " + arg0.getMessage(), Toast.LENGTH_SHORT).show();
+				Log.e("market", "ERROR O ENGADIR NA BD ");
+			}
+		}
+	});
+	}
 }
 
 
