@@ -1,0 +1,77 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"    >
+
+    <EditText
+        android:id="@+id/signup_username_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ParseLoginUI.EditText"
+        android:hint="@string/Username" 
+        android:digits="0,1,2,3,4,5,6,7,8,9,*,qwertzuiopasdfghjklyxcvbnm,QWERTTZUIOPASDFGHJKLYXCVBNM,_,-"
+        android:maxLength="30"
+  		/>
+
+    <EditText 
+        android:id="@+id/signup_password_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ParseLoginUI.EditText"
+        android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+        android:fontFamily="sans-serif"
+        android:hint="@string/Password"
+        android:inputType="textPassword"
+        android:selectAllOnFocus="true" 
+        android:digits="0,1,2,3,4,5,6,7,8,9,*,qwertzuiopasdfghjklyxcvbnm,QWERTTZUIOPASDFGHJKLYXCVBNM,_,-"
+        android:maxLength="8"
+  		/>
+
+    <EditText
+        android:id="@+id/signup_confirm_password_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ParseLoginUI.EditText"
+        android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+        android:fontFamily="sans-serif"
+        android:hint="@string/RePassword"
+        android:inputType="textPassword"
+        android:selectAllOnFocus="true" 
+        android:digits="0,1,2,3,4,5,6,7,8,9,*,qwertzuiopasdfghjklyxcvbnm,QWERTTZUIOPASDFGHJKLYXCVBNM,_,-"
+        android:maxLength="8"
+  		/>
+
+    <EditText
+        android:id="@+id/signup_email_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ParseLoginUI.EditText"
+        android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+        android:hint="@string/Email"
+        android:inputType="textEmailAddress" />
+
+    <com.gc.materialdesign.views.ButtonRectangle
+        android:id="@+id/create_account"
+        android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/SignupBtn"
+        android:background="@color/verde_oscuro"
+        materialdesign:animate="true" />
+
+    <TextView
+        android:id="@+id/link_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="91dp"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="@string/LoginBtn"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/darker_gray"
+        android:textStyle="italic|bold"
+        android:typeface="serif" />
+
+</LinearLayout>

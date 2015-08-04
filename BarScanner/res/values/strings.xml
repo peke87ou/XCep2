@@ -1,0 +1,11 @@
+<resources>
+
+    <string name="app_name">BarScanner</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="leido_inicial">Ningún código leido</string>
+    <string name="camara1">Cámara 1</string>
+    <string name="camara2">Cámara 2</string>
+
+</resources>

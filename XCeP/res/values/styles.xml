@@ -1,0 +1,75 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    
+
+    <!-- Application theme. -->
+ <!--    <style name="AppTheme" parent="AppBaseTheme">
+        All customizations that are NOT specific to a particular API-level can go here.
+    </style>
+     -->
+
+
+
+	<color name="custom_theme_color">#E0F8F1</color>
+	<color name="actionbar_text_color">#088A68</color>
+	
+	<style name="CustomTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+	    <item name="android:windowBackground">@color/custom_theme_color</item>
+	    <item name="android:colorBackground">@color/custom_theme_color</item>
+	    <item name="android:actionBarStyle">@style/MyActionBar</item>
+	</style>
+	
+	<!-- ActionBar styles -->
+    <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="android:background">@color/custom_theme_color</item>
+        <item name="android:textColor">@color/actionbar_text_color</item>
+        <!-- Support library compatibility -->
+        <item name="background">@color/custom_theme_color</item>
+    </style>
+    
+    <style name="CustomThemeNoActionBar" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+	    <item name="android:windowBackground">@color/custom_theme_color</item>
+	    <item name="android:colorBackground">@color/custom_theme_color</item>
+	    <item name="android:actionBarStyle">@style/NoActionBar</item>
+	</style>
+	
+	<style name="NoActionBar" >
+    	<item name="android:windowActionBar">false</item>
+    	<item name="android:windowNoTitle">true</item>
+    	 <item name="android:background">@color/custom_theme_color</item>
+        <item name="android:textColor">@color/actionbar_text_color</item>
+        <!-- Support library compatibility -->
+        <item name="background">@color/custom_theme_color</item>
+	</style> 
+	
+	 <style name="ParseLoginUI" />
+	<style name="ParseLoginUI.EditText" parent="@android:style/Widget.EditText">
+        <item name="android:singleLine">true</item>
+        <item name="android:textColorLink">@android:color/white</item>
+    </style>
+    
+	  <style name="ParseLoginUI.Button" parent="@android:style/Widget.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:background">
+            @drawable/com_parse_ui_parse_login_button_background_selector
+        </item>
+        <item name="android:textColor">@color/com_parse_ui_parse_login_display_text</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    
+	  <style name="Widget.MaterialProgressBar.ProgressBar.Horizontal" parent="android:Widget.ProgressBar.Horizontal">
+        <!--
+        Disabled for correct behavior on Android 4.x
+        <item name="android:progressDrawable">@null</item>
+        -->
+        <item name="android:indeterminateDrawable">@null</item>
+        <item name="android:minHeight">16dp</item>
+        <item name="android:maxHeight">16dp</item>
+    </style>
+
+</resources>

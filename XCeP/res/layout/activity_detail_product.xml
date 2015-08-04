@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp" >
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
+	</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="84dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="Categoría" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/image_view_product"
+            android:layout_width="50dp"
+            android:layout_height="104dp"
+            android:layout_weight="0.06"
+            android:src="@drawable/abc_ic_clear" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="84dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="Descrición" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="84dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="Marca" />
+    </LinearLayout>
+     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+         <ImageView
+             android:id="@+id/ImageView01"
+             android:layout_width="50dp"
+             android:layout_height="104dp"
+             android:layout_weight="0.06"
+             android:src="@drawable/abc_ic_clear" />
+
+        <TextView
+            android:layout_width="84dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="Prezo" />
+
+    </LinearLayout>
+
+     <ListView
+         android:id="@+id/listView1"
+         android:layout_width="match_parent"
+         android:layout_height="104dp" >
+     </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="horizontal" >
+
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/cancel_new_product"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@color/verde_oscuro"
+            android:text="Compartir"
+            materialdesign:animate="true" >
+
+        </com.gc.materialdesign.views.ButtonRectangle>
+
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/add_new_product"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@color/verde_oscuro"
+            android:text="Engadir"
+            materialdesign:animate="true" />
+    </LinearLayout>
+
+</LinearLayout>

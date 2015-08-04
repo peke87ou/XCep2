@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp" >
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/idNameMarket"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.36"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="Supermercado a engadir"
+                    android:textSize="25sp" />
+	</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="84dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="Nome" />
+
+        <EditText
+            android:id="@+id/text_name_market"
+            style="@style/ParseLoginUI.EditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="7.67"
+            android:ems="10" />
+    </LinearLayout>
+
+    <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal" >
+        
+         <LinearLayout
+		    android:id="@+id/button_camera"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:background="@android:color/transparent"
+		    android:clickable="true"
+		    android:orientation="horizontal"
+		    android:layout_gravity="center_vertical" >
+		
+		  <ImageButton
+             android:layout_width="wrap_content"
+             android:layout_height="43dp"
+             android:layout_gravity="center"
+             android:layout_weight="0.11"
+             android:background="@android:color/transparent"
+             android:src="@drawable/camera2" />
+		
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center_vertical"
+		        android:layout_margin="5dp"
+		        android:text="Engadir Imaxe" />
+		</LinearLayout>
+
+         <ImageView
+             android:id="@+id/image_view_market"
+             android:layout_width="50dp"
+             android:layout_height="104dp"
+             android:layout_weight="0.06"
+             android:src="@drawable/abc_ic_clear" />
+
+     </LinearLayout>
+     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="horizontal" >
+
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/cancel_new_market"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@color/verde_oscuro"
+            android:text="Cancelar"
+            materialdesign:animate="true" />
+
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/add_new_market"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@color/verde_oscuro"
+            android:text="Engadir"
+            materialdesign:animate="true" >
+
+        </com.gc.materialdesign.views.ButtonRectangle>
+    </LinearLayout>
+
+</LinearLayout>

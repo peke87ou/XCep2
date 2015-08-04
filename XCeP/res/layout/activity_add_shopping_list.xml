@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_name_add_shopping_list" />
+
+        <EditText
+            android:id="@+id/text_name_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:ems="10"
+            android:hint="@string/hint_name_list" 
+            android:maxLength="30"/>
+    </LinearLayout>
+
+    <GridView
+        android:id="@+id/grid_logo_market"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.75"
+        android:gravity="center"
+        android:listSelector="@drawable/grid_selector"
+        android:numColumns="3"
+        android:padding="20dp"
+        android:choiceMode="singleChoice"
+          >
+    </GridView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="horizontal" >
+
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/cancelar_new_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@color/verde_oscuro"
+            android:text="@string/button_cancel_new_list"
+            materialdesign:animate="true" />
+
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/crear_new_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@color/verde_oscuro"
+            android:text="@string/button_add_new_list"
+            materialdesign:animate="true" />
+    </LinearLayout>
+
+</LinearLayout>

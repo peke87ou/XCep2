@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/txtwelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="10dp"
+        android:text="@string/my_list"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/txtuser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtwelcome"
+        android:layout_centerHorizontal="true" />
+
+    <com.gc.materialdesign.views.ButtonRectangle
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/verde_oscuro"
+        android:text="@string/LogoutBtn"
+        materialdesign:animate="true" />
+
+    <ListView
+        android:id="@+id/lista_list"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_above="@+id/logout"
+        android:layout_below="@+id/txtuser"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp" >
+
+    </ListView>
+    
+   <!--   <com.gc.materialdesign.views.ButtonFloat
+        android:id="@+id/add_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/add" 
+        android:layout_marginRight="16dp"
+        materialdesign:animate="true"
+        android:background="@color/green"
+        materialdesign:iconDrawable="@android:drawable/ic_input_add" /> -->
+
+   <ImageButton
+       android:id="@+id/add_list"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_alignParentRight="true"
+       android:layout_alignParentTop="true"
+       android:layout_marginRight="17dp"
+       android:layout_marginTop="12dp"
+       android:background="@android:color/transparent"
+       android:scaleType="fitCenter"
+       android:src="@drawable/add" />
+
+</RelativeLayout>

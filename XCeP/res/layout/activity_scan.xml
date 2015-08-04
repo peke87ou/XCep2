@@ -1,0 +1,376 @@
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+   
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="0dp"
+    tools:context="com.inditex.stradivarius.ScanActivity"
+    android:background="#fff"
+  
+	android:id="@+id/scan">
+<!--
+    Backgroun carama de fondo
+  	<SurfaceView
+        android:id="@+id/CameraPreview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" 
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
+     
+
+   <LinearLayout 
+       android:id="@+id/contenedor_pantalla"
+       android:layout_width="100dp" 
+       android:layout_height="100dp" 
+       android:orientation="vertical" 
+       android:gravity="center_horizontal">
+    
+          
+        contenedor de imagenes de cámara y teclado
+        <LinearLayout 
+              android:id="@+id/contenedor_botones_camara_teclado" 
+              android:layout_width="100" 
+              android:layout_height="33" 
+              android:orientation="horizontal" 
+              android:background="@color/scan_transparent_white">
+              
+               botón camara
+               <LinearLayout 
+	                android:id="@+id/boton_camara" 
+	                android:layout_width="50dp" 
+	                android:layout_height="100dp" 
+	                android:orientation="vertical" 
+	                android:gravity="center_vertical|center_horizontal"
+	                  >
+                   
+                   <LinearLayout 
+		                android:layout_width="0dp" 
+		                android:layout_height="0dp" 
+		                android:orientation="vertical"
+		                android:gravity="center_vertical|center_horizontal"
+		                percentageLayout:pl_percentage_width="@dimen/scan_block_camera_img_width"
+		                percentageLayout:pl_percentage_height="@dimen/scan_block_camera_img_height" >
+	                	<ImageView 
+				            android:layout_width="match_parent" 
+				            android:layout_height="match_parent"
+				            android:id="@+id/boton_camara_image" 
+				            android:adjustViewBounds="true" 
+				            android:contentDescription="@null" 
+				            android:scaleType="fitCenter" />
+                   </com.inditex.stradivarius.percentagelayout.PLinearLayout>
+	           	</com.inditex.stradivarius.percentagelayout.PLinearLayout>
+	           	
+            	botón teclado
+	            <com.inditex.stradivarius.percentagelayout.PLinearLayout 
+	                android:id="@+id/boton_teclado" 
+	                android:layout_width="0dp" 
+	                android:layout_height="0dp" 
+	                android:orientation="vertical"
+	                android:gravity="center_vertical|center_horizontal" 
+	                percentageLayout:pl_percentage_width="50" 
+	                percentageLayout:pl_percentage_height="100" >
+                    <com.inditex.stradivarius.percentagelayout.PLinearLayout 
+		                android:layout_width="0dp" 
+		                android:layout_height="0dp" 
+		                android:orientation="vertical"
+		                android:gravity="center_vertical|center_horizontal"
+		                percentageLayout:pl_percentage_width="@dimen/scan_block_camera_img_width"
+		                percentageLayout:pl_percentage_height="@dimen/scan_block_camera_img_height" >
+		                <ImageView 
+				            android:layout_width="match_parent" 
+				            android:layout_height="match_parent" 
+				            android:id="@+id/boton_teclado_image" 
+				            android:adjustViewBounds="true" 
+				            android:contentDescription="@null" 
+				            android:scaleType="fitCenter" />
+		            </com.inditex.stradivarius.percentagelayout.PLinearLayout>
+	       		</com.inditex.stradivarius.percentagelayout.PLinearLayout> 
+        </com.inditex.stradivarius.percentagelayout.PLinearLayout>
+        
+        FIN Imagen Central centrada segun las dimensiones de la imagen
+	        
+        Plinear de contenedor cámara QR 
+        <com.inditex.stradivarius.percentagelayout.PLinearLayout 
+              android:id="@+id/contenedor_camara_qr" 
+              android:layout_width="match_parent" 
+              android:layout_height="match_parent" 
+              android:orientation="vertical" 
+              percentageLayout:pl_percentage_width="100" 
+              percentageLayout:pl_percentage_height="100">  
+              
+        Contenedor invisible para porcentajes  
+		<com.insa.percentagelayout.PLinearLayout 
+              android:id="@+id/contenedor_invisible_porcentajes" 
+              android:layout_width="0dp" 
+              android:layout_height="0dp" 
+              percentageLayout:pl_percentage_width="33" 
+              percentageLayout:pl_percentage_height="1"> 
+        </com.inditex.stradivarius.percentagelayout.PLinearLayout>
+        
+        Plinear de contenedor de opacidad y cuadros blancos 
+        <com.inditex.stradivarius.percentagelayout.PLinearLayout 
+              android:id="@+id/cuadros_camara_parte_superior_scan" 
+              android:layout_width="match_parent" 
+              android:layout_height="match_parent" 
+              android:orientation="horizontal" 
+              percentageLayout:pl_percentage_width="100" 
+              percentageLayout:pl_percentage_height="5">
+	        
+              Primer plinearlayout con opacidad
+ 			  <com.inditex.stradivarius.percentagelayout.PLinearLayout 
+	                android:layout_width="0dp" 
+	                android:layout_height="0dp" 
+	                android:orientation="horizontal" 
+	                percentageLayout:pl_percentage_width="@dimen/scan_block_lateral_square_width"
+	                percentageLayout:pl_percentage_height="100" 
+	                android:background="@color/scan_transparent_white" > 
+	           	</com.inditex.stradivarius.percentagelayout.PLinearLayout>
+	           	
+             	Segundo plinear con un cuadro blanco para la camara alineado a la izquierda
+	            <com.inditex.stradivarius.percentagelayout.PLinearLayout 
+	                android:layout_width="0dp" 
+	                android:layout_height="0dp" 
+	                android:orientation="vertical" 
+	                android:gravity="center_vertical|left"
+	                percentageLayout:pl_percentage_width="@dimen/scan_block_small_white_square_width"
+	                percentageLayout:pl_percentage_height="100" 
+	                percentageLayout:pl_percentage_padding_top="15" 
+	                percentageLayout:pl_percentage_padding_bottom="15" 
+	                percentageLayout:pl_percentage_padding_left="9"
+	                percentageLayout:pl_percentage_padding_right="15" >
+	                 <ImageView 
+			            android:layout_width="15dp" 
+			            android:layout_height="15dp" 
+			            android:adjustViewBounds="true" 
+			            android:contentDescription="@null" 
+			            android:scaleType="centerInside"
+			            android:background="#FFFFFF"/>
+	      		</com.inditex.stradivarius.percentagelayout.PLinearLayout>
+	      		
+	       		Tercero plinear con un cuadro blanco para la camara alineado a la derecha
+	       		<com.inditex.stradivarius.percentagelayout.PLinearLayout 
+	                android:layout_width="0dp" 
+	                android:layout_height="0dp" 
+	                android:orientation="vertical" 
+	                android:gravity="center_vertical|right"
+	                percentageLayout:pl_percentage_width="@dimen/scan_block_small_white_square_width"
+	                percentageLayout:pl_percentage_height="100" 
+	                percentageLayout:pl_percentage_padding_top="15" 
+	                percentageLayout:pl_percentage_padding_bottom="15" 
+	                percentageLayout:pl_percentage_padding_left="9"
+	                percentageLayout:pl_percentage_padding_right="15">
+	                <ImageView 
+			            android:layout_width="15dp" 
+			            android:layout_height="15dp" 
+			            android:adjustViewBounds="true" 
+			            android:contentDescription="@null" 
+			            android:scaleType="centerInside"
+			            android:background="#FFFFFF" />              
+	 	       		</com.inditex.stradivarius.percentagelayout.PLinearLayout>
+	 	       		
+	       		Cuarto plinearlayout con opacidad
+ 			  	<com.inditex.stradivarius.percentagelayout.PLinearLayout 
+	                android:layout_width="0dp" 
+	                android:layout_height="0dp" 
+	                android:orientation="vertical" 
+	                percentageLayout:pl_percentage_width="@dimen/scan_block_lateral_square_width"
+	                percentageLayout:pl_percentage_height="100" 
+	                android:background="@color/scan_transparent_white"> 
+	           	</com.inditex.stradivarius.percentagelayout.PLinearLayout>
+        </com.inditex.stradivarius.percentagelayout.PLinearLayout>
+        FIN Plinear de contenedor de opacidad y cuadros blancos 
+        
+	       Contenedor scan    
+	    <LinearLayout 
+	        		android:id="@+id/contenedor_scan"
+	        		android:layout_width="match_parent" 
+	        		android:layout_height="0px" 
+	        		android:orientation="horizontal" 
+	        		>
+	        		
+	        		
+	    </LinearLayout>	  		 		
+		FIN  Contenedor scan  		    
+	    	   
+		Plinear 2 de contenedor de opacidad y cuadros blancos 
+        <com.inditex.stradivarius.percentagelayout.PLinearLayout 
+            android:id="@+id/scan_second_container"
+              android:layout_width="match_parent" 
+              android:layout_height="match_parent" 
+              android:orientation="horizontal" 
+              percentageLayout:pl_percentage_width="100" 
+              percentageLayout:pl_percentage_height="5">
+	        
+              Primer plinearlayout con opacidad
+ 			  <com.inditex.stradivarius.percentagelayout.PLinearLayout 
+	                android:layout_width="0dp" 
+	                android:layout_height="0dp" 
+	                android:orientation="horizontal" 
+	                percentageLayout:pl_percentage_width="@dimen/scan_block_lateral_square_width" 
+	                percentageLayout:pl_percentage_height="100" 
+	                android:background="@color/scan_transparent_white"> 
+	           	</com.inditex.stradivarius.percentagelayout.PLinearLayout>
+	           	
+             	Segundo plinear con un cuadro blanco para la camara alineado a la izquierda
+	            <com.inditex.stradivarius.percentagelayout.PLinearLayout 
+	                android:layout_width="0dp" 
+	                android:layout_height="0dp" 
+	                android:orientation="vertical" 
+	                android:gravity="center_vertical|left"
+	                percentageLayout:pl_percentage_width="@dimen/scan_block_small_white_square_width" 
+	                percentageLayout:pl_percentage_height="100" 
+	                percentageLayout:pl_percentage_padding_top="15" 
+	                percentageLayout:pl_percentage_padding_bottom="15" 
+	                percentageLayout:pl_percentage_padding_left="9"
+	                percentageLayout:pl_percentage_padding_right="15">
+	                 <ImageView 
+			            android:layout_width="15dp" 
+			            android:layout_height="15dp" 
+			            android:adjustViewBounds="true" 
+			            android:contentDescription="@null" 
+			            android:scaleType="centerInside"
+			            android:background="#FFFFFF"/>
+	      		</com.inditex.stradivarius.percentagelayout.PLinearLayout>
+	      		
+	       		Tercero plinear con un cuadro blanco para la camara alineado a la derecha
+	       		<com.inditex.stradivarius.percentagelayout.PLinearLayout 
+	                android:layout_width="0dp" 
+	                android:layout_height="0dp" 
+	                android:orientation="vertical" 
+	                android:gravity="center_vertical|right"
+	                percentageLayout:pl_percentage_width="@dimen/scan_block_small_white_square_width" 
+	                percentageLayout:pl_percentage_height="100" 
+	                percentageLayout:pl_percentage_padding_top="15" 
+	                percentageLayout:pl_percentage_padding_bottom="15" 
+	                percentageLayout:pl_percentage_padding_left="9"
+	                percentageLayout:pl_percentage_padding_right="15">
+	               	 <ImageView 
+			            android:layout_width="15dp" 
+			            android:layout_height="15dp" 
+			            android:adjustViewBounds="true" 
+			            android:contentDescription="@null" 
+			            android:scaleType="centerInside"
+			            android:background="#000000"
+			             />              
+	 	       	</com.inditex.stradivarius.percentagelayout.PLinearLayout>
+	 	       		
+	       		Cuarto plinearlayout con opacidad
+ 			  	<com.inditex.stradivarius.percentagelayout.PLinearLayout 
+	                android:layout_width="0dp" 
+	                android:layout_height="0dp" 
+	                android:orientation="vertical" 
+	                percentageLayout:pl_percentage_width="@dimen/scan_block_lateral_square_width" 
+	                percentageLayout:pl_percentage_height="100" 
+	                android:background="@color/scan_transparent_white"> 
+	           	</com.inditex.stradivarius.percentagelayout.PLinearLayout>
+        </com.inditex.stradivarius.percentagelayout.PLinearLayout>
+        FIN Plinear 2 de contenedor de opacidad y cuadros blancos 
+          
+          
+         <com.inditex.stradivarius.percentagelayout.PLinearLayout 
+	                android:id="@+id/text_desciption_scan" 
+	                android:layout_width="0dp" 
+	                android:layout_height="0dp" 
+	                android:orientation="vertical" 
+	                percentageLayout:pl_percentage_width="100" 
+	                percentageLayout:pl_percentage_height="47"
+	                android:background="@color/scan_transparent_white">
+	              
+                   <com.inditex.stradivarius.percentagelayout.PTextView
+					    android:id="@+id/description_scan"
+					    android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:includeFontPadding="false"
+		           		android:gravity="center"
+						android:textColor="@color/general_text_active"
+						percentageLayout:ptv_height="@dimen/font32pt"
+						/>
+	     </com.inditex.stradivarius.percentagelayout.PLinearLayout>  
+            
+   	</com.inditex.stradivarius.percentagelayout.PLinearLayout>
+  
+	Plinear de contenedor cámara QR 
+	
+	Plinear de contenedor  teclado codigo de barras 
+    <com.inditex.stradivarius.percentagelayout.PLinearLayout 
+       android:id="@+id/contenedor_teclado_barcode" 
+       android:layout_width="match_parent" 
+       android:layout_height="match_parent" 
+       android:orientation="vertical" 
+       percentageLayout:pl_percentage_width="100" 
+       percentageLayout:pl_percentage_height="100" 
+       android:background="@color/scan_transparent_white" 
+       android:visibility="gone">  
+              
+        Plinear de contenedor de opacidad y cuadros blancos 
+        <com.inditex.stradivarius.percentagelayout.PLinearLayout 
+            android:id="@+id/contenedor_imagen_codigo_barras" 
+            android:layout_width="match_parent" 
+            android:layout_height="match_parent" 
+            android:orientation="horizontal" 
+            percentageLayout:pl_percentage_width="100" 
+            percentageLayout:pl_percentage_height="5" 
+            percentageLayout:pl_percentage_padding_left="20" 
+            percentageLayout:pl_percentage_padding_right="20" 
+            android:gravity="center">
+	        
+                  <ImageView 
+                      android:layout_width="match_parent" 
+                      android:layout_height="match_parent" 
+                      android:adjustViewBounds="true" 
+                      android:contentDescription="@null" 
+                      android:scaleType="centerInside" 
+                      android:src="@drawable/codigobarras" />
+	      		</com.inditex.stradivarius.percentagelayout.PLinearLayout>
+
+         <com.inditex.stradivarius.percentagelayout.PLinearLayout 
+             android:id="@+id/contenedor_texto_codigo_barras" 
+             android:layout_width="0dp" 
+             android:layout_height="0dp" 
+             android:orientation="vertical" 
+             percentageLayout:pl_percentage_width="100" 
+             percentageLayout:pl_percentage_height="5">
+	              
+                   <com.inditex.stradivarius.percentagelayout.PEditText 
+                       android:id="@+id/codigo_barras" 
+                       android:layout_width="match_parent" 
+                       android:layout_height="match_parent" 
+                       android:includeFontPadding="false" 
+                       android:gravity="center" 
+                       android:textColor="@color/general_text_active" 
+                       percentageLayout:ptv_height="@dimen/font26pt" 
+                       android:background="@color/scan_transparent_none" 
+                       android:numeric="integer" 
+                       android:text="@string/numbers_codigo_barras" />
+	     </com.inditex.stradivarius.percentagelayout.PLinearLayout>  
+            
+         
+         <com.inditex.stradivarius.percentagelayout.PLinearLayout 
+             android:id="@+id/text_desciption_barcode" 
+             android:layout_width="0dp" 
+             android:layout_height="0dp" 
+             android:orientation="vertical" 
+             percentageLayout:pl_percentage_width="100" 
+             percentageLayout:pl_percentage_height="57">
+	              
+                   <com.inditex.stradivarius.percentagelayout.PTextView 
+                       android:id="@+id/codigo_barras_text" 
+                       android:layout_width="match_parent" 
+                       android:layout_height="match_parent" 
+                       android:includeFontPadding="false" 
+                       android:gravity="center" 
+                       android:textColor="@color/general_text_active" 
+                       percentageLayout:ptv_height="@dimen/font32pt" />
+	     </com.inditex.stradivarius.percentagelayout.PLinearLayout>  
+   </com.inditex.stradivarius.percentagelayout.PLinearLayout></com.inditex.stradivarius.percentagelayout.PLinearLayout>
+	Plinear de contenedor cámara QR 
+   
+   
+    <com.inditex.stradivarius.views.ActionBar
+        android:id="@+id/scan_actionbar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"/>
+    --> 
+</RelativeLayout>

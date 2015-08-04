@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#E0F8F1"
+    android:orientation="vertical"
+    android:padding="10dip"
+    >
+
+    <TextView
+        android:id="@+id/txtusername"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/Username" />
+
+    <EditText
+        android:id="@+id/username"
+        style="@style/ParseLoginUI.EditText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtusername"
+        android:inputType="text" 
+        android:digits="0,1,2,3,4,5,6,7,8,9,*,qwertzuiopasdfghjklyxcvbnm,QWERTTZUIOPASDFGHJKLYXCVBNM,_,-"
+        android:maxLength="30"
+  		/>
+
+    <TextView
+        android:id="@+id/txtpassword"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/username"
+        android:gravity="center"
+        android:text="@string/Password" />
+
+    <EditText
+        android:id="@+id/password"
+        style="@style/ParseLoginUI.EditText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtpassword"
+        android:inputType="textPassword|textNoSuggestions|" 
+        android:digits="0,1,2,3,4,5,6,7,8,9,*,qwertzuiopasdfghjklyxcvbnm,QWERTTZUIOPASDFGHJKLYXCVBNM,_,-"
+        android:maxLength="8"
+        
+  		/>
+
+    <com.gc.materialdesign.views.ButtonRectangle
+        android:id="@+id/login"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/password"
+        android:background="@color/verde_oscuro"
+        android:layout_marginTop="20dp"
+        android:text="@string/LoginBtn" 
+        materialdesign:animate="true"/>
+
+    <TextView
+        android:id="@+id/link_signup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/login"
+        android:layout_below="@+id/login"
+        android:layout_marginRight="108dp"
+        android:layout_marginTop="91dp"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="@string/SignupBtn"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/darker_gray"
+        android:textStyle="italic|bold"
+        android:typeface="serif" />
+    
+</RelativeLayout>

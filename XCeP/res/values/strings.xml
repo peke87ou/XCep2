@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    
+    <string name="app_name">XCeP</string>
+    <string name="Username">Nome</string>
+    <string name="Password">Contrasinal </string>
+    <string name="RePassword">Volva introducir o contrasinal</string>
+    <string name="Email">Enderezo electrónico</string>
+    <string name="LoginBtn">Iniciar sesión</string>
+    <string name="SignupBtn">Rexistrarse</string>
+    <string name="LogoutBtn">Desconectarse</string>
+    <string name="my_list">As miñas listas</string>
+    <string name="action_settings">Configuracion</string>
+	<string name="title_action_bar_login">Logueate</string>
+    <string name="title_action_bar_signup">Rexistrate</string>
+    <string name="products"> produtos</string>
+    <string name="hint_name_list">Introduza o nome da lista</string>
+    <string name="button_cancel_new_list">Cancelar</string>
+    <string name="button_add_new_list">Crear</string>
+    <string name="title_action_bar_add_shopping_list">Nova Lista</string>
+    <string name="text_name_add_shopping_list">Nome da lista:</string>
+    <string name="text_adapter_list_market">Supermercado encontrado</string>
+    <string name="text_login_home_user">Has iniciado sesión como  </string>
+    <string name="empty_list">Listas baleira</string>
+    <string name="error_add_list">Erro o engadir a nova lista</string>
+    <string name="conect_Ok">Conectado Exitosamente </string>
+    <string name="conect_ko_login">As credenciais son inválidas, se non está auténticado no sistema, por favor rexistrese</string>
+    <string name="pass_no_ok">As contrasinais non coinciden</string>
+    <string name="conect_ko_signup">Rexistrado Exitosamente </string>
+    <string name="email_fail">O seu enderezo electrónico é inválido</string>
+    <string name="user_fail">O usuario que intenta rexistrar xa existe, Loguese!</string>
+    <string name="email_exist">O email que intenta rexistrar xa existe</string>
+    <string name="error_signup">Error no rexistro</string>
+    <string name="drawer_open">Abrir</string>
+    <string name="drawer_close">Cerrar</string>
+    <string name="catalog">Catálogo</string>
+    <string name="scan">Escaner</string>
+ 	<string name="setting">Axustes</string>
+ 	<string name="facebook">Facebook</string>
+ 	<string name="twitter">Twitter</string>
+ 	<string name="language">Idioma</string>
+ 	<string name="reset_bd">Reiniciar Datos</string>
+ 	<string name="help">Acerca de ...</string>
+     
+    <!--  <style name="DefaultButtonText">
+	   <item name="android:layout_width">fill_parent</item>
+	    <item name="android:layout_height">wrap_content</item>
+	    <item name="android:textColor">#979797</item>
+	    <item name="android:gravity">center</item>
+	    <item name="android:layout_margin">3dp</item>
+	    <item name="android:textStyle">normal</item>
+	    <item name="android:textSize">20sp</item>
+	    <item name="android:shadowColor">#f9f9f9</item>
+	    <item name="android:shadowDx">1</item>
+	    <item name="android:shadowDy">1</item>
+	    <item name="android:shadowRadius">1</item>
+	</style> -->
+</resources>

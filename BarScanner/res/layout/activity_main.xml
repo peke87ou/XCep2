@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <SurfaceView
+        android:id="@+id/cameraPreview"
+        android:layout_width="325dp"
+        android:layout_height="250dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@+id/leido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cameraPreview"
+        android:layout_centerHorizontal="true"
+        android:text="@string/leido_inicial"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/camara1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/cameraPreview"
+        android:layout_toLeftOf="@+id/cameraPreview"
+        android:text="@string/camara1" />
+
+    <Button
+        android:id="@+id/camara2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/camara1"
+        android:layout_below="@+id/camara1"
+        android:text="@string/camara2" />
+
+</RelativeLayout>
