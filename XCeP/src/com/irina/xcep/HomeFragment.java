@@ -3,9 +3,12 @@ package com.irina.xcep;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,6 +23,7 @@ import android.widget.Toast;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.irina.xcep.adapters.AdapterListas;
 import com.irina.xcep.model.Lista;
+import com.irina.xcep.model.Produto;
 import com.irina.xcep.utils.FragmentIndexes;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -114,7 +118,17 @@ public class HomeFragment extends Fragment {
 				}
 			}
 		});
+		//Click proglongado para a modificación dunha lista
+		list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+            	showDialogoModificarProducto();
+            	return true;
+            }
+        }); 
 		
+		
+		//Click para acceder o detalle da lista
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 	        @Override
@@ -139,6 +153,73 @@ public class HomeFragment extends Fragment {
 	}
 	
 	
+	
+	public void showDialogoModificarProducto(){
+		
+//		// Mirar se existe na BD
+//		ParseQuery<Produto> productos = ParseQuery.getQuery(Produto.class);
+//		 
+//		productos.whereEqualTo("idBarCode",resultadoBarCode);
+//		productos.findInBackground(new FindCallback<Produto>() {
+//			@Override
+//			public void done(List<Produto> objects, ParseException e) {
+//					Log.i("jklsdfjklsdfsdfjkl",objects.size()+"resultado"+resultadoBarCode+"");
+//					if (objects.size() > 0){
+//						isProductoEnParse = false;
+//					}else{
+//						isProductoEnParse = true;
+//					}
+//				
+//			}
+//		});
+//	
+	
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setTitle("Modificacións da lista" );
+		builder.setMessage("¿Que desexa facer? ");
+		// Add the buttons
+		builder.setPositiveButton("Eliminar a lista", new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+//		        	   if(isProductoEnParse){
+//		        		   barcode = resultadoBarCode;
+//			        	   //TODO Agregar resultadoBarCode a parse
+//			        	   resultadoBarCode = null;
+//			        	   Intent intent = new Intent(getActivity(), AddProductActivity.class);
+//			        	   Log.i("QUE ENVIA", barcode);
+//			        	   intent.putExtra("MESSAGE",barcode);  
+//		                   startActivityForResult(intent, 1);
+//		        	   }else{
+//		        		   barcode = resultadoBarCode;
+//		        		   resultadoBarCode = null;
+////		        		   Toast.makeText(getActivity(), "DETALLE DE PRODUTO", Toast.LENGTH_LONG).show();
+//		        		   Intent intent = new Intent(getActivity(), DetailProduct.class);
+////			        	   Log.i("QUE ENVIA", barcode);
+////			        	   intent.putExtra("MESSAGE",barcode);  
+//		                   startActivityForResult(intent, 1);
+//		        	   }
+		        	  
+		        	 
+		        	  
+		           }
+		       });
+		builder.setNeutralButton("Cambiar Nome", new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		builder.setNegativeButton("Pechar", new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		        	 dialog.dismiss();
+		           }
+		       });
+		AlertDialog dialogo = builder.create();
+		dialogo.show();
+	}
 	
 //	private AbsListView.OnScrollListener mScrollListener = new AbsListView.OnScrollListener() {
 //
