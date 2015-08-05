@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.irina.xcep.R;
 import com.irina.xcep.model.Lista;
-import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Supermercado;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -68,7 +67,7 @@ public class AdapterListas extends ArrayAdapter<Lista> {
 		}
         String productos = "";
         if(i == 1){
-        	productos = i + "Producto";
+        	productos = i + " Producto";
         }else{
         	productos = i + " Productos";
         }
