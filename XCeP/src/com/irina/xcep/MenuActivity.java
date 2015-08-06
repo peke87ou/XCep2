@@ -153,7 +153,8 @@ public class MenuActivity extends Activity implements MenuAdapter.SelectedListBu
 		    NavMenuItem.create(203, R.string.language, R.drawable.comments, true, this),
 //		    NavMenuItem.create(204, R.string.reset_bd, R.drawable.recycle, true, this),
 		    NavMenuItem.create(205, R.string.help, R.drawable.help, true, this)};
-
+//http://code.tutsplus.com/tutorials/android-essentials-creating-simple-user-forms--mobile-1758
+    //Formulario  peticiones
 
 
     public void loadFragment(int index) {
@@ -167,14 +168,10 @@ public class MenuActivity extends Activity implements MenuAdapter.SelectedListBu
                 break;
             case FragmentIndexes.FRAGMENT_LIST:
             	fragment = DetailListFragment.newInstance(FragmentIndexes.FRAGMENT_LIST);
-                
-               // transaction.add(R.id.container, fragment).commit();
-                break;
-                
+            	break;
             case FragmentIndexes.FACEBOOK:
             	shareFacebook();
             	return;
-            	
             case FragmentIndexes.TWITTER:
             	shareTwitter();
             	return;
