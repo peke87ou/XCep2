@@ -3,6 +3,7 @@ package com.irina.xcep;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -25,6 +26,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
@@ -38,11 +40,15 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
+import com.irina.xcep.adapters.AdapterListas;
+import com.irina.xcep.adapters.AdapterProducts;
+import com.irina.xcep.model.Lista;
 import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Supermercado;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
 public class DetailListFragment extends Fragment implements SurfaceHolder.Callback{
@@ -55,6 +61,12 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	String resultadoBarCode;
 	String barcode;
 	boolean isProductoEnParse;
+	
+	AdapterProducts adapter;
+	ArrayList<Produto> productLista = new ArrayList<Produto>();
+	ListView list;
+	ParseUser currentUser = ParseUser.getCurrentUser();
+	String nameList ;
 	
 	public static DetailListFragment newInstance (int Index){
 		DetailListFragment fragment = new DetailListFragment();
@@ -239,8 +251,11 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		tabHost.setCurrentTab(0);
 		// Convertir currentUser en String
-		TextView txtuser = (TextView) home.findViewById(R.id.idNameList);
-		txtuser.setText(((MenuActivity)getActivity()).mNameList);
+		TextView txtNameList = (TextView) home.findViewById(R.id.idNameList);
+		nameList = ((MenuActivity)getActivity()).mNameList;
+		txtNameList.setText(nameList);
+		
+		
 		ImageView imageMarket =  (ImageView) home.findViewById(R.id.imageMarket);
 		if(mMarketSelected ==null){
 			mMarketSelected = ((MenuActivity)getActivity()).mMarketSelected;
@@ -257,28 +272,77 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			@Override
 			public void onTabChanged(String tabId) {
 				Toast.makeText(getActivity(), "ID: "+ tabId, Toast.LENGTH_SHORT).show();
-				if (tabId == "Escaner") {
-					if(cam==null){
-						prepararCamara();
+				switch (tabId) {
+				
+				case "Escaner":
+					if (tabId == "Escaner") {
+						if(cam==null){
+							prepararCamara();
+						}else{
+							cam.startPreview();
+						}
+						
+						/**
+						 * Lector QR por intent
+						IntentIntegratorBarCode integrator = new IntentIntegratorBarCode(getActivity());
+						integrator.initiateScan();*/
 					}else{
-						cam.startPreview();
+						if(cam != null)
+							cam.stopPreview();
 					}
-					
-					/**
-					 * Lector QR por intent
-					IntentIntegratorBarCode integrator = new IntentIntegratorBarCode(getActivity());
-					integrator.initiateScan();*/
-				}else{
-					if(cam != null)
-						cam.stopPreview();
+					break;
+				case "Lista da compra":
+					cargarProdutosLista(nameList);
+					break;
+
+				default:
+					cargarProdutosLista(nameList);
+					break;
 				}
+				
+				
+				
 			}
 		});
+		
+		//Lista de produtos
+		list = (ListView) home.findViewById(R.id.list_products);
 			
 		return home;
 	}
 	
-	
+	private void cargarProdutosLista( String nameList ) {
+		
+		adapter = new AdapterProducts(getActivity(), productLista);
+		
+		list.setAdapter(adapter);
+		
+		
+		ParseQuery<Produto> query = ParseQuery.getQuery(Produto.class);
+//		query.include("Market");
+		//Filtramos as lista para cada usuario logueado na app
+//		query.include("User");
+//		query.whereEqualTo("idUser", currentUser);
+//		FIXME filtrar por lista revisar BD
+//		query.include("List");
+//		Log.e("Adaptador productos", nameList+"");
+//		query.whereEqualTo("name", nameList);
+		query.findInBackground(new FindCallback<Produto>() {
+			
+			@Override
+			public void done(List<Produto> objects, ParseException e) {
+				Log.e("Adaptador productos", objects.size()+"");
+				productLista = (ArrayList<Produto>) objects;
+				adapter.clear();
+				if(productLista != null){
+					adapter.addAll(productLista);
+				}else{
+					Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
+				}
+				
+			}
+		});
+	}
 	
 	@Override
 	public void onStop() {
@@ -288,7 +352,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 
 	@Override
 	public void onPause() {
-		// TODO Auto-generated method stub
 		super.onPause();
 		if(cam!=null)
 			cam.stopPreview();
@@ -303,25 +366,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		}
 	}
 	
-
-	/**
-	 * No se usa actualmente el lector QR por intent
-	 */
-	/*@Deprecated
-	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		
-		  IntentResultBarcode scanResult = IntentIntegratorBarCode.parseActivityResult(requestCode, resultCode, intent);
-		  if (scanResult != null) {
-			  
-			  Toast.makeText(getActivity(), "Se lee"+scanResult.getContents(), Toast.LENGTH_LONG).show();
-		  }else{
-			  
-			  Toast.makeText(getActivity(), "QR vacío", Toast.LENGTH_LONG).show();
-		  }
-	}*/
-	
-	
-
 	
 	/**
 	 * Surfaceholder callback de la cámara
@@ -339,46 +383,5 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	public void surfaceDestroyed(SurfaceHolder holder){
 	}
 	
-	
-//	private AbsListView.OnScrollListener mScrollListener = new AbsListView.OnScrollListener() {
-//
-//	        private int mLastFirstVisibleItem;
-//	        private boolean mAnimationCalled = false;
-//			private AdapterView<ListAdapter> mListView;
-//			private boolean mListStateFlying;
-//			private  Object mAddQuoteBtn;
-//
-//	        @Override
-//	        public void onScrollStateChanged(AbsListView view, int scrollState) {
-//	            //If we are flying
-//	            boolean mListStateFlying = AbsListView.OnScrollListener.SCROLL_STATE_FLING == scrollState;
-//	            mAnimationCalled = mListStateFlying ? mAnimationCalled : false;
-//	            Log.i("ABDLISTVIEW", "State changed, new state: " + scrollState);
-//
-//	        }
-//
-//	        @Override
-//	        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//
-//	           
-//				if (mAddQuoteBtn == null) return;
-//
-//
-//	            if (!mAnimationCalled && mLastFirstVisibleItem < firstVisibleItem) {
-//	                //Scrolling down
-//	                ((ButtonFloat) mAddQuoteBtn).hide();
-//	                mAnimationCalled = true;
-//	            } else if (!mAnimationCalled && mLastFirstVisibleItem > firstVisibleItem) {
-//	                //Scrolling up
-//	                ((Toast) mAddQuoteBtn).show();
-//	                mAnimationCalled = true;
-//	            }
-//	            mLastFirstVisibleItem = firstVisibleItem;
-//
-//
-//
-//	            if(mListStateFlying || mListView.getCount() == 0) return;
-//
-//	        }
-//	    };
+
 }

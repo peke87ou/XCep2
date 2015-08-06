@@ -7,6 +7,7 @@ import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.irina.xcep.R;
 import com.irina.xcep.model.Lista;
+import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Supermercado;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -25,54 +27,56 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.squareup.picasso.Picasso;
 
-public class AdapterListas extends ArrayAdapter<Lista> {
+public class AdapterProducts extends ArrayAdapter<Produto> {
 	
 	private static Map<String, Bitmap> mImagenes = new HashMap<String, Bitmap>();
     
-	public AdapterListas(Context context, ArrayList<Lista> lista) {
-       super(context, 0, lista);
+	public AdapterProducts(Context context, ArrayList<Produto> productos) {
+       super(context, 0, productos);
     }
 
     @Override
     public View getView(int position, View celdaView, ViewGroup parent) {
        //Recuperar o elemento de datos para esta posición
-       final Lista lista = getItem(position);    
-       
+       final Produto productosList = getItem(position);    
+              
        // Comproba se unha vista existente está a ser reutilizado , se non inflar a vista
        if (celdaView == null) {
-          celdaView = LayoutInflater.from(getContext()).inflate(R.layout.item_shopping_list, parent, false);
+          celdaView = LayoutInflater.from(getContext()).inflate(R.layout.item_product_shopping_list, parent, false);
        }
        
        //Buscar Vista para recheo de datos
-       ((TextView) celdaView.findViewById(R.id.name_list)).setText(lista.getNome());
+       Log.i("Productos", productosList+"");
+       ((TextView) celdaView.findViewById(R.id.name_product)).setText(productosList.getNome());
 
-       final ImageView imageView = (ImageView)celdaView.findViewById(R.id.imageMarketList);
-       ParseRelation<ParseObject> relation = lista.getRelation("idMarket");
+       ImageView imageView = (ImageView)celdaView.findViewById(R.id.image_product);
+      
+//       ParseRelation<ParseObject> relation = productosList.getRelation("idMarket");
        
-       final String objectId = lista.getObjectId();
-       Bitmap bmp = mImagenes.get(objectId);
+//       final String objectId = productosList.getObjectId();
+     // Bitmap bmp = mImagenes.get(productosList.getUrlImaxe());
        
-       if(bmp != null){
-    	   imageView.setImageBitmap(bmp);
-       }else{
-    	   downloadBitmap(relation, imageView);
-       }
-       int i = 0;
+//       if(bmp != null){
+//    	   imageView.setImageBitmap(bmp);
+//       }else{
+//    	   downloadBitmap(relation, imageView);
+//       }
+//       int i = 0;
        //Buscar Vista para recheo de datos
-        try {
-			 i = lista.getIdProducts().getQuery().count();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        String productos = "";
-        if(i == 1){
-        	productos = i + " Producto";
-        }else{
-        	productos = i + " Productos";
-        }
+//        try {
+//			 i = productosList.getIdProducts().getQuery().count();
+//		} catch (ParseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//        String productos = "";
+//        if(i == 1){
+//        	productos = i + " Producto";
+//        }else{
+//        	productos = i + " Productos";
+//        }
         	
-		((TextView) celdaView.findViewById(R.id.products_list)).setText(productos);
+//		((TextView) celdaView.findViewById(R.id.products_list)).setText(productos);
 	
        
        return celdaView;

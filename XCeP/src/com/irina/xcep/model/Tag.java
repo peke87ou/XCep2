@@ -6,5 +6,12 @@ import com.parse.ParseObject;
 @ParseClassName("Tag")
 public class Tag extends ParseObject {
 
+	public String getNome() {
+		return getString("name");
+	}
 
+	public void setNome(String nome) {
+		put("name", nome);
+	}
+	
 }

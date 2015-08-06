@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bottom_line_black"
+        android:padding="5dp" >
+
+        <com.gc.materialdesign.views.CheckBox
+            android:id="@+id/checkBox1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" >
+
+        </com.gc.materialdesign.views.CheckBox>
+
+        <LinearLayout
+            android:layout_width="136dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.80"
+            android:orientation="vertical"
+            android:padding="10dp" >
+
+            <TextView
+                android:id="@+id/name_product"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Producto"
+                android:textColor="@color/actionbar_text_color" />
+
+            <TextView
+                android:id="@+id/products_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unidades"
+                android:textColor="#000000" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/image_product"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:background="@color/custom_theme_color"
+            android:src="@drawable/abc_ab_bottom_solid_dark_holo" />
+
+        <TextView
+            android:id="@+id/TextView01"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:layout_gravity="right|center"
+            android:padding="10dp"
+            android:text="0,0 €"
+            android:textColor="#000000" />
+    </LinearLayout>
+
+</LinearLayout>

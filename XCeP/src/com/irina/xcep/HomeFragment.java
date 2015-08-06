@@ -8,12 +8,12 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -23,7 +23,6 @@ import android.widget.Toast;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.irina.xcep.adapters.AdapterListas;
 import com.irina.xcep.model.Lista;
-import com.irina.xcep.model.Produto;
 import com.irina.xcep.utils.FragmentIndexes;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -42,6 +41,12 @@ public class HomeFragment extends Fragment {
 	ImageButton addlist;
 	// Solicitar usuario actual do Parse.com
 	ParseUser currentUser = ParseUser.getCurrentUser();
+	
+	String objid = "";
+	
+	String nameListtxt= "";
+	
+	
 	
 	public static HomeFragment newInstance (int Index){
 		HomeFragment fragment = new HomeFragment();
@@ -121,9 +126,12 @@ public class HomeFragment extends Fragment {
 		//Click proglongado para a modificación dunha lista
 		list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int pos, long id) {
+            	objid = misListas.get(pos).getObjectId();
             	showDialogoModificarProducto();
             	return true;
+            	
+            	
             }
         }); 
 		
@@ -156,62 +164,75 @@ public class HomeFragment extends Fragment {
 	
 	public void showDialogoModificarProducto(){
 		
-//		// Mirar se existe na BD
-//		ParseQuery<Produto> productos = ParseQuery.getQuery(Produto.class);
-//		 
-//		productos.whereEqualTo("idBarCode",resultadoBarCode);
-//		productos.findInBackground(new FindCallback<Produto>() {
-//			@Override
-//			public void done(List<Produto> objects, ParseException e) {
-//					Log.i("jklsdfjklsdfsdfjkl",objects.size()+"resultado"+resultadoBarCode+"");
-//					if (objects.size() > 0){
-//						isProductoEnParse = false;
-//					}else{
-//						isProductoEnParse = true;
-//					}
-//				
-//			}
-//		});
-//	
-	
-		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle("Modificacións da lista" );
 		builder.setMessage("¿Que desexa facer? ");
-		// Add the buttons
 		builder.setPositiveButton("Eliminar a lista", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
-//		        	   if(isProductoEnParse){
-//		        		   barcode = resultadoBarCode;
-//			        	   //TODO Agregar resultadoBarCode a parse
-//			        	   resultadoBarCode = null;
-//			        	   Intent intent = new Intent(getActivity(), AddProductActivity.class);
-//			        	   Log.i("QUE ENVIA", barcode);
-//			        	   intent.putExtra("MESSAGE",barcode);  
-//		                   startActivityForResult(intent, 1);
-//		        	   }else{
-//		        		   barcode = resultadoBarCode;
-//		        		   resultadoBarCode = null;
-////		        		   Toast.makeText(getActivity(), "DETALLE DE PRODUTO", Toast.LENGTH_LONG).show();
-//		        		   Intent intent = new Intent(getActivity(), DetailProduct.class);
-////			        	   Log.i("QUE ENVIA", barcode);
-////			        	   intent.putExtra("MESSAGE",barcode);  
-//		                   startActivityForResult(intent, 1);
-//		        	   }
 		        	  
-		        	 
-		        	  
-		           }
+		        		    ParseQuery<Lista> query=ParseQuery.getQuery(Lista.class);
+		        		    query.whereEqualTo("objectId",objid);
+		        		    query.findInBackground(new FindCallback<Lista>() {
+		        		        @Override
+		        		        public void done(List<Lista> parseObjects, ParseException e) {
+		        		            if(e==null) {
+
+		        		                for (ParseObject delete : parseObjects) {
+		        		                    delete.deleteInBackground();
+		        		                    Toast.makeText(getActivity(), "Borramos a lista seleccionada", Toast.LENGTH_SHORT).show();
+		        		                    onResume();
+		        		                }
+		        		            }else{
+		        		                Toast.makeText(getActivity(), "Error no borrado", Toast.LENGTH_SHORT).show();
+		        		            }
+		        		        }
+		        		    });
+		        	}
 		       });
 		builder.setNeutralButton("Cambiar Nome", new DialogInterface.OnClickListener() {
-
+			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
+				AlertDialog.Builder popDialog = new AlertDialog.Builder(getActivity());
+				final LayoutInflater inflater = getActivity().getLayoutInflater();
 				
-			}
-			
-		});
+				popDialog.setTitle("Cambiar o nome da lista ");
+				popDialog.setView(inflater.inflate(R.layout.activity_dialog_change_name_list, null))
+				           .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				               @Override
+				               public void onClick(DialogInterface dialog, int id) {
+				              
+				            	   EditText newNameList = (EditText) ((AlertDialog) dialog).findViewById(R.id.NameListNew);
+				                   nameListtxt = newNameList.getText().toString();
+				                   
+				                   ParseQuery<Lista> query=ParseQuery.getQuery(Lista.class);
+				        		   query.whereEqualTo("objectId",objid);
+				        		   query.findInBackground(new FindCallback<Lista>() {
+				        		   @Override
+				        		   public void done(List<Lista> parseObjects, ParseException e) {
+				        		            if(parseObjects.size()==1)	{
+				        		            		parseObjects.get(0).setNome(nameListtxt);
+				        		            		parseObjects.get(0).saveInBackground();
+				        		            		onResume();
+				        		                    Toast.makeText(getActivity(), "Cambiamos o nombre", Toast.LENGTH_LONG).show();
+				        		                   
+				        		            }    				        		           
+				        		        }
+				        		    });
+				               }
+				           })
+				           .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+				               public void onClick(DialogInterface dialog, int id) {
+				                   dialog.cancel();
+				               }
+				           });      
+				
+				 popDialog.create();
+				 popDialog.show(); 
+				            	
+				            }	
+				        });
+				   
 		builder.setNegativeButton("Pechar", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
 		        	 dialog.dismiss();
@@ -221,47 +242,5 @@ public class HomeFragment extends Fragment {
 		dialogo.show();
 	}
 	
-//	private AbsListView.OnScrollListener mScrollListener = new AbsListView.OnScrollListener() {
-//
-//	        private int mLastFirstVisibleItem;
-//	        private boolean mAnimationCalled = false;
-//			private AdapterView<ListAdapter> mListView;
-//			private boolean mListStateFlying;
-//			private  Object mAddQuoteBtn;
-//
-//	        @Override
-//	        public void onScrollStateChanged(AbsListView view, int scrollState) {
-//	            //If we are flying
-//	            boolean mListStateFlying = AbsListView.OnScrollListener.SCROLL_STATE_FLING == scrollState;
-//	            mAnimationCalled = mListStateFlying ? mAnimationCalled : false;
-//	            Log.i("ABDLISTVIEW", "State changed, new state: " + scrollState);
-//
-//	        }
-//
-//	        @Override
-//	        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//
-//	           
-//				if (mAddQuoteBtn == null) return;
-//
-//
-//	            if (!mAnimationCalled && mLastFirstVisibleItem < firstVisibleItem) {
-//	                //Scrolling down
-//	                ((ButtonFloat) mAddQuoteBtn).hide();
-//	                mAnimationCalled = true;
-//	            } else if (!mAnimationCalled && mLastFirstVisibleItem > firstVisibleItem) {
-//	                //Scrolling up
-//	                ((Toast) mAddQuoteBtn).show();
-//	                mAnimationCalled = true;
-//	            }
-//	            mLastFirstVisibleItem = firstVisibleItem;
-//
-//
-//
-//	            if(mListStateFlying || mListView.getCount() == 0) return;
-//
-//	           
-//
-//	        }
-//	    };
+
 }
