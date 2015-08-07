@@ -25,6 +25,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -33,6 +35,7 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gc.materialdesign.views.CheckBox;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.LuminanceSource;
 import com.google.zxing.MultiFormatReader;
@@ -40,11 +43,14 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
+import com.irina.xcep.adapters.AdapterGridAddShoppingList;
 import com.irina.xcep.adapters.AdapterListas;
 import com.irina.xcep.adapters.AdapterProducts;
+import com.irina.xcep.adapters.AdapterTags;
 import com.irina.xcep.model.Lista;
 import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Supermercado;
+import com.irina.xcep.model.Tag;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -67,6 +73,13 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	ListView list;
 	ParseUser currentUser = ParseUser.getCurrentUser();
 	String nameList ;
+	
+	
+	ArrayList<Tag> tagList = new ArrayList<Tag>();
+	GridView grid;
+	AdapterTags adapterTag;
+	CheckBox checkboxTag;
+	
 	
 	public static DetailListFragment newInstance (int Index){
 		DetailListFragment fragment = new DetailListFragment();
@@ -295,8 +308,12 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					cargarProdutosLista(nameList);
 					break;
 
+				case "Catálogo":
+					getCatalogo();
+					break;
+					
 				default:
-					cargarProdutosLista(nameList);
+					//cargarProdutosLista(nameList);
 					break;
 				}
 				
@@ -307,10 +324,59 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		//Lista de produtos
 		list = (ListView) home.findViewById(R.id.list_products);
-			
+		
+		grid=(GridView) home.findViewById(R.id.grid_tags);
+	
 		return home;
 	}
-	
+	private void getCatalogo(){
+		
+		adapterTag = new AdapterTags(getActivity(), tagList);
+				
+        grid.setAdapter(adapterTag);
+        grid.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
+        
+        ParseQuery<Tag> query = ParseQuery.getQuery(Tag.class);
+		query.findInBackground(new FindCallback<Tag>() {
+			
+			@Override
+			public void done(List<Tag> objects, ParseException e) {
+
+				tagList = (ArrayList<Tag>) objects;
+				
+				//FIXME Ver como actualizar la lista de supermercados dentro del adapter
+				adapterTag.clear();
+				adapterTag.addAll(tagList);
+//				adapterTag = new AdapterGridAddShoppingList(AddShoppingListActivity.this, supermercados);
+//				grid=(GridView)findViewById(R.id.grid_logo_market);
+//		        grid.setAdapter(adapter);
+//		        grid.setChoiceMode(GridView.CHOICE_MODE_SINGLE);
+			}
+		});
+        
+//		checkboxTag.setOnClickListener(l)
+		
+        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        	Toast.makeText(getActivity(), "You Clicked at " + tagList.get(position), Toast.LENGTH_SHORT).show();
+        	checkboxTag =  (CheckBox) view.findViewById(R.id.checkBoxTag);
+        	checkboxTag.setChecked(!checkboxTag.isCheck());
+        	grid.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+//        	if (supermercados.size()== position){ //ultima
+//        		Intent intent = new Intent(AddShoppingListActivity.this, AddMarketActivity.class);
+//        		//FIXME invocar como startActivityForResult, y manejar el callback para hacer reload de la lista
+//                startActivity(intent);
+//          	  
+//                
+//            }else {
+//            	idSuper = supermercados.get(position);
+//            }
+          }
+         });
+		
+	}
 	private void cargarProdutosLista( String nameList ) {
 		
 		adapter = new AdapterProducts(getActivity(), productLista);
