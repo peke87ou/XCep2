@@ -7,6 +7,7 @@ import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,7 @@ public class AdapterListas extends ArrayAdapter<Lista> {
        //Buscar Vista para recheo de datos
        ((TextView) celdaView.findViewById(R.id.name_list)).setText(lista.getNome());
 
+       
        final ImageView imageView = (ImageView)celdaView.findViewById(R.id.imageMarketList);
        ParseRelation<ParseObject> relation = lista.getRelation("idMarket");
        
@@ -59,25 +61,14 @@ public class AdapterListas extends ArrayAdapter<Lista> {
        }else{
     	   downloadBitmap(relation, imageView);
        }
-       int i = 0;
-       //Buscar Vista para recheo de datos
-        try {
-			 i = lista.getIdProducts().getQuery().count();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        String productos = "";
-        if(i == 1){
-        	productos = i + " Producto";
-        }else{
-        	productos = i + " Productos";
-        }
-        	
-		((TextView) celdaView.findViewById(R.id.products_list)).setText(productos);
-	
        
-       return celdaView;
+       
+       //Buscar Vista para recheo de datos	
+		TextView textViewProductos = ((TextView) celdaView.findViewById(R.id.products_list));
+		textViewProductos.setText("Buscando productos...");
+		new AsynkTaskGetProductos(textViewProductos, lista).execute();
+		
+		return celdaView;
    }
     
     public void downloadBitmap(ParseRelation<ParseObject> relation, final ImageView imageView){
@@ -95,10 +86,60 @@ public class AdapterListas extends ArrayAdapter<Lista> {
      	               
      	             Picasso.with(mContext ).load(urlBitmap).into(imageView);
      	             
-     	             //new AsyncTaskDownloadImage(imageView).execute(urlBitmap,superRelacionado);
      	           }
      	       } 
      	   }
      	});
+    }
+    
+    
+    
+    private class AsynkTaskGetProductos extends AsyncTask<Void, Void, String> {
+
+    	TextView textoProductosCelda;
+    	Lista listaProductos;
+    	
+    	
+        public AsynkTaskGetProductos(TextView textoProductosCelda,
+				Lista listaProductos) {
+			super();
+			this.textoProductosCelda = textoProductosCelda;
+			this.listaProductos = listaProductos;
+		}
+
+		@Override
+        protected String doInBackground(Void... params) {
+           
+	    	if(listaProductos == null)
+	    		return "Error de productos";
+	        
+			String productos = "";
+	        try {
+	        	int i = 0;
+	 			i = listaProductos.getIdProducts().getQuery().count();
+	 			if(i == 1){
+	 	         	productos = i + " Producto";
+	 	        }else{
+	 	         	productos = i + " Productos";
+	 	        }
+	 			 
+	 		} catch (ParseException e) {
+	 			e.printStackTrace();
+	 		}
+	         
+            return productos;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if(textoProductosCelda!= null)
+            	textoProductosCelda.setText(result);
+        }
+
+        @Override
+        protected void onPreExecute() {}
+
+        @Override
+        protected void onProgressUpdate(Void... values) {}
     }
 }

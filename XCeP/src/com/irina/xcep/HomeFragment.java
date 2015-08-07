@@ -105,40 +105,6 @@ public class HomeFragment extends Fragment {
 		//Listas da compra
 		list = (ListView) home.findViewById(R.id.lista_list);
 		adapter = new AdapterListas(getActivity(), misListas);
-		list.setAdapter(adapter);
-		
-		return home;
-	}
-	
-	public void reloadUserShoppingLists(boolean actualizarServidor) {
-		//Recreamos o conxunto de listas de compra do usuario
-		
-		Log.d(TAG, "reloadUserShoppingLists"); 
-
-		if(actualizarServidor){
-			ParseQuery<Lista> query = ParseQuery.getQuery(Lista.class);
-			query.include("Market");
-			//Filtramos as lista para cada usuario logueado na app
-			query.include("User");
-			query.whereEqualTo("idUser", currentUser);
-			query.include("Products");
-			query.findInBackground(new FindCallback<Lista>() {
-				@Override
-				public void done(List<Lista> objects, ParseException e) {
-					misListas = (ArrayList<Lista>) objects;
-					adapter.clear();
-					if(misListas != null){
-						adapter.addAll(misListas);
-					}else{
-						Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
-					}
-				}
-			});
-		}else{
-			adapter.setNotifyOnChange(true);
-		}
-				
-		
 		//Click proglongado para a modificación dunha lista
 		list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
@@ -167,7 +133,47 @@ public class HomeFragment extends Fragment {
 				
 	        	((MenuActivity)getActivity()).loadFragment(FragmentIndexes.FRAGMENT_LIST);
 	            }
-	         });
+	    });
+		
+		return home;
+	}
+	
+	public void reloadUserShoppingLists(boolean actualizarServidor) {
+		//Recreamos o conxunto de listas de compra do usuario
+		list.setAdapter(adapter);
+		Log.d(TAG, "reloadUserShoppingLists"); 
+
+		if(actualizarServidor){
+			final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), "Actualizando listas");
+     	   	progress.show();
+			ParseQuery<Lista> query = ParseQuery.getQuery(Lista.class);
+			query.include("Market");
+			//Filtramos as lista para cada usuario logueado na app
+			query.include("User");
+			query.whereEqualTo("idUser", currentUser);
+			query.include("Products");
+			query.findInBackground(new FindCallback<Lista>() {
+				@Override
+				public void done(List<Lista> objects, ParseException e) {
+					if(e!= null){
+						Toast.makeText(getActivity(), "Error no borrado", Toast.LENGTH_SHORT).show();
+					}
+					
+					misListas = (ArrayList<Lista>) objects;
+					
+					if(misListas != null){
+						adapter.clear();
+						adapter.addAll(misListas);
+						//adapter.setNotifyOnChange(true);
+					}
+					
+					progress.dismiss();
+				}
+			});
+		}else{
+			adapter.setNotifyOnChange(true);
+		}
+				
 	}
 	
 	@Override
@@ -181,10 +187,7 @@ public class HomeFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		if(misListas.size() == 0 )
-			reloadUserShoppingLists(true);
-		else
-			reloadUserShoppingLists(false);
+		reloadUserShoppingLists(true);
 	}
 
 
@@ -195,7 +198,10 @@ public class HomeFragment extends Fragment {
 		builder.setMessage("¿Que desexa facer? ");
 		builder.setPositiveButton("Eliminar a lista", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
-		        	  
+		        	   		Utils.hideSoftKeyboard(getActivity());
+		        	   		final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), "Eliminando lista");
+		        	   		progress.show();
+		        	   		
 		        		    ParseQuery<Lista> query=ParseQuery.getQuery(Lista.class);
 		        		    query.whereEqualTo("objectId",objid);
 		        		    query.findInBackground(new FindCallback<Lista>() {
@@ -205,10 +211,12 @@ public class HomeFragment extends Fragment {
 
 		        		                for (ParseObject delete : parseObjects) {
 		        		                    delete.deleteInBackground();
-		        		                    Toast.makeText(getActivity(), "Borramos a lista seleccionada", Toast.LENGTH_SHORT).show();
-		        		                    onResume();
 		        		                }
+		        		                
+		        		                progress.dismiss();
+		        		                reloadUserShoppingLists(true);
 		        		            }else{
+		        		            	progress.dismiss();
 		        		                Toast.makeText(getActivity(), "Error no borrado", Toast.LENGTH_SHORT).show();
 		        		            }
 		        		        }
@@ -228,6 +236,7 @@ public class HomeFragment extends Fragment {
 				               @Override
 				               public void onClick(DialogInterface dialog, int id) {
 				              
+				            	   Utils.hideSoftKeyboard(getActivity());
 				            	   final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), "Cambiando nombre");
 				            	   progress.show();
 				            	   EditText newNameList = (EditText) ((AlertDialog) dialog).findViewById(R.id.NameListNew);
@@ -238,19 +247,25 @@ public class HomeFragment extends Fragment {
 				        		   query.findInBackground(new FindCallback<Lista>() {
 				        		   @Override
 				        		   public void done(List<Lista> parseObjects, ParseException e) {
-				        		            if(parseObjects.size()==1)	{
+				        			   
+				        			   if(e!= null){
+				        				   progress.dismiss();
+				        				   Toast.makeText(getActivity(), "Produciuse un erro: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+				        				   return;
+				        			   }
+				        			   
+				        		       if(parseObjects.size()==1)	{
 				        		            		parseObjects.get(0).setNome(nameListtxt);
 				        		            		//parseObjects.get(0).saveInBackground();
 				        		            		parseObjects.get(0).saveInBackground(new SaveCallback() {
 														
 														@Override
 														public void done(ParseException e) {
+															progress.dismiss();
 															if(e!= null){
 																Toast.makeText(getActivity(), "Produciuse un erro: "+e.getMessage(), Toast.LENGTH_SHORT).show();
 															}else{
-																progress.dismiss();
 																reloadUserShoppingLists(true);
-																Toast.makeText(getActivity(), "Cambiamos o nombre", Toast.LENGTH_SHORT).show();
 															}
 														}
 														
