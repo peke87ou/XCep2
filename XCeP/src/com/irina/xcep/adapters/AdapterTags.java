@@ -3,6 +3,7 @@ package com.irina.xcep.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -26,12 +27,12 @@ public class AdapterTags extends ArrayAdapter<Tag> {
               
        // FIXME crear vista TAGS
        if (celdaView == null) {
-          //celdaView = LayoutInflater.from(getContext()).inflate(R.layout.item_product_shopping_list, parent, false);
+          celdaView = LayoutInflater.from(getContext()).inflate(R.layout.item_tag, parent, false);
        }
        
        //Buscar Vista para recheo de datos
     
-       ((TextView) celdaView.findViewById(R.id.name_product)).setText(tagList.getNome());
+       ((TextView) celdaView.findViewById(R.id.products_list)).setText(tagList.getNome());
 
        return celdaView;
    }
