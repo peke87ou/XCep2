@@ -65,9 +65,10 @@ public class AdapterListas extends ArrayAdapter<Lista> {
        
        //Buscar Vista para recheo de datos	
 		TextView textViewProductos = ((TextView) celdaView.findViewById(R.id.products_list));
-		textViewProductos.setText("Buscando productos...");
-		new AsynkTaskGetProductos(textViewProductos, lista).execute();
-		
+		if(textViewProductos.getText().length()==0){
+			textViewProductos.setText("Buscando productos...");
+			new AsynkTaskGetProductos(textViewProductos, lista).execute();
+		}
 		return celdaView;
    }
     

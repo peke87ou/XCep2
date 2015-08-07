@@ -30,16 +30,6 @@
         android:background="@color/verde_oscuro"
         android:text="@string/LogoutBtn"
         materialdesign:animate="false" />
-        
-        <!-- <Button 
-             android:id="@+id/logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="false"
-        android:layout_centerHorizontal="true"
-        android:background="@color/verde_oscuro"
-        android:text="@string/LogoutBtn"
-            />-->
 
     <ListView
         android:id="@+id/lista_list"

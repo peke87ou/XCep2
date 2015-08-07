@@ -36,7 +36,6 @@ public class AddShoppingListActivity extends Activity{
 	private EditText nameList;
 	private String nameListtxt;
 	private Supermercado idSuper;
-	//private int posicion = 0;
 	
 	
 	@Override
@@ -65,16 +64,34 @@ public class AddShoppingListActivity extends Activity{
 				engadirLista();
 			}
 		});
-		reloadAddshoppingList();
-	}
-		protected void reloadAddshoppingList() {
-			
-		
-		adapter = new AdapterGridAddShoppingList(AddShoppingListActivity.this, supermercados);
 		
 		grid=(GridView)findViewById(R.id.grid_logo_market);
         grid.setAdapter(adapter);
         grid.setChoiceMode(GridView.CHOICE_MODE_SINGLE);
+		grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+		        @Override
+		        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+		        	if (supermercados.size()== position){ 
+		        		Intent intent = new Intent(AddShoppingListActivity.this, AddMarketActivity.class);
+		                startActivity(intent);
+		                
+		            }else {
+		            	idSuper = supermercados.get(position);
+		            }
+		          }
+		});
+		 
+		 
+		reloadAddshoppingList();
+	}
+	
+	
+	protected void reloadAddshoppingList() {
+			
+		
+		adapter = new AdapterGridAddShoppingList(AddShoppingListActivity.this, supermercados);
         
         
         ParseQuery<Supermercado> query = ParseQuery.getQuery(Supermercado.class);
@@ -84,35 +101,12 @@ public class AddShoppingListActivity extends Activity{
 			public void done(List<Supermercado> objects, ParseException e) {
 
 				supermercados = (ArrayList<Supermercado>) objects;
-				
-				//FIXME Ver como actualizar la lista de supermercados dentro del adapter
-				//adapter.clear();
-				//adapter.addAll(supermercados);
 				adapter = new AdapterGridAddShoppingList(AddShoppingListActivity.this, supermercados);
-				grid=(GridView)findViewById(R.id.grid_logo_market);
 		        grid.setAdapter(adapter);
-		        grid.setChoiceMode(GridView.CHOICE_MODE_SINGLE);
 			}
 		});
         
 		
-		
-        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        	//Toast.makeText(AddShoppingListActivity.this, "You Clicked at " + supermercados.get(position), Toast.LENGTH_SHORT).show();
-        	if (supermercados.size()== position){ //ultima
-        		Intent intent = new Intent(AddShoppingListActivity.this, AddMarketActivity.class);
-        		//FIXME invocar como startActivityForResult, y manejar el callback para hacer reload de la lista
-                startActivity(intent);
-          	  
-                
-            }else {
-            	idSuper = supermercados.get(position);
-            }
-          }
-         });
 	}
 
 	@Override

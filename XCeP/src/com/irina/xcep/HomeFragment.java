@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -49,7 +48,6 @@ public class HomeFragment extends Fragment {
 	ParseUser currentUser = ParseUser.getCurrentUser();
 	
 	String objid = "";
-	
 	String nameListtxt= "";
 	
 	
@@ -112,8 +110,6 @@ public class HomeFragment extends Fragment {
             	objid = misListas.get(pos).getObjectId();
             	showDialogoModificarProducto();
             	return true;
-            	
-            	
             }
         }); 
 		
