@@ -21,9 +21,8 @@ public class Utils {
 		
 		ProgressDialog mProgressDialog = new ProgressDialog(context);
         mProgressDialog.setMessage(mensaje);
-        mProgressDialog.setIndeterminate(false);
-        mProgressDialog.setMax(100);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setCancelable(true);
         mProgressDialog.show();
         return mProgressDialog;
