@@ -322,8 +322,13 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		dialogo = builder.create();
 		
+		if (tabHost.getCurrentTab() == 0){
+			cargarProdutosLista(nameList);
+		}
+		
 		return home;
 	}
+	
 	private void getScan(String tabId){
 		if (tabId == "Escaner") {
 			if(cam==null){
@@ -341,6 +346,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				cam.stopPreview();
 		}
 	}
+	
 	private void getCatalogo(){
 		
 		adapterTag = new AdapterTags(getActivity(), tagList);
