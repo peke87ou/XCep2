@@ -9,6 +9,10 @@ import com.parse.ParseRelation;
 @ParseClassName("Products")
 public class Produto extends ParseObject {
 
+	/**
+	 * 
+	 */
+
 	Context mContext;
 	//FIXME pensar como se hace
 	// Prezo por supermercado

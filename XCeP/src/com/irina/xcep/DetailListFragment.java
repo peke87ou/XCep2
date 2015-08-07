@@ -66,6 +66,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	String resultadoBarCode;
 	String barcode;
 	boolean isProductoEnParse;
+	Produto productBarcode;
 	
 	AdapterProducts adapter;
 	ArrayList<Produto> productLista = new ArrayList<Produto>();
@@ -186,6 +187,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					Log.i("jklsdfjklsdfsdfjkl",objects.size()+"resultado"+resultadoBarCode);
 					if (objects.size() > 0){
 						isProductoEnParse = true;
+						productBarcode =  objects.get(0);
 					}else{
 						isProductoEnParse = false;
 					}
@@ -305,9 +307,10 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			        	   intent.putExtra("MESSAGE",barcode);  
 		                   startActivityForResult(intent, 1);
 		        	   }else{
-		        		   Log.i("DetailProduct QUE ENVIA", barcode);
+		        		   Log.i("DetailProduct QUE ENVIA", productBarcode.getNome());
 		        		   Intent intent = new Intent(getActivity(), DetailProduct.class);
-//			        	   intent.putExtra("MESSAGE",barcode);  
+		        		   intent.putExtra("NOMEPRODUCTO",productBarcode.getNome());  
+		        		   intent.putExtra("DESCRIPCIONPRODUCTO",productBarcode.getDescripcion()); 
 		                   startActivityForResult(intent, 1);
 		        	   }
 		        	  
