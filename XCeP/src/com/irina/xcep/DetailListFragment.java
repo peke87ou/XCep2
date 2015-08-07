@@ -8,6 +8,7 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -43,14 +44,12 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
-import com.irina.xcep.adapters.AdapterGridAddShoppingList;
-import com.irina.xcep.adapters.AdapterListas;
 import com.irina.xcep.adapters.AdapterProducts;
 import com.irina.xcep.adapters.AdapterTags;
-import com.irina.xcep.model.Lista;
 import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Supermercado;
 import com.irina.xcep.model.Tag;
+import com.irina.xcep.utils.Utils;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -79,7 +78,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	GridView grid;
 	AdapterTags adapterTag;
 	CheckBox checkboxTag;
-	
+	AlertDialog dialogo;
 	
 	public static DetailListFragment newInstance (int Index){
 		DetailListFragment fragment = new DetailListFragment();
@@ -88,6 +87,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		args.putInt("Index", Index);
 		
 		fragment.setArguments(args);
+		
+		
 		
 		return fragment;
 	}
@@ -171,69 +172,41 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		// Mirar se existe na BD
 		ParseQuery<Produto> productos = ParseQuery.getQuery(Produto.class);
-		 
+		final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(), "Buscando producto en el sistema");
+		progressDialog.show();
+		
 		productos.whereEqualTo("idBarCode",resultadoBarCode);
 		productos.findInBackground(new FindCallback<Produto>() {
 			@Override
 			public void done(List<Produto> objects, ParseException e) {
-					Log.i("jklsdfjklsdfsdfjkl",objects.size()+"resultado"+resultadoBarCode+"");
+				progressDialog.dismiss();
+				if(e!=null){
+					Toast.makeText(getActivity(), "Erro ao consultar o producto", Toast.LENGTH_SHORT).show();
+				}else{
+					Log.i("jklsdfjklsdfsdfjkl",objects.size()+"resultado"+resultadoBarCode);
 					if (objects.size() > 0){
-						isProductoEnParse = false;
-					}else{
 						isProductoEnParse = true;
+					}else{
+						isProductoEnParse = false;
 					}
-				
+					
+					Log.i("Esta en parse", isProductoEnParse+"");
+					if(isProductoEnParse){
+						
+						dialogo.setTitle("Produto atopado");
+						dialogo.setMessage("Atopouse o produto "+resultadoBarCode +"\n¿Desexa engadilo a súa lista?");
+						
+					}else{
+						
+						dialogo.setTitle("Produto novo");
+						dialogo.setMessage("Atopouse o produto  "+resultadoBarCode +"\n¿Desexa engadilo o sistema para o supermercado ");
+					}
+					
+					dialogo.show();
+				}
 			}
 		});
 	
-	
-		
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		// Add the buttons
-		builder.setPositiveButton("Engadir produto", new DialogInterface.OnClickListener() {
-		           public void onClick(DialogInterface dialog, int id) {
-		        	   if(isProductoEnParse){
-		        		   barcode = resultadoBarCode;
-			        	   //TODO Agregar resultadoBarCode a parse
-			        	   resultadoBarCode = null;
-			        	   Intent intent = new Intent(getActivity(), AddProductActivity.class);
-			        	   Log.i("QUE ENVIA", barcode);
-			        	   intent.putExtra("MESSAGE",barcode);  
-		                   startActivityForResult(intent, 1);
-		        	   }else{
-		        		   barcode = resultadoBarCode;
-		        		   resultadoBarCode = null;
-//		        		   Toast.makeText(getActivity(), "DETALLE DE PRODUTO", Toast.LENGTH_LONG).show();
-		        		   Intent intent = new Intent(getActivity(), DetailProduct.class);
-//			        	   Log.i("QUE ENVIA", barcode);
-//			        	   intent.putExtra("MESSAGE",barcode);  
-		                   startActivityForResult(intent, 1);
-		        	   }
-		        	  
-		        	 
-		        	  
-		           }
-		       });
-		builder.setNegativeButton("Pechar", new DialogInterface.OnClickListener() {
-		           public void onClick(DialogInterface dialog, int id) {
-		              resultadoBarCode = null;
-		           }
-		       });
-		AlertDialog dialogo = builder.create();
-		
-		Log.i("Esta en parse", isProductoEnParse+"");
-		if(isProductoEnParse){
-			
-			dialogo.setTitle("Produto atopado");
-			dialogo.setMessage("Atopouse o produto "+resultadoBarCode +"\n¿Desexa engadilo a súa lista?");
-			
-		}else{
-			
-			dialogo.setTitle("Produto novo");
-			dialogo.setMessage("Atopouse o produto  "+resultadoBarCode +"\n¿Desexa engadilo o sistema para o supermercado "+ mMarketSelected.getNome()+ "?");
-		}
-		
-		dialogo.show();
 	}
 	
 	
@@ -285,25 +258,14 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			@Override
 			public void onTabChanged(String tabId) {
 				Toast.makeText(getActivity(), "ID: "+ tabId, Toast.LENGTH_SHORT).show();
+				
+				getScan(tabId);
+				
 				switch (tabId) {
 				
-				case "Escaner":
-					if (tabId == "Escaner") {
-						if(cam==null){
-							prepararCamara();
-						}else{
-							cam.startPreview();
-						}
-						
-						/**
-						 * Lector QR por intent
-						IntentIntegratorBarCode integrator = new IntentIntegratorBarCode(getActivity());
-						integrator.initiateScan();*/
-					}else{
-						if(cam != null)
-							cam.stopPreview();
-					}
-					break;
+//				case "Escaner":
+//					getScan(tabId);
+//					break;
 				case "Lista da compra":
 					cargarProdutosLista(nameList);
 					break;
@@ -327,7 +289,57 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		grid=(GridView) home.findViewById(R.id.grid_tags);
 	
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		// Add the buttons
+		builder.setCancelable(false);
+		builder.setPositiveButton("Engadir produto", new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		        	   
+	        		   barcode = resultadoBarCode;
+	        		   resultadoBarCode = null;
+	        		   
+		        	   if(!isProductoEnParse){
+			        	   Intent intent = new Intent(getActivity(), AddProductActivity.class);
+			        	   Log.i("AddProduct QUE ENVIA", barcode);
+			        	   intent.putExtra("MESSAGE",barcode);  
+		                   startActivityForResult(intent, 1);
+		        	   }else{
+		        		   Log.i("DetailProduct QUE ENVIA", barcode);
+		        		   Intent intent = new Intent(getActivity(), DetailProduct.class);
+//			        	   intent.putExtra("MESSAGE",barcode);  
+		                   startActivityForResult(intent, 1);
+		        	   }
+		        	  
+		           }
+		       });
+		
+		builder.setNegativeButton("Pechar", new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		              resultadoBarCode = null;
+		           }
+		       });
+		
+		dialogo = builder.create();
+		
 		return home;
+	}
+	private void getScan(String tabId){
+		if (tabId == "Escaner") {
+			if(cam==null){
+				prepararCamara();
+			}else{
+				cam.startPreview();
+			}
+			
+			/**
+			 * Lector QR por intent
+			IntentIntegratorBarCode integrator = new IntentIntegratorBarCode(getActivity());
+			integrator.initiateScan();*/
+		}else{
+			if(cam != null)
+				cam.stopPreview();
+		}
 	}
 	private void getCatalogo(){
 		
