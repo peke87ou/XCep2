@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonRectangle;
@@ -17,7 +18,7 @@ import com.parse.SaveCallback;
 public class DetailProduct extends Activity{
 	
 	ButtonRectangle btncancel, btnacept;
-	
+	private String barcode;
 	
 	
 	@Override
@@ -26,6 +27,13 @@ public class DetailProduct extends Activity{
 		
 		setContentView(R.layout.activity_detail_product);
 
+		
+		barcode=getIntent().getExtras().getString("NOMEPRODUCTO");
+		((TextView) findViewById(R.id.detail_product_name)).setText( barcode);
+		
+		barcode=getIntent().getExtras().getString("DESCRIPCIONPRODUCTO");
+		((TextView) findViewById(R.id.detail_product_description)).setText( barcode);
+		 
 		btncancel = (ButtonRectangle) findViewById(R.id.share_product);
 		btncancel.setOnClickListener(new OnClickListener() {
 			
@@ -43,29 +51,34 @@ public class DetailProduct extends Activity{
 			public void onClick(View v) {
 				//Engadimos a nova lista a BD
 				
-				engadirProducto();
+				detailProducto();
 				
 				
 			}
 		});
 	}
 	
-	public void engadirProducto(){
+	public void detailProducto(){
 		
 		
-//		String nameProductTxt ="";
-//		Produto addProduct = new Produto();
-//		
-//		
-//		
-//		barcode=getIntent().getExtras().getString("MESSAGE");
-//		//Barcode
+		String nameProductTxt ="";
+		Produto addProduct = new Produto();
+		
+		
+		
+	
+		//Barcode
 //		addProduct.setIdentificadorScan(barcode);
-//		
-//		//Nome
-//		 EditText nameProduto = (EditText) findViewById(R.id.text_name_product);
-//		 nameProductTxt = nameProduto.getText().toString();
-//		 addProduct.setNome(nameProductTxt);
+		
+		//Nome
+		 
+//		 TextView nameProduto = (TextView) findViewById(R.id.detail_product_name);
+//		 Log.i("BARCODE", barcode.getClass().getName());
+//		 barcode.getClass().getName();
+//		 addProduct.setNome(nome)
+		 //nameProductTxt = nameProduto.getText().toString();
+		 
+//		 addProduct.getNome();
 //					
 //		//Marca
 //		 EditText markProduto = (EditText) findViewById(R.id.text_mark_product);
