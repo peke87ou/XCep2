@@ -10,6 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center" >
+         <TextView
+            android:id="@+id/detail_product_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:text="Nome Producto" />
 	</LinearLayout>
 
     <LinearLayout
@@ -18,11 +24,11 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/detail_product_name"
+            android:id="@+id/detail_product_category"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:text="Nome Producto" />
+            
+            android:text="Categoría: " />
     </LinearLayout>
 
     <LinearLayout

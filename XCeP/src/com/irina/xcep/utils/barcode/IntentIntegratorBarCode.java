@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;

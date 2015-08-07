@@ -310,7 +310,11 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		        		   Log.i("DetailProduct QUE ENVIA", productBarcode.getNome());
 		        		   Intent intent = new Intent(getActivity(), DetailProduct.class);
 		        		   intent.putExtra("NOMEPRODUCTO",productBarcode.getNome());  
+		        		   //CATEGORIA
+		        		   //IMAGEN
 		        		   intent.putExtra("DESCRIPCIONPRODUCTO",productBarcode.getDescripcion()); 
+		        		   intent.putExtra("MARCAPRODUCTO",productBarcode.getMarca()); 
+		        		   //SUPERMERCADO Y PRECIO
 		                   startActivityForResult(intent, 1);
 		        	   }
 		        	  
