@@ -28,9 +28,11 @@ import com.squareup.picasso.Picasso;
 public class AdapterListas extends ArrayAdapter<Lista> {
 	
 	private static Map<String, Bitmap> mImagenes = new HashMap<String, Bitmap>();
+	private Context mContext;
     
 	public AdapterListas(Context context, ArrayList<Lista> lista) {
        super(context, 0, lista);
+       mContext = context;
     }
 
     @Override
@@ -91,7 +93,8 @@ public class AdapterListas extends ArrayAdapter<Lista> {
      	             final ParseFile fileObject = superRelacionado.getUrlLogo();
      	             String urlBitmap = fileObject.getUrl(); 
      	               
-     	             Picasso.with(getContext()).load(urlBitmap).into(imageView);
+     	             Picasso.with(mContext ).load(urlBitmap).into(imageView);
+     	             
      	             //new AsyncTaskDownloadImage(imageView).execute(urlBitmap,superRelacionado);
      	           }
      	       } 

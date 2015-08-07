@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,20 +27,23 @@ import com.gc.materialdesign.views.ButtonRectangle;
 import com.irina.xcep.adapters.AdapterListas;
 import com.irina.xcep.model.Lista;
 import com.irina.xcep.utils.FragmentIndexes;
+import com.irina.xcep.utils.Utils;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class HomeFragment extends Fragment {
 	
 	// Declaración de variables
+	public static final String TAG = HomeFragment.class.getName();
 	ButtonRectangle logout;
 	ListView list;
 	List<ParseObject> ob;
 	AdapterListas adapter;
-	ArrayList<Lista> misListas = new ArrayList<Lista>();
+	public static ArrayList<Lista> misListas = new ArrayList<Lista>();
 	ImageButton addlist;
 	// Solicitar usuario actual do Parse.com
 	ParseUser currentUser = ParseUser.getCurrentUser();
@@ -49,6 +55,9 @@ public class HomeFragment extends Fragment {
 	
 	
 	public static HomeFragment newInstance (int Index){
+		
+		Log.d(TAG, "HomeFragment newInstance");
+		
 		HomeFragment fragment = new HomeFragment();
 		Bundle args = new Bundle();
 		
@@ -63,6 +72,7 @@ public class HomeFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
+		Log.d(TAG, "OncreateView");
 		RelativeLayout home = (RelativeLayout) inflater.inflate(R.layout.fragment_home, container, false);
 		
 		// Convertir currentUser en String
@@ -94,35 +104,41 @@ public class HomeFragment extends Fragment {
 		
 		//Listas da compra
 		list = (ListView) home.findViewById(R.id.lista_list);
-		
+		adapter = new AdapterListas(getActivity(), misListas);
+		list.setAdapter(adapter);
 		
 		return home;
 	}
 	
-	public void reloadUserShoppingLists() {
+	public void reloadUserShoppingLists(boolean actualizarServidor) {
 		//Recreamos o conxunto de listas de compra do usuario
 		
-		adapter = new AdapterListas(getActivity(), misListas);
-		list.setAdapter(adapter);
-				
-		ParseQuery<Lista> query = ParseQuery.getQuery(Lista.class);
-		query.include("Market");
-		//Filtramos as lista para cada usuario logueado na app
-		query.include("User");
-		query.whereEqualTo("idUser", currentUser);
-		query.include("Products");
-		query.findInBackground(new FindCallback<Lista>() {
-			@Override
-			public void done(List<Lista> objects, ParseException e) {
-				misListas = (ArrayList<Lista>) objects;
-				adapter.clear();
-				if(misListas != null){
-					adapter.addAll(misListas);
-				}else{
-					Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
+		Log.d(TAG, "reloadUserShoppingLists"); 
+
+		if(actualizarServidor){
+			ParseQuery<Lista> query = ParseQuery.getQuery(Lista.class);
+			query.include("Market");
+			//Filtramos as lista para cada usuario logueado na app
+			query.include("User");
+			query.whereEqualTo("idUser", currentUser);
+			query.include("Products");
+			query.findInBackground(new FindCallback<Lista>() {
+				@Override
+				public void done(List<Lista> objects, ParseException e) {
+					misListas = (ArrayList<Lista>) objects;
+					adapter.clear();
+					if(misListas != null){
+						adapter.addAll(misListas);
+					}else{
+						Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
+					}
 				}
-			}
-		});
+			});
+		}else{
+			adapter.setNotifyOnChange(true);
+		}
+				
+		
 		//Click proglongado para a modificación dunha lista
 		list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
@@ -157,11 +173,21 @@ public class HomeFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		reloadUserShoppingLists();
+		//reloadUserShoppingLists();
 	}
 	
 	
 	
+	@Override
+	public void onStart() {
+		super.onStart();
+		if(misListas.size() == 0 )
+			reloadUserShoppingLists(true);
+		else
+			reloadUserShoppingLists(false);
+	}
+
+
 	public void showDialogoModificarProducto(){
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -202,6 +228,8 @@ public class HomeFragment extends Fragment {
 				               @Override
 				               public void onClick(DialogInterface dialog, int id) {
 				              
+				            	   final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), "Cambiando nombre");
+				            	   progress.show();
 				            	   EditText newNameList = (EditText) ((AlertDialog) dialog).findViewById(R.id.NameListNew);
 				                   nameListtxt = newNameList.getText().toString();
 				                   
@@ -212,10 +240,21 @@ public class HomeFragment extends Fragment {
 				        		   public void done(List<Lista> parseObjects, ParseException e) {
 				        		            if(parseObjects.size()==1)	{
 				        		            		parseObjects.get(0).setNome(nameListtxt);
-				        		            		parseObjects.get(0).saveInBackground();
-				        		            		onResume();
-				        		                    Toast.makeText(getActivity(), "Cambiamos o nombre", Toast.LENGTH_LONG).show();
-				        		                   
+				        		            		//parseObjects.get(0).saveInBackground();
+				        		            		parseObjects.get(0).saveInBackground(new SaveCallback() {
+														
+														@Override
+														public void done(ParseException e) {
+															if(e!= null){
+																Toast.makeText(getActivity(), "Produciuse un erro: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+															}else{
+																progress.dismiss();
+																reloadUserShoppingLists(true);
+																Toast.makeText(getActivity(), "Cambiamos o nombre", Toast.LENGTH_SHORT).show();
+															}
+														}
+														
+													});
 				        		            }    				        		           
 				        		        }
 				        		    });
@@ -242,5 +281,7 @@ public class HomeFragment extends Fragment {
 		dialogo.show();
 	}
 	
+	
+
 
 }

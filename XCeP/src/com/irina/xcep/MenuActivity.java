@@ -41,6 +41,7 @@ public class MenuActivity extends Activity implements MenuAdapter.SelectedListBu
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+    private HomeFragment homeFragment;
     public String mNameList= "";
     public Supermercado mMarketSelected = null;
 
@@ -164,7 +165,8 @@ public class MenuActivity extends Activity implements MenuAdapter.SelectedListBu
 
         switch (index) {
             case FragmentIndexes.FRAGMENT_HOME:
-                fragment = HomeFragment.newInstance(FragmentIndexes.FRAGMENT_HOME);
+
+            	fragment = HomeFragment.newInstance(FragmentIndexes.FRAGMENT_HOME);
                 break;
             case FragmentIndexes.FRAGMENT_LIST:
             	fragment = DetailListFragment.newInstance(FragmentIndexes.FRAGMENT_LIST);
@@ -187,6 +189,8 @@ public class MenuActivity extends Activity implements MenuAdapter.SelectedListBu
            
         }
 
+
+        //Add fragment to layout
         //Store current index
         mCurrentFragmentIndex = index;
         //Add fragment to layout
