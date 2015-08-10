@@ -61,6 +61,7 @@ import com.squareup.picasso.Picasso;
 public class DetailListFragment extends Fragment implements SurfaceHolder.Callback{
 
 	private Supermercado mMarketSelected;
+	private Lista mListaSelected;
 	Camera cam;
 	SurfaceHolder surfaceholder;
 	String previewImagePath;
@@ -256,6 +257,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			Picasso.with(getActivity()).load(mMarketSelected.getUrlLogo().getUrl()).into(imageMarket);
 		}
 		
+		if(mListaSelected ==null){
+			mListaSelected = ((MenuActivity)getActivity()).mListSelected;
+		}
 		
 		tabHost.setOnTabChangedListener(new OnTabChangeListener() {
 			
@@ -407,11 +411,30 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	private void cargarProdutosLista( String nameList ) {
 		
 		adapter = new AdapterProducts(getActivity(), productLista);
-		
 		list.setAdapter(adapter);
 		
+		mListaSelected.getIdProducts().getQuery().findInBackground(new FindCallback<Produto>() {
+
+			@Override
+			public void done(List<Produto> objects, ParseException e) {
+				
+				productLista = (ArrayList<Produto>) objects;
+				adapter.clear();
+				if(productLista != null){
+					Log.e("Adaptador productos", objects.size()+"");
+					adapter.addAll(productLista);
+				}else{
+					Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
+					e.printStackTrace();
+				}
+			}
+	     	  
+			
+	    });
 		
-		ParseQuery<Produto> query = ParseQuery.getQuery(Produto.class);
+		
+		
+/*		ParseQuery<Produto> query = ParseQuery.getQuery(Produto.class);
 //		query.include("Market");
 //		query.whereEqualTo("objectId", "wYjus2o7TZ");
 //		//Filtramos as lista para cada usuario logueado na app
@@ -425,8 +448,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		query.whereMatchesKeyInQuery("idProducts", "name", listaProducto);
 		
 		//query.whereMatchesQuery("idProducts", listaProducto);
-//		query.whereEqualTo("name", nameList);
-//		query.whereEqualTo("objectId", "juzZMn1c1Q");
+		//		query.whereEqualTo("name", nameList);
 		query.findInBackground(new FindCallback<Produto>() {
 			
 			@Override
@@ -443,7 +465,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				}
 				
 			}
-		});
+		});*/
 	}
 	
 	@Override
