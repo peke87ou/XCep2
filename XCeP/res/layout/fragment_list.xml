@@ -60,7 +60,7 @@
                	android:layout_weight="3"
                 >
 
-                <LinearLayout
+              <LinearLayout
                     android:id="@+id/tab_list_buy"
                     android:layout_width="match_parent"
                     android:layout_height="420dp"
@@ -71,19 +71,9 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical" >
 
-                        <!--
-                             <TextView
-                            android:id="@+id/text_empty_list"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/verde_oscuro"
-                         	android:gravity="center"
-                         	android:typeface="serif"
-                            android:text="LISTA BALEIRA \n Engada productos a súa lista"
-                            android:padding="10dp"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:visibility="visible" />
-                        -->
+                        
+                         
+                       
 
                         <ListView
                             android:id="@+id/list_products"
@@ -165,25 +155,23 @@
 
                     <SearchView
                         android:id="@+id/searchView1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_gravity="center_horizontal"
-                         >
+                        android:layout_marginTop="8dp" >
+
                     </SearchView>
 
                    <GridView
-				        android:id="@+id/grid_tags"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				      
-				        android:gravity="center"
-				       
-				        android:numColumns="2"
-				        android:paddingLeft="10dp"
-				        android:choiceMode="singleChoice"
-				       android:background="@drawable/bg_bottom_line_black"
-				          >
+                       android:id="@+id/grid_tags"
+                       android:layout_width="wrap_content"
+                       android:layout_height="220dp"
+                       android:background="@drawable/bg_bottom_line_black"
+                       android:choiceMode="singleChoice"
+                       android:gravity="center"
+                       android:numColumns="2"
+                       android:paddingLeft="10dp" >
+
 				    </GridView>
 
                     <ListView

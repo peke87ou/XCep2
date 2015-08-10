@@ -55,7 +55,7 @@ public class AdapterProducts extends ArrayAdapter<Produto> {
 			Log.e("NumeroEncontrado", precioProducto);
 
 			((TextView) celdaView.findViewById(R.id.price_product))
-					.setText(precioProducto);
+					.setText(precioProducto + " € ");
 
 		} catch (ParseException e) {
 			((TextView) celdaView.findViewById(R.id.price_product))
@@ -63,17 +63,21 @@ public class AdapterProducts extends ArrayAdapter<Produto> {
 			e.printStackTrace();
 		}
 
-		String unidadesProducto = "";
+		String unidadesProductos = "";
 		try {
-			unidadesProducto = productosList.getPrezoPorSupermercado()
+			Number unidadesProducto = productosList.getPrezoPorSupermercado()
 					.getQuery().getFirst().getUnits().getQuery().getFirst()
-					.getNumberProduct()
-					+ "";
+					.getNumberProduct();
+			if (unidadesProducto.intValue() == 1){
+				unidadesProductos = unidadesProducto +  " Unidade ";
+			}else {
+				unidadesProductos = unidadesProducto +  " Unidades ";
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		((TextView) celdaView.findViewById(R.id.products_list))
-				.setText(unidadesProducto);
+				.setText(unidadesProductos);
 
 		Bitmap bmp = mImagenes.get(productosList.getIcon());
 
