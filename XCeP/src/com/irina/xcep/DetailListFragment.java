@@ -58,6 +58,8 @@ import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
 public class DetailListFragment extends Fragment implements SurfaceHolder.Callback{
+	
+	public static final String TAG = DetailListFragment.class.getName();
 
 	private Supermercado mMarketSelected;
 	private Lista mListaSelected;
@@ -274,7 +276,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 //					getScan(tabId);
 //					break;
 				case "Lista da compra":
-					cargarProdutosLista(nameList);
+					cargarProdutosLista(nameList, false);
 					break;
 
 				case "Catálogo":
@@ -335,7 +337,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		dialogo = builder.create();
 		
 		if (tabHost.getCurrentTab() == 0){
-			cargarProdutosLista(nameList);
+			cargarProdutosLista(nameList, false);
 		}
 		
 		return home;
@@ -407,10 +409,17 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
          });
 		
 	}
-	private void cargarProdutosLista( String nameList ) {
+	private void cargarProdutosLista(String nameList, boolean forzarRecarga) {
 		
 		adapter = new AdapterProducts(getActivity(), productLista);
 		list.setAdapter(adapter);
+		
+		if(!forzarRecarga && productLista.size() > 0){
+			Log.d(TAG, "No se vuelve a ejecutar un find de productos");
+			return;
+		}
+		
+
 		
 		mListaSelected.getIdProducts().getQuery().findInBackground(new FindCallback<Produto>() {
 

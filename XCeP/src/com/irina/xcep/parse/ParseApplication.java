@@ -19,6 +19,7 @@ public class ParseApplication extends Application {
     public void onCreate() {
         super.onCreate();
  
+        
         // Engadir o teu codigo de inicialización 
         Parse.initialize(this,  "wtEK7WzQx7cytFc1ogtpNxH5aPqDhipqlZQkFaPX", 		//YOUR_APPLICATION_ID
         						"WC1Xbw9HsZv17VyW0VXRjTC4To9PsGRDUKiwU4Mq");					//YOUR_CLIENT_KEY

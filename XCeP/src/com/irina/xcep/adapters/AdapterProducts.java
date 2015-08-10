@@ -44,6 +44,7 @@ public class AdapterProducts extends ArrayAdapter<Produto> {
 		((TextView) celdaView.findViewById(R.id.name_product))
 				.setText(productosList.getNome());
 
+
 		ImageView imageView = (ImageView) celdaView
 				.findViewById(R.id.image_product);
 
@@ -62,6 +63,9 @@ public class AdapterProducts extends ArrayAdapter<Produto> {
 					.setText("ERROR");
 			e.printStackTrace();
 		}
+		
+		if(true)
+			return celdaView;
 
 		String unidadesProducto = "";
 		try {
@@ -80,7 +84,7 @@ public class AdapterProducts extends ArrayAdapter<Produto> {
 		if (bmp != null) {
 			imageView.setImageBitmap(bmp);
 		} else {
-			Log.d("Imagen producto: ", productosList.getIcon().getUrl());
+
 			Picasso.with(getContext()).load(productosList.getIcon().getUrl())
 					.into(imageView);
 		}
