@@ -54,27 +54,26 @@ public class AdapterProducts extends ArrayAdapter<Produto> {
      //PRICE
            try {
         	 String precioProducto = productosList.getPrezoPorSupermercado().getQuery().getFirst().getPrice() + "";
-        	 String unidadesProducto = productosList.getPrezoPorSupermercado().getQuery().getFirst().getUnits().getQuery().getFirst().getNumberProduct() + "";
+        	 
         	 Log.e("NumeroEncontrado", precioProducto);
-        	 Log.e("unidadesEncontradas", unidadesProducto);
-     ((TextView) celdaView.findViewById(R.id.price_product)).setText(precioProducto);
-     } catch (ParseException e) {
-     ((TextView) celdaView.findViewById(R.id.price_product))
-     .setText("ERROR");
-     e.printStackTrace();
-     }
-       //PRICE
-       try {
-    	  String precioProducto = productosList.getPrezoPorSupermercado().getQuery().getFirst().getPrice() + "";
-    	  String unidadesProducto = productosList.getPrezoPorSupermercado().getQuery().getFirst().getUnits().getQuery().getFirst().getNumberProduct() + "";
-    	  Log.e("NumeroEncontrado", precioProducto);
-    	  Log.e("unidadesEncontradas", unidadesProducto);
-		((TextView) celdaView.findViewById(R.id.price_product)).setText(precioProducto);
+        	 
+	     ((TextView) celdaView.findViewById(R.id.price_product)).setText(precioProducto);
+	    
+	     } catch (ParseException e) {
+	     ((TextView) celdaView.findViewById(R.id.price_product))
+	     .setText("ERROR");
+	     e.printStackTrace();
+	     }
+     
+     String unidadesProducto =  "";
+	try {
+		unidadesProducto = productosList.getPrezoPorSupermercado().getQuery().getFirst().getUnits().getQuery().getFirst().getNumberProduct() + "";
 	} catch (ParseException e) {
-		((TextView) celdaView.findViewById(R.id.price_product))
-		.setText("ERROR");
+		// TODO Auto-generated catch block
 		e.printStackTrace();
-	}
+	}    
+     ((TextView) celdaView.findViewById(R.id.products_list)).setText(unidadesProducto);
+   
        
        
       
