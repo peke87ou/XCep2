@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bottom_line_black"
+        android:padding="5dp" >
+
+        <ImageView
+            android:id="@+id/image_product"
+            android:layout_width="30dp"
+            android:layout_height="42dp"
+            android:layout_weight="0.45"
+            android:layout_gravity="center"
+            android:background="@color/custom_theme_color"
+            android:src="@drawable/abc_ab_bottom_solid_dark_holo" />
+
+        <LinearLayout
+            android:layout_width="121dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.21"
+            android:orientation="vertical"
+            android:padding="10dp" >
+
+            <TextView
+                android:id="@+id/name_product"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Producto"
+                android:textColor="@color/actionbar_text_color" />
+
+            <TextView
+                android:id="@+id/price_product"
+                android:layout_width="wrap_content"
+                android:layout_height="46dp"
+                android:gravity="right|center"
+                android:padding="10dp"
+                android:text="0,0 €"
+                android:textColor="#000000" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/image_add_product"
+            android:layout_width="30dp"
+            android:layout_height="42dp"
+            android:layout_weight="0.45"
+            android:layout_gravity="center"
+            android:background="@color/custom_theme_color"
+            android:src="@drawable/ic_add_shopping_cart" />
+
+    </LinearLayout>
+
+</LinearLayout>

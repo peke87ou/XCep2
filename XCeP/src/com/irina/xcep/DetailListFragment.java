@@ -45,9 +45,9 @@ import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.irina.xcep.adapters.AdapterProducts;
+import com.irina.xcep.adapters.AdapterProductsCatalog;
 import com.irina.xcep.adapters.AdapterTags;
 import com.irina.xcep.model.Lista;
-import com.irina.xcep.model.Prezo;
 import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Supermercado;
 import com.irina.xcep.model.Tag;
@@ -73,8 +73,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	boolean isProductoEnParse;
 	Produto productBarcode;
 	
-	AdapterProducts adapter;
-	ArrayList<Produto> productLista = new ArrayList<Produto>();
+	AdapterProductsCatalog adapterProductoCatalog;
+	ArrayList<Produto> ProductCatalogList = new ArrayList<Produto>();
+	ListView listCatalog;
 	ListView list;
 	ParseUser currentUser = ParseUser.getCurrentUser();
 	String nameList ;
@@ -86,6 +87,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	AdapterTags adapterTag;
 	CheckBox checkboxTag;
 	AlertDialog dialogo;
+	
+	AdapterProducts adapter;
+	ArrayList<Produto> productLista = new ArrayList<Produto>();
 	
 	public static DetailListFragment newInstance (int Index){
 		DetailListFragment fragment = new DetailListFragment();
@@ -301,7 +305,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		grid=(GridView) home.findViewById(R.id.grid_tags);
 		
 //		emptyList=(TextView) home.findViewById(R.id.text_empty_list);
-	
+		listCatalog = (ListView) home.findViewById(R.id.listProductCatalog);
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		// Add the buttons
@@ -381,15 +385,25 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					//FIXME Ver como actualizar la lista de supermercados dentro del adapter
 					adapterTag.clear();
 					adapterTag.addAll(tagList);
-	//				adapterTag = new AdapterGridAddShoppingList(AddShoppingListActivity.this, supermercados);
-	//				grid=(GridView)findViewById(R.id.grid_logo_market);
-	//		        grid.setAdapter(adapter);
-	//		        grid.setChoiceMode(GridView.CHOICE_MODE_SINGLE);
-				
 			}
 		});
         
-//		checkboxTag.setOnClickListener(l)
+		
+		adapterProductoCatalog = new AdapterProductsCatalog(getActivity(), ProductCatalogList);
+		listCatalog.setAdapter(adapterProductoCatalog);
+		
+    	//Todos los productos
+    	ParseQuery<Produto> query2 = ParseQuery.getQuery(Produto.class);
+		query2.findInBackground(new FindCallback<Produto>() {
+			@Override
+			public void done(List<Produto> objects, ParseException e) {
+				Log.e("Adaptador productos Catalogo", objects.size()+"");
+				ProductCatalogList = (ArrayList<Produto>) objects;
+				adapterProductoCatalog.clear();
+				adapterProductoCatalog.addAll(ProductCatalogList);
+			}
+		});
+		
 		
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -408,8 +422,12 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 //            }else {
 //            	idSuper = supermercados.get(position);
 //            }
+        	
+        	
           }
          });
+        
+        
 		
 	}
 	private void cargarProdutosLista(String nameList, boolean forzarRecarga) {
@@ -418,7 +436,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		list.setAdapter(adapter);
 		
 		if(!forzarRecarga && productLista.size() > 0){
-			Log.d(TAG, "No se vuelve a ejecutar un find de productos");
+			Log.d(TAG, "Non se volve a executar un find de produtos");
 			return;
 		}
 		
@@ -435,10 +453,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				
 				productLista = (ArrayList<Produto>) objects;
 				
-				Prezo prezoPrimero = (Prezo) productLista.get(0).getParseObject("Price");
-				prezoPrimero = (Prezo) productLista.get(0).getParseObject("Price");
-				Log.d(TAG, "Prezo do primeiro producto"+prezoPrimero.getPrice());
-				
+			
 				adapter.clear();
 				if(productLista != null){
 					Log.e("Adaptador productos", objects.size()+"");
