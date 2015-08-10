@@ -5,6 +5,7 @@ import com.parse.ParseObject;
 
 @ParseClassName("UnitsProduct")
 public class Units extends ParseObject {
+	
 	public Number getNumberProduct() {
 		return getNumber("numberProduct");
 	}

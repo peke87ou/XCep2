@@ -37,18 +37,8 @@ public class Supermercado extends ParseObject{
 	}
 
 	public void setProductos(Produto productos) {
-		put("Products", productos);
+		getProductos().add(productos);
+		saveInBackground();
 	}
-	
-	//TODO agregar el resto de metodos
-	
-	/**
-	 * @param tags Lista de tags
-	 * @return Devuelve una lista de producto que tienen este tag
-	 */
-	public ParseRelation<Tag> getProductosPorTag(Tag tags){
-		
-		return null;
-	}
-	
+
 }

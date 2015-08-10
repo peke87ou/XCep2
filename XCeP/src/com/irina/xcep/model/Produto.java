@@ -3,33 +3,24 @@ package com.irina.xcep.model;
 import android.content.Context;
 
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
 
 @ParseClassName("Products")
 public class Produto extends ParseObject {
 
-	/**
-	 * 
-	 */
-
 	Context mContext;
-	//FIXME pensar como se hace
-	// Prezo por supermercado
-	//	List<Map<String, Producto>> prezoPorSupermercado;
-	//	List<String> tags;
 	
-	 public Produto(Context context, Produto producto) {
+	public Produto(Context context, Produto producto) {
 			super();
 			mContext = context;
-		}
+	}
 	
 	public Produto() {
 		
 	}
 
-	//Métodos empregados nesta clase
-	
 	/**
 	 * Conxunto de getters e setters da clase
 	 */
@@ -50,14 +41,6 @@ public class Produto extends ParseObject {
 		put("title", nome);
 	}
 
-	public String getCategoria() {
-		return getString("categoria");
-	}
-
-	public void setCategoria(String categoria) {
-		put("categoria", categoria);
-	}
-
 	public String getDescripcion() {
 		return getString("description");
 	}
@@ -65,13 +48,13 @@ public class Produto extends ParseObject {
 	public void setDescripcion(String descripcion) {
 		put("description", descripcion);
 	}
-
-	public String getUrlImaxe() {
-		return getString("icon");
+	
+	public ParseFile getIcon() {
+		return getParseFile("icon");
 	}
 
-	public void setUrlImaxe(String urlImaxe) {
-		put("icon", urlImaxe);
+	public void setIcon(ParseFile icon) {
+		put("icon", icon);
 	}
 
 	public String getMarca() {
@@ -87,7 +70,8 @@ public class Produto extends ParseObject {
 	}
 
 	public void setPrezoPorSupermercado(Prezo prezoPorSupermercado) {
-		put("PriceMarket", prezoPorSupermercado);
+		getPrezoPorSupermercado().add(prezoPorSupermercado);
+		saveInBackground();
 	}
 
 	public ParseRelation<Tag> getTags() {
@@ -95,7 +79,8 @@ public class Produto extends ParseObject {
 	}
 
 	public void setTags(Tag tags) {
-		put("tags", tags);
+		getTags().add(tags);
+		saveInBackground();
 	}
 
 }

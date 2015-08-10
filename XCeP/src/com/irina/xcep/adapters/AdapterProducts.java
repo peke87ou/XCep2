@@ -67,13 +67,13 @@ public class AdapterProducts extends ArrayAdapter<Produto> {
 	}    
      ((TextView) celdaView.findViewById(R.id.products_list)).setText(unidadesProducto);
    
-   Bitmap bmp = mImagenes.get(productosList.getUrlImaxe());
+   Bitmap bmp = mImagenes.get(productosList.getIcon());
      
    if(bmp != null){
 	   imageView.setImageBitmap(bmp);
    }else{
-	   Log.d("Imagen producto: ", productosList.getUrlImaxe());
-	   Picasso.with(getContext()).load(productosList.getUrlImaxe()).into(imageView);
+	   Log.d("Imagen producto: ", productosList.getIcon().getUrl());
+	   Picasso.with(getContext()).load(productosList.getIcon().getUrl()).into(imageView);
    }
        
        

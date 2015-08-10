@@ -17,7 +17,8 @@ public class Prezo extends ParseObject {
 	public ParseRelation<Units> getUnits() {
 		return getRelation("idUnits");
 	}
-	public void setUnits(Tag idUnits) {
-		put("idUnits", idUnits);
+	public void setUnits(Units idUnits) {
+		getUnits().add(idUnits);
+		saveInBackground();
 	}
 }
