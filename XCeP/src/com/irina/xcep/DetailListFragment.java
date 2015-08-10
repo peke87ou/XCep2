@@ -46,12 +46,14 @@ import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.irina.xcep.adapters.AdapterProducts;
 import com.irina.xcep.adapters.AdapterTags;
+import com.irina.xcep.model.Lista;
 import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Supermercado;
 import com.irina.xcep.model.Tag;
 import com.irina.xcep.utils.Utils;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
@@ -416,21 +418,28 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 //		query.include("User");
 //		query.whereEqualTo("idUser", currentUser);
 //		FIXME filtrar por lista revisar BD
-		query.include("List");
+		//query.include("List");
 		Log.e("Adaptador productos", nameList+"");
+		ParseQuery<Lista> listaProducto = ParseQuery.getQuery(Lista.class);
+		listaProducto.whereEqualTo("name", nameList);
+		query.whereMatchesKeyInQuery("idProducts", "name", listaProducto);
+		
+		//query.whereMatchesQuery("idProducts", listaProducto);
 //		query.whereEqualTo("name", nameList);
 //		query.whereEqualTo("objectId", "juzZMn1c1Q");
 		query.findInBackground(new FindCallback<Produto>() {
 			
 			@Override
 			public void done(List<Produto> objects, ParseException e) {
-				Log.e("Adaptador productos", objects.size()+"");
+				
 				productLista = (ArrayList<Produto>) objects;
 				adapter.clear();
 				if(productLista != null){
+					Log.e("Adaptador productos", objects.size()+"");
 					adapter.addAll(productLista);
 				}else{
 					Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
+					e.printStackTrace();
 				}
 				
 			}
