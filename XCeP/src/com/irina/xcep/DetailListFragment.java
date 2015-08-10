@@ -410,15 +410,16 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		
 		ParseQuery<Produto> query = ParseQuery.getQuery(Produto.class);
-		query.include("Market");
-		query.whereEqualTo("idMarket", "wYjus2o7TZ");
-		//Filtramos as lista para cada usuario logueado na app
-		query.include("User");
-		query.whereEqualTo("idUser", currentUser);
+//		query.include("Market");
+//		query.whereEqualTo("objectId", "wYjus2o7TZ");
+//		//Filtramos as lista para cada usuario logueado na app
+//		query.include("User");
+//		query.whereEqualTo("idUser", currentUser);
 //		FIXME filtrar por lista revisar BD
 		query.include("List");
 		Log.e("Adaptador productos", nameList+"");
-		query.whereEqualTo("name", nameList);
+//		query.whereEqualTo("name", nameList);
+//		query.whereEqualTo("objectId", "juzZMn1c1Q");
 		query.findInBackground(new FindCallback<Produto>() {
 			
 			@Override
