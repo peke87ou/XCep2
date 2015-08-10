@@ -50,15 +50,19 @@ public class AdapterProducts extends ArrayAdapter<Produto> {
 
        ImageView imageView = (ImageView)celdaView.findViewById(R.id.image_product);
        
-       //PRICE
-       try {
-		((TextView) celdaView.findViewById(R.id.price_product))
-		.setText(productosList.getPrezoPorSupermercado().getQuery().getFirst().getPrice()+"");
-	} catch (ParseException e) {
-		((TextView) celdaView.findViewById(R.id.price_product))
-		.setText("ERROR");
-		e.printStackTrace();
-	}
+
+     //PRICE
+           try {
+        	 String precioProducto = productosList.getPrezoPorSupermercado().getQuery().getFirst().getPrice() + "";
+        	 String unidadesProducto = productosList.getPrezoPorSupermercado().getQuery().getFirst().getUnits().getQuery().getFirst().getNumberProduct() + "";
+        	 Log.e("NumeroEncontrado", precioProducto);
+        	 Log.e("unidadesEncontradas", unidadesProducto);
+     ((TextView) celdaView.findViewById(R.id.price_product)).setText(precioProducto);
+     } catch (ParseException e) {
+     ((TextView) celdaView.findViewById(R.id.price_product))
+     .setText("ERROR");
+     e.printStackTrace();
+     }
        
        
       
