@@ -2,7 +2,6 @@ package com.irina.xcep.adapters;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
@@ -17,13 +16,7 @@ import android.widget.TextView;
 
 import com.irina.xcep.R;
 import com.irina.xcep.model.Produto;
-import com.irina.xcep.model.Supermercado;
-import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import com.squareup.picasso.Picasso;
 
 public class AdapterProducts extends ArrayAdapter<Produto> {
@@ -74,6 +67,14 @@ public class AdapterProducts extends ArrayAdapter<Produto> {
 	}    
      ((TextView) celdaView.findViewById(R.id.products_list)).setText(unidadesProducto);
    
+   Bitmap bmp = mImagenes.get(productosList.getUrlImaxe());
+     
+   if(bmp != null){
+	   imageView.setImageBitmap(bmp);
+   }else{
+	   Log.d("Imagen producto: ", productosList.getUrlImaxe());
+	   Picasso.with(getContext()).load(productosList.getUrlImaxe()).into(imageView);
+   }
        
        
       
@@ -108,24 +109,4 @@ public class AdapterProducts extends ArrayAdapter<Produto> {
        return celdaView;
    }
     
-    public void downloadBitmap(ParseRelation<ParseObject> relation, final ImageView imageView){
-    	
-    	ParseQuery<ParseObject> query = relation.getQuery();
-        query.findInBackground(new FindCallback<ParseObject>() {
-     	   public void done(List<ParseObject> list, ParseException e) {
-     	       if (e == null) {
-     	           for (ParseObject object : list) {
-     	             final Supermercado superRelacionado = ((Supermercado)object);
-     	             System.out.println(R.string.text_adapter_list_market + superRelacionado.getNome());
-     	              
-     	             final ParseFile fileObject = superRelacionado.getUrlLogo();
-     	             String urlBitmap = fileObject.getUrl(); 
-     	               
-     	             Picasso.with(getContext()).load(urlBitmap).into(imageView);
-     	             //new AsyncTaskDownloadImage(imageView).execute(urlBitmap,superRelacionado);
-     	           }
-     	       } 
-     	   }
-     	});
-    }
 }
