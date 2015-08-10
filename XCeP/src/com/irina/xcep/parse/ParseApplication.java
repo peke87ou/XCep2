@@ -7,6 +7,7 @@ import com.irina.xcep.model.Prezo;
 import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Supermercado;
 import com.irina.xcep.model.Tag;
+import com.irina.xcep.model.Units;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseObject;
@@ -27,6 +28,7 @@ public class ParseApplication extends Application {
         ParseObject.registerSubclass(Produto.class);
         ParseObject.registerSubclass(Prezo.class);
         ParseObject.registerSubclass(Tag.class);
+        ParseObject.registerSubclass(Units.class);
         
         ParseUser.enableAutomaticUser();
         ParseACL defaultACL = new ParseACL();

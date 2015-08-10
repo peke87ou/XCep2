@@ -49,6 +49,18 @@ public class AdapterProducts extends ArrayAdapter<Produto> {
        ((TextView) celdaView.findViewById(R.id.name_product)).setText(productosList.getNome());
 
        ImageView imageView = (ImageView)celdaView.findViewById(R.id.image_product);
+       
+       //PRICE
+       try {
+		((TextView) celdaView.findViewById(R.id.price_product))
+		.setText(productosList.getPrezoPorSupermercado().getQuery().getFirst().getPrice()+"");
+	} catch (ParseException e) {
+		((TextView) celdaView.findViewById(R.id.price_product))
+		.setText("ERROR");
+		e.printStackTrace();
+	}
+       
+       
       
 //       ParseRelation<ParseObject> relation = productosList.getRelation("idMarket");
        
