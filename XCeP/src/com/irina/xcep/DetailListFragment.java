@@ -81,6 +81,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	
 	ArrayList<Tag> tagList = new ArrayList<Tag>();
 	GridView grid;
+	TextView emptyList;
 	AdapterTags adapterTag;
 	CheckBox checkboxTag;
 	AlertDialog dialogo;
@@ -297,6 +298,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		list = (ListView) home.findViewById(R.id.list_products);
 		
 		grid=(GridView) home.findViewById(R.id.grid_tags);
+		
+		emptyList=(TextView) home.findViewById(R.id.text_empty_list);
 	
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -373,16 +376,15 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			
 			@Override
 			public void done(List<Tag> objects, ParseException e) {
-
-				tagList = (ArrayList<Tag>) objects;
+					tagList = (ArrayList<Tag>) objects;
+					//FIXME Ver como actualizar la lista de supermercados dentro del adapter
+					adapterTag.clear();
+					adapterTag.addAll(tagList);
+	//				adapterTag = new AdapterGridAddShoppingList(AddShoppingListActivity.this, supermercados);
+	//				grid=(GridView)findViewById(R.id.grid_logo_market);
+	//		        grid.setAdapter(adapter);
+	//		        grid.setChoiceMode(GridView.CHOICE_MODE_SINGLE);
 				
-				//FIXME Ver como actualizar la lista de supermercados dentro del adapter
-				adapterTag.clear();
-				adapterTag.addAll(tagList);
-//				adapterTag = new AdapterGridAddShoppingList(AddShoppingListActivity.this, supermercados);
-//				grid=(GridView)findViewById(R.id.grid_logo_market);
-//		        grid.setAdapter(adapter);
-//		        grid.setChoiceMode(GridView.CHOICE_MODE_SINGLE);
 			}
 		});
         
@@ -425,12 +427,15 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 
 			@Override
 			public void done(List<Produto> objects, ParseException e) {
-				
+				if(objects.size()!=0){
+					emptyList.setVisibility(View.GONE);
+				}
 				productLista = (ArrayList<Produto>) objects;
 				adapter.clear();
 				if(productLista != null){
 					Log.e("Adaptador productos", objects.size()+"");
 					adapter.addAll(productLista);
+					
 				}else{
 					Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
 					e.printStackTrace();
