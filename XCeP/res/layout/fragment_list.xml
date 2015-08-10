@@ -60,48 +60,41 @@
                	android:layout_weight="3"
                 >
 
-                <LinearLayout
+              <LinearLayout
                     android:id="@+id/tab_list_buy"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="420dp"
                     android:orientation="horizontal" >
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:orientation="vertical" >
 
-                        <TextView
-                            android:id="@+id/text_empty_list"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/verde_oscuro"
-                         	android:gravity="center"
-                         	android:typeface="serif"
-                            android:text="LISTA BALEIRA \n Engada productos a súa lista"
-                            android:padding="10dp"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:visibility="visible" />
+                        
+                         
+                       
 
                         <ListView
                             android:id="@+id/list_products"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="240dp"
                             android:layout_margin="10dp"
+                            android:layout_weight="0.67"
                             android:choiceMode="singleChoice"
                             android:divider="@android:color/transparent"
                             android:dividerHeight="0dp" >
-
                         </ListView>
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="73dp"
+                            android:layout_weight="0.13"
                             android:orientation="vertical" >
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:padding="10dp" >
 
                                 <TextView
@@ -109,7 +102,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.50"
-                                    android:text="Prezo Carriño " />
+                                    android:text="Prezo Carriño "
+                                    android:textStyle="bold"
+                                    android:typeface="serif" />
 
                                 <TextView
                                     android:id="@+id/textView4"
@@ -117,7 +112,9 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.50"
                                     android:gravity="right"
-                                    android:text="0,0 €" />
+                                    android:text="0,0 €" 
+                                    android:textStyle="bold"
+                                    android:typeface="serif" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -130,7 +127,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.50"
-                                    android:text="Prezo Lista" />
+                                    android:text="Prezo Lista" 
+                                    android:textStyle="bold"
+                                    android:typeface="serif"/>
 
                                 <TextView
                                     android:id="@+id/textView5"
@@ -138,11 +137,11 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.50"
                                     android:gravity="right"
-                                    android:text="0,0 €" />
+                                    android:text="0,0 €"
+                                    android:textStyle="bold"
+                                    android:typeface="serif" />
                             </LinearLayout>
-
                         </LinearLayout>
-
                     </LinearLayout>
 
                 </LinearLayout>
@@ -156,25 +155,23 @@
 
                     <SearchView
                         android:id="@+id/searchView1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_gravity="center_horizontal"
-                         >
+                        android:layout_marginTop="8dp" >
+
                     </SearchView>
 
                    <GridView
-				        android:id="@+id/grid_tags"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				      
-				        android:gravity="center"
-				       
-				        android:numColumns="2"
-				        android:paddingLeft="10dp"
-				        android:choiceMode="singleChoice"
-				       android:background="@drawable/bg_bottom_line_black"
-				          >
+                       android:id="@+id/grid_tags"
+                       android:layout_width="wrap_content"
+                       android:layout_height="220dp"
+                       android:background="@drawable/bg_bottom_line_black"
+                       android:choiceMode="singleChoice"
+                       android:gravity="center"
+                       android:numColumns="2"
+                       android:paddingLeft="10dp" >
+
 				    </GridView>
 
                     <ListView

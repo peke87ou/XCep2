@@ -300,7 +300,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		grid=(GridView) home.findViewById(R.id.grid_tags);
 		
-		emptyList=(TextView) home.findViewById(R.id.text_empty_list);
+//		emptyList=(TextView) home.findViewById(R.id.text_empty_list);
 	
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -428,8 +428,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 
 			@Override
 			public void done(List<Produto> objects, ParseException e) {
-				if(objects.size()!=0){
-					emptyList.setVisibility(View.GONE);
+				if(objects.size()==0){
+					//emptyList.setVisibility(View.GONE);
+					Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
 				}
 				
 				productLista = (ArrayList<Produto>) objects;

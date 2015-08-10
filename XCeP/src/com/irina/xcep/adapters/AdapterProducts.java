@@ -61,18 +61,23 @@ public class AdapterProducts extends ArrayAdapter<Produto> {
 		
  		if(prezoProducto !=null){
  			
- 			precioTextView.setText(prezoProducto.getPrice()+"");
+ 			precioTextView.setText(prezoProducto.getPrice()+" € ");
  		}else{
  			
- 			precioTextView.setText("--");
+ 			precioTextView.setText("-- € ");
  		}
 
  		if(unitsProducto != null){
+ 			if (unitsProducto.getNumberProduct().intValue() == 1){
+				unidadesTextView.setText(unitsProducto.getNumberProduct()+" Unidade");
+			}else {
+				unidadesTextView.setText(unitsProducto.getNumberProduct()+" Unidades");
+			}
  			
- 			unidadesTextView.setText(unitsProducto.getNumberProduct()+"");
+ 			
  		}else{
  			
- 			unidadesTextView.setText("--");
+ 			unidadesTextView.setText("-- ");
  		}
 
 
