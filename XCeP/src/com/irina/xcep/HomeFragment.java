@@ -122,6 +122,7 @@ public class HomeFragment extends Fragment {
 	        	((MenuActivity)getActivity()).mNameList = misListas.get(position).getNome();
 	        	try {
 					((MenuActivity)getActivity()).mMarketSelected = misListas.get(position).getIdSupermercado().getQuery().getFirst();
+					((MenuActivity)getActivity()).mListSelected = misListas.get(position);
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -147,6 +148,8 @@ public class HomeFragment extends Fragment {
 			query.include("User");
 			query.whereEqualTo("idUser", currentUser);
 			query.include("Products");
+			query.include("Price");
+			query.include("UnitsProduct");
 			query.findInBackground(new FindCallback<Lista>() {
 				@Override
 				public void done(List<Lista> objects, ParseException e) {

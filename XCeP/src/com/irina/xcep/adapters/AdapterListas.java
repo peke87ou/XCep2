@@ -119,7 +119,7 @@ public class AdapterListas extends ArrayAdapter<Lista> {
 	        	int i = 0;
 	 			i = listaProductos.getIdProducts().getQuery().count();
 	 			if(i == 1){
-	 	         	productos = i + " Producto";
+	 	         	productos = i + " Producto ";
 	 	        }else{
 	 	         	productos = i + " Productos";
 	 	        }
