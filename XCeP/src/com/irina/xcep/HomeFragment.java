@@ -149,8 +149,8 @@ public class HomeFragment extends Fragment {
 			query.include("User");
 			query.whereEqualTo("idUser", currentUser);
 			query.include("Products");
-			query.include("Price");
-			query.include("UnitsProduct");
+			query.include("Products.Price");
+			query.include("Productis.Price.UnitsProduct");
 			query.findInBackground(new FindCallback<Lista>() {
 				@Override
 				public void done(List<Lista> objects, ParseException e) {

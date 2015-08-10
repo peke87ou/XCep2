@@ -54,6 +54,7 @@ import com.irina.xcep.model.Tag;
 import com.irina.xcep.utils.Utils;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
@@ -422,8 +423,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			return;
 		}
 		
-		ParseQuery<Produto> parseQueryProduto = mListaSelected.getIdProducts().getQuery();
-		parseQueryProduto.include("Price");
+
+		ParseQuery<Produto> parseQueryProduto = mListaSelected.getIdProducts().getQuery();//mListaSelected.getIdProducts().getQuery();
+		parseQueryProduto.include("Price.price");
 		parseQueryProduto.findInBackground(new FindCallback<Produto>() {
 
 			@Override
@@ -433,11 +435,18 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
 				}
 				
-				productLista = (ArrayList<Produto>) objects;
+				@SuppressWarnings("unused")
+				ParseObject parseObjectPrice = objects.get(0).getParseObject("Price");
+				ParseObject parseObjectPrezo = objects.get(0).getParseObject("Prezo");
+				ParseObject parseObjectPriceMarket = objects.get(0).getParseObject("PriceMarket");
+				ParseObject parseObjectprice = objects.get(0).getParseObject("price");
 				
-				Prezo prezoPrimero = (Prezo) productLista.get(0).getParseObject("Price");
-				prezoPrimero = (Prezo) productLista.get(0).getParseObject("Price");
-				Log.d(TAG, "Prezo do primeiro producto"+prezoPrimero.getPrice());
+				//productLista = (ArrayList<Produto>) objects;
+				
+				//ParseObject prezoPrimero = (ParseObject) productLista.get(0)
+				//prezoPrimero = (Prezo) productLista.get(0).getParseObject("Prezo");
+				//prezoPrimero = (Prezo) productLista.get(0).getParseObject("PriceMarket");
+				//Log.d(TAG, "Prezo do primeiro producto"+prezoPrimero.getPrice());
 				
 				adapter.clear();
 				if(productLista != null){
