@@ -15,8 +15,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.irina.xcep.R;
+import com.irina.xcep.model.Prezo;
 import com.irina.xcep.model.Produto;
+import com.irina.xcep.model.Units;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.squareup.picasso.Picasso;
 
 public class AdapterProducts extends ArrayAdapter<Produto> {
@@ -30,7 +33,7 @@ public class AdapterProducts extends ArrayAdapter<Produto> {
 	@Override
 	public View getView(int position, View celdaView, ViewGroup parent) {
 		// Recuperar o elemento de datos para esta posición
-		final Produto productosList = getItem(position);
+		final Produto producto = getItem(position);
 
 		// Comproba se unha vista existente está a ser reutilizado , se non
 		// inflar a vista
@@ -39,54 +42,47 @@ public class AdapterProducts extends ArrayAdapter<Produto> {
 					R.layout.item_product_shopping_list, parent, false);
 		}
 
-		// Buscar Vista para recheo de datos
-		Log.i("Productos", productosList + "");
-		((TextView) celdaView.findViewById(R.id.name_product))
-				.setText(productosList.getNome());
-
-
-		ImageView imageView = (ImageView) celdaView
-				.findViewById(R.id.image_product);
-
+		((TextView) celdaView.findViewById(R.id.name_product)).setText(producto.getNome());
+		ImageView productoImageView = (ImageView) celdaView.findViewById(R.id.image_product);
+		TextView unidadesTextView = ((TextView) celdaView.findViewById(R.id.products_list));
+		TextView precioTextView = ((TextView) celdaView.findViewById(R.id.price_product));
+		
+		Prezo prezoProducto;
+		Units unitsProducto;
+		
 		try {
-			String precioProducto = productosList.getPrezoPorSupermercado()
-					.getQuery().getFirst().getPrice()
-					+ "";
-
-			Log.e("NumeroEncontrado", precioProducto);
-
-			((TextView) celdaView.findViewById(R.id.price_product))
-					.setText(precioProducto);
-
-		} catch (ParseException e) {
-			((TextView) celdaView.findViewById(R.id.price_product))
-					.setText("ERROR");
-			e.printStackTrace();
+			prezoProducto = producto.getPrezoPorSupermercado().getQuery().getFirst();
+			unitsProducto = prezoProducto.getUnits().getQuery().getFirst();
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			prezoProducto = null;
+			unitsProducto = null;
 		}
 		
-		if(true)
-			return celdaView;
+ 		if(prezoProducto !=null){
+ 			
+ 			precioTextView.setText(prezoProducto.getPrice()+"");
+ 		}else{
+ 			
+ 			precioTextView.setText("--");
+ 		}
 
-		String unidadesProducto = "";
-		try {
-			unidadesProducto = productosList.getPrezoPorSupermercado()
-					.getQuery().getFirst().getUnits().getQuery().getFirst()
-					.getNumberProduct()
-					+ "";
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		((TextView) celdaView.findViewById(R.id.products_list))
-				.setText(unidadesProducto);
+ 		if(unitsProducto != null){
+ 			
+ 			unidadesTextView.setText(unitsProducto.getNumberProduct()+"");
+ 		}else{
+ 			
+ 			unidadesTextView.setText("--");
+ 		}
 
-		Bitmap bmp = mImagenes.get(productosList.getIcon());
+
+		Bitmap bmp = mImagenes.get(producto.getIcon());
 
 		if (bmp != null) {
-			imageView.setImageBitmap(bmp);
+			productoImageView.setImageBitmap(bmp);
 		} else {
 
-			Picasso.with(getContext()).load(productosList.getIcon().getUrl())
-					.into(imageView);
+			Picasso.with(getContext()).load(producto.getIcon().getUrl()).into(productoImageView);
 		}
 
 		return celdaView;

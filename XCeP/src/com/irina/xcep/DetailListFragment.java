@@ -47,6 +47,7 @@ import com.google.zxing.common.HybridBinarizer;
 import com.irina.xcep.adapters.AdapterProducts;
 import com.irina.xcep.adapters.AdapterTags;
 import com.irina.xcep.model.Lista;
+import com.irina.xcep.model.Prezo;
 import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Supermercado;
 import com.irina.xcep.model.Tag;
@@ -421,16 +422,22 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			return;
 		}
 		
-
-		
-		mListaSelected.getIdProducts().getQuery().findInBackground(new FindCallback<Produto>() {
+		ParseQuery<Produto> parseQueryProduto = mListaSelected.getIdProducts().getQuery();
+		parseQueryProduto.include("Price");
+		parseQueryProduto.findInBackground(new FindCallback<Produto>() {
 
 			@Override
 			public void done(List<Produto> objects, ParseException e) {
 				if(objects.size()!=0){
 					emptyList.setVisibility(View.GONE);
 				}
+				
 				productLista = (ArrayList<Produto>) objects;
+				
+				Prezo prezoPrimero = (Prezo) productLista.get(0).getParseObject("Price");
+				prezoPrimero = (Prezo) productLista.get(0).getParseObject("Price");
+				Log.d(TAG, "Prezo do primeiro producto"+prezoPrimero.getPrice());
+				
 				adapter.clear();
 				if(productLista != null){
 					Log.e("Adaptador productos", objects.size()+"");
