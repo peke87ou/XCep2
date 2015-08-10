@@ -169,7 +169,7 @@
                        android:background="@drawable/bg_bottom_line_black"
                        android:choiceMode="singleChoice"
                        android:gravity="center"
-                       android:numColumns="2"
+                       android:numColumns="3"
                        android:paddingLeft="10dp" >
 
 				    </GridView>

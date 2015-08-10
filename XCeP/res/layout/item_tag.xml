@@ -11,8 +11,8 @@
 
         <com.gc.materialdesign.views.CheckBox
             android:id="@+id/checkBoxTag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="33dp"
+            android:layout_height="30dp"
             android:layout_gravity="center" >
 
         </com.gc.materialdesign.views.CheckBox>
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.74"
             android:orientation="vertical"
-            android:padding="10dp" >
+            android:padding="4dp" >
 
             <TextView
                 android:id="@+id/products_list"
