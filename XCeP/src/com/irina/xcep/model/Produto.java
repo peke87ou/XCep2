@@ -83,11 +83,11 @@ public class Produto extends ParseObject {
 	}
 
 	public ParseRelation<Prezo> getPrezoPorSupermercado() {
-		return getRelation("PrizeMarket");
+		return getRelation("PriceMarket");
 	}
 
 	public void setPrezoPorSupermercado(Prezo prezoPorSupermercado) {
-		put("PrizeMarket", prezoPorSupermercado);
+		put("PriceMarket", prezoPorSupermercado);
 	}
 
 	public ParseRelation<Tag> getTags() {

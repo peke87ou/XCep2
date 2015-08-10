@@ -9,7 +9,7 @@ public class Units extends ParseObject {
 		return getNumber("numberProduct");
 	}
 
-	public void setPrice(Number numberProduct) {
+	public void setNumberProduct(Number numberProduct) {
 		put("numberProduct", numberProduct);
 	}
 }
