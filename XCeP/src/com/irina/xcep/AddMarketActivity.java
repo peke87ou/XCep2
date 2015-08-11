@@ -191,20 +191,24 @@ public class AddMarketActivity extends Activity{
 		 
 		 addmarket.setUrlLogo(imagenSupermercado);
 		 
-		 addmarket.saveInBackground(new SaveCallback() {
-		@Override
-		public void done(ParseException arg0) {
-			if (arg0 == null){
-				Toast.makeText(AddMarketActivity.this, "Engadimos O supermercado a BD ", Toast.LENGTH_SHORT).show();
-				Log.i("market", "Engadimos O supermercado a BD ");
-				finish();
-				
-			}else{
-				Toast.makeText(AddMarketActivity.this, R.string.error_add_list+" " + arg0.getMessage(), Toast.LENGTH_SHORT).show();
-				Log.e("market", "ERROR O ENGADIR NA BD ");
+		addmarket.saveInBackground(new SaveCallback() {
+			@Override
+			public void done(ParseException arg0) {
+				if (arg0 == null) {
+					Toast.makeText(AddMarketActivity.this,
+							"Engadimos O supermercado a BD ",
+							Toast.LENGTH_SHORT).show();
+					Log.i("market", "Engadimos O supermercado a BD ");
+					finish();
+
+				} else {
+					Toast.makeText(AddMarketActivity.this,
+							R.string.error_add_list + " " + arg0.getMessage(),
+							Toast.LENGTH_SHORT).show();
+					Log.e("market", "ERROR O ENGADIR NA BD ");
+				}
 			}
-		}
-	});
+		});
 	}
 }
 

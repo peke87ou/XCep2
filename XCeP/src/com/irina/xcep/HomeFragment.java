@@ -3,6 +3,7 @@ package com.irina.xcep;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
@@ -25,18 +26,17 @@ import android.widget.Toast;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.irina.xcep.adapters.AdapterListas;
 import com.irina.xcep.model.Lista;
-import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Supermercado;
 import com.irina.xcep.utils.FragmentIndexes;
 import com.irina.xcep.utils.Utils;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+@SuppressLint("InflateParams")
 public class HomeFragment extends Fragment {
 	
 	// Declaración de variables
@@ -254,7 +254,6 @@ public class HomeFragment extends Fragment {
 				        			   
 				        		       if(parseObjects.size()==1)	{
 				        		            		parseObjects.get(0).setNome(nameListtxt);
-				        		            		//parseObjects.get(0).saveInBackground();
 				        		            		parseObjects.get(0).saveInBackground(new SaveCallback() {
 														
 														@Override

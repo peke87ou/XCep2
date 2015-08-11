@@ -25,7 +25,6 @@ public class AdapterTags extends ArrayAdapter<Tag> {
        //Recuperar o elemento de datos para esta posición
        final Tag tagList = getItem(position);    
               
-       // FIXME crear vista TAGS
        if (celdaView == null) {
           celdaView = LayoutInflater.from(getContext()).inflate(R.layout.item_tag, parent, false);
        }

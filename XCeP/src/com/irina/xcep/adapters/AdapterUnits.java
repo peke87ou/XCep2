@@ -1,11 +1,8 @@
 package com.irina.xcep.adapters;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +17,6 @@ import com.squareup.picasso.Picasso;
 
 public class AdapterUnits extends ArrayAdapter<Units> {
 
-	private static Map<String, Bitmap> mImagenes = new HashMap<String, Bitmap>();
 
 	public AdapterUnits(Context context, ArrayList<Units> productos) {
 		super(context, 0, productos);
@@ -53,17 +49,8 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 		}
  			
 
+ 		Picasso.with(getContext()).load(producto.getIcon().getUrl()).into(productoImageView);
 
-		Bitmap bmp = mImagenes.get(producto.getIcon().getUrl());
-
-		if (bmp != null) {
-			productoImageView.setImageBitmap(bmp);
-		} else {
-
-			Picasso.with(getContext()).load(producto.getIcon().getUrl()).into(productoImageView);
-		}
-
-		
 		return celdaView;
 	}
 

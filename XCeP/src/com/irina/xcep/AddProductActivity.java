@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonRectangle;
@@ -85,12 +84,12 @@ public class AddProductActivity extends Activity{
 				 addProduct.setDescripcion(descriptionProdutoTxt);
 				 
 				//foto
-				 ImageView fotoProducto = (ImageView) findViewById(R.id.image_view_product);
+				 //ImageView fotoProducto = (ImageView) findViewById(R.id.image_view_product);
 //				 String fotoProductoTxt = fotoProducto.getText().toString();
 //				 addProduct.setUrlImaxe(fotoProductoTxt);
 				 
 				//Prezo
-				 EditText priceProduto = (EditText) findViewById(R.id.text_name_product);
+				 //EditText priceProduto = (EditText) findViewById(R.id.text_name_product);
 //				 String priceProdutoTxt = priceProduto.getText().toString();
 //				 addProduct.setPrezoPorSupermercado(priceProdutoTxt);
 //				 

@@ -44,9 +44,9 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
-import com.irina.xcep.adapters.AdapterUnits;
 import com.irina.xcep.adapters.AdapterProductsCatalog;
 import com.irina.xcep.adapters.AdapterTags;
+import com.irina.xcep.adapters.AdapterUnits;
 import com.irina.xcep.model.Lista;
 import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Supermercado;
@@ -55,10 +55,13 @@ import com.irina.xcep.model.Units;
 import com.irina.xcep.utils.Utils;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
+
+
+//FIXME Controlar la activacion/desactivación de la cámara
+//FIXME Agregar correctamente un producto nuevo. Agregar al array de productos del market, agregar el objeto a la tabla de productos, y completar bien los field.
 
 public class DetailListFragment extends Fragment implements SurfaceHolder.Callback{
 	
@@ -368,6 +371,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void getCatalogo(){
 		
 		adapterTag = new AdapterTags(getActivity(), tagList);
@@ -399,19 +403,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		listCatalog.setAdapter(adapterProductoCatalog);
 		
 		
-    	//Todos los productos
-    	/*ParseQuery<Produto> query2 = ParseQuery.getQuery(Produto.class);
-		query2.findInBackground(new FindCallback<Produto>() {
-			@Override
-			public void done(List<Produto> objects, ParseException e) {
-				Log.e("Adaptador productos Catalogo", objects.size()+"");
-				productCatalogList = (ArrayList<Produto>) objects;
-				adapterProductoCatalog.clear();
-				adapterProductoCatalog.addAll(productCatalogList);
-			}
-		});*/
-		
-		
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
         @Override
@@ -420,23 +411,14 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
         	checkboxTag =  (CheckBox) view.findViewById(R.id.checkBoxTag);
         	checkboxTag.setChecked(!checkboxTag.isCheck());
         	grid.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-//        	if (supermercados.size()== position){ //ultima
-//        		Intent intent = new Intent(AddShoppingListActivity.this, AddMarketActivity.class);
-//        		//FIXME invocar como startActivityForResult, y manejar el callback para hacer reload de la lista
-//                startActivity(intent);
-//          	  
-//                
-//            }else {
-//            	idSuper = supermercados.get(position);
-//            }
-        	
         	
           }
-         });
         
-        
+       });
+         
 		
 	}
+	@SuppressWarnings("unchecked")
 	private void cargarProdutosLista(String nameList, boolean forzarRecarga) {
 		
 		listaUnidades.clear();
@@ -455,36 +437,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			Log.d(TAG, "Non se volve a executar un find de produtos");
 			return;
 		}
-		
-		
-		//ParseObject precio = mListaSelected.getParseObject("Products");
-		/*ParseQuery<Produto> parseQueryProduto = mListaSelected.getIdProducts().getQuery();//mListaSelected.getIdProducts().getQuery();
-		parseQueryProduto.include("Price.price");
-		parseQueryProduto.findInBackground(new FindCallback<Produto>() {
-
-			@Override
-			public void done(List<Produto> objects, ParseException e) {
-				if(objects.size()==0){
-					//emptyList.setVisibility(View.GONE);
-					Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
-				}
-				
-				
-				listaUnidades = (ArrayList<Produto>) objects;
-				adapter.clear();
-				if(listaUnidades != null){
-					Log.e("Adaptador productos", objects.size()+"");
-					adapter.addAll(listaUnidades);
-					
-				}else{
-					Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
-					e.printStackTrace();
-				}
-			}
-	     	  
-			
-	    });*/
-		
 		
 	}
 	

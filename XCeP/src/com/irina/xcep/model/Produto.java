@@ -85,24 +85,4 @@ public class Produto extends ParseObject {
 	}
 
 	
-	//Custom
-	private Number prezo;
-	private Number unidades;
-	
-	public Number getPrezo() {
-		return prezo;
-	}
-
-	public void setPrezo(Number prezo) {
-		this.prezo = prezo;
-	}
-
-	public Number getUnidades() {
-		return unidades;
-	}
-
-	public void setUnidades(Number unidades) {
-		this.unidades = unidades;
-	}
-	
 }

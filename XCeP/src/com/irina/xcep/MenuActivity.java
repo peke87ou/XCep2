@@ -2,6 +2,7 @@ package com.irina.xcep;
 
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -30,6 +31,7 @@ import com.irina.xcep.model.Supermercado;
 import com.irina.xcep.utils.FragmentIndexes;
 
 
+@SuppressLint("DefaultLocale")
 public class MenuActivity extends Activity implements MenuAdapter.SelectedListButton, AdapterView.OnItemClickListener{
 
 
@@ -42,7 +44,6 @@ public class MenuActivity extends Activity implements MenuAdapter.SelectedListBu
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
-    private HomeFragment homeFragment;
     public String mNameList= "";
     public Supermercado mMarketSelected = null;
     public Lista mListSelected=null;
