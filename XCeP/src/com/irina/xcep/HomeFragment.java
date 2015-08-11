@@ -25,10 +25,13 @@ import android.widget.Toast;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.irina.xcep.adapters.AdapterListas;
 import com.irina.xcep.model.Lista;
+import com.irina.xcep.model.Produto;
+import com.irina.xcep.model.Supermercado;
 import com.irina.xcep.utils.FragmentIndexes;
 import com.irina.xcep.utils.Utils;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -121,15 +124,10 @@ public class HomeFragment extends Fragment {
 	        @Override
 	        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 	        	((MenuActivity)getActivity()).mNameList = misListas.get(position).getNome();
-	        	try {
-					((MenuActivity)getActivity()).mMarketSelected = misListas.get(position).getIdSupermercado().getQuery().getFirst();
-					((MenuActivity)getActivity()).mListSelected = misListas.get(position);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-				
+				((MenuActivity)getActivity()).mMarketSelected = (Supermercado)misListas.get(position).get("PidMarket");
+				((MenuActivity)getActivity()).mListSelected = misListas.get(position);
 	        	((MenuActivity)getActivity()).loadFragment(FragmentIndexes.FRAGMENT_LIST);
-	            }
+	        }
 	    });
 		
 		return home;
@@ -144,13 +142,13 @@ public class HomeFragment extends Fragment {
 			final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), "Actualizando listas");
      	   	progress.show();
 			ParseQuery<Lista> query = ParseQuery.getQuery(Lista.class);
-			query.include("Market");
+			query.include("PidMarket");
+			query.include("PidMarket.AProduct");
+			query.include("AidUnits");
+			query.include("AidUnits.PidProduct");
 			//Filtramos as lista para cada usuario logueado na app
-			query.include("User");
+			//query.include("User");
 			query.whereEqualTo("idUser", currentUser);
-			query.include("Products");
-			query.include("Products.Price");
-			query.include("Productis.Price.UnitsProduct");
 			query.findInBackground(new FindCallback<Lista>() {
 				@Override
 				public void done(List<Lista> objects, ParseException e) {
@@ -159,11 +157,12 @@ public class HomeFragment extends Fragment {
 					}
 					
 					misListas = (ArrayList<Lista>) objects;
+
 					
 					if(misListas != null){
+						
 						adapter.clear();
 						adapter.addAll(misListas);
-						//adapter.setNotifyOnChange(true);
 					}
 					
 					progress.dismiss();

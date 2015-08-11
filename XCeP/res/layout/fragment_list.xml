@@ -165,17 +165,17 @@
                    <GridView
                        android:id="@+id/grid_tags"
                        android:layout_width="wrap_content"
-                       android:layout_height="220dp"
+                       android:layout_height="100dp"
                        android:background="@drawable/bg_bottom_line_black"
                        android:choiceMode="singleChoice"
                        android:gravity="center"
-                       android:numColumns="2"
+                       android:numColumns="3"
                        android:paddingLeft="10dp" >
 
 				    </GridView>
 
                     <ListView
-                        android:id="@+id/listView1"
+                        android:id="@+id/listProductCatalog"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1" >

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,9 @@ import android.widget.TextView;
 
 import com.irina.xcep.R;
 import com.irina.xcep.model.Lista;
+import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Supermercado;
+import com.irina.xcep.model.Units;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -48,9 +51,39 @@ public class AdapterListas extends ArrayAdapter<Lista> {
        
        //Buscar Vista para recheo de datos
        ((TextView) celdaView.findViewById(R.id.name_list)).setText(lista.getNome());
-
-       
        final ImageView imageView = (ImageView)celdaView.findViewById(R.id.imageMarketList);
+       TextView textViewProductos = ((TextView) celdaView.findViewById(R.id.products_list));
+       //List<Produto> objeto = (ArrayList<Produto>) lista0.get("idProducts2");
+       Supermercado supermercado = (Supermercado)lista.get("PidMarket");
+       List<Units> unidadesProducto = (ArrayList<Units>)lista.get("AidUnits");
+    
+       
+	   if(supermercado!=null){
+		    Picasso.with(mContext ).load(supermercado.getUrlLogo().getUrl()).into(imageView);
+	   }
+		
+       
+	   String numeroProductos;
+	   
+	   if(unidadesProducto != null){
+		   
+		   int nUnidades = unidadesProducto.size();
+		   
+		   if(nUnidades == 1){
+			   numeroProductos = nUnidades + " producto";
+		   }else{
+			   numeroProductos = nUnidades + " productos";
+		   }
+		   
+	   }else{
+		   numeroProductos = "0 productos";
+	   }
+       
+	   textViewProductos.setText(numeroProductos);
+	   
+       if(true)
+    	   return celdaView;
+       
        ParseRelation<ParseObject> relation = lista.getRelation("idMarket");
        
        final String objectId = lista.getObjectId();
@@ -64,7 +97,6 @@ public class AdapterListas extends ArrayAdapter<Lista> {
        
        
        //Buscar Vista para recheo de datos	
-		TextView textViewProductos = ((TextView) celdaView.findViewById(R.id.products_list));
 		if(textViewProductos.getText().length()==0){
 			textViewProductos.setText("Buscando productos...");
 			new AsynkTaskGetProductos(textViewProductos, lista).execute();

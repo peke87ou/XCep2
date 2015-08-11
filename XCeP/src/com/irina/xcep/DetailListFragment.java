@@ -44,13 +44,14 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
-import com.irina.xcep.adapters.AdapterProducts;
+import com.irina.xcep.adapters.AdapterUnits;
+import com.irina.xcep.adapters.AdapterProductsCatalog;
 import com.irina.xcep.adapters.AdapterTags;
 import com.irina.xcep.model.Lista;
-import com.irina.xcep.model.Prezo;
 import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Supermercado;
 import com.irina.xcep.model.Tag;
+import com.irina.xcep.model.Units;
 import com.irina.xcep.utils.Utils;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -74,8 +75,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	boolean isProductoEnParse;
 	Produto productBarcode;
 	
-	AdapterProducts adapter;
-	ArrayList<Produto> productLista = new ArrayList<Produto>();
+	AdapterProductsCatalog adapterProductoCatalog;
+	ArrayList<Produto> productCatalogList = new ArrayList<Produto>();
+	ListView listCatalog;
 	ListView list;
 	ParseUser currentUser = ParseUser.getCurrentUser();
 	String nameList ;
@@ -87,6 +89,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	AdapterTags adapterTag;
 	CheckBox checkboxTag;
 	AlertDialog dialogo;
+	
+	AdapterUnits adapter;
+	ArrayList<Units> listaUnidades = new ArrayList<Units>();
 	
 	public static DetailListFragment newInstance (int Index){
 		DetailListFragment fragment = new DetailListFragment();
@@ -254,12 +259,10 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		ImageView imageMarket =  (ImageView) home.findViewById(R.id.imageMarket);
 		if(mMarketSelected ==null){
 			mMarketSelected = ((MenuActivity)getActivity()).mMarketSelected;
-			if(mMarketSelected !=null){
-				Picasso.with(getActivity()).load(mMarketSelected.getUrlLogo().getUrl()).into(imageMarket);
-			}
-		}else{
-			Picasso.with(getActivity()).load(mMarketSelected.getUrlLogo().getUrl()).into(imageMarket);
 		}
+
+		Picasso.with(getActivity()).load(mMarketSelected.getUrlLogo().getUrl()).into(imageMarket);
+		
 		
 		if(mListaSelected ==null){
 			mListaSelected = ((MenuActivity)getActivity()).mListSelected;
@@ -269,7 +272,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			
 			@Override
 			public void onTabChanged(String tabId) {
-				Toast.makeText(getActivity(), "ID: "+ tabId, Toast.LENGTH_SHORT).show();
 				
 				getScan(tabId);
 				
@@ -302,7 +304,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		grid=(GridView) home.findViewById(R.id.grid_tags);
 		
 //		emptyList=(TextView) home.findViewById(R.id.text_empty_list);
-	
+		listCatalog = (ListView) home.findViewById(R.id.listProductCatalog);
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		// Add the buttons
@@ -369,8 +371,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	private void getCatalogo(){
 		
 		adapterTag = new AdapterTags(getActivity(), tagList);
-				
-        grid.setAdapter(adapterTag);
         grid.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
         
         ParseQuery<Tag> query = ParseQuery.getQuery(Tag.class);
@@ -382,15 +382,35 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					//FIXME Ver como actualizar la lista de supermercados dentro del adapter
 					adapterTag.clear();
 					adapterTag.addAll(tagList);
-	//				adapterTag = new AdapterGridAddShoppingList(AddShoppingListActivity.this, supermercados);
-	//				grid=(GridView)findViewById(R.id.grid_logo_market);
-	//		        grid.setAdapter(adapter);
-	//		        grid.setChoiceMode(GridView.CHOICE_MODE_SINGLE);
-				
+					grid.setAdapter(adapterTag);
 			}
 		});
         
-//		checkboxTag.setOnClickListener(l)
+		productCatalogList.clear();
+		if(mMarketSelected == null){
+			mMarketSelected = ((MenuActivity)getActivity()).mMarketSelected;
+		}
+		Supermercado supermercado = mMarketSelected;
+		List<Produto> productosSupermercado = (ArrayList<Produto>) supermercado.get("AProduct");
+		if(productosSupermercado != null){
+			productCatalogList.addAll(productosSupermercado);
+		}
+		adapterProductoCatalog = new AdapterProductsCatalog(getActivity(), productCatalogList);
+		listCatalog.setAdapter(adapterProductoCatalog);
+		
+		
+    	//Todos los productos
+    	/*ParseQuery<Produto> query2 = ParseQuery.getQuery(Produto.class);
+		query2.findInBackground(new FindCallback<Produto>() {
+			@Override
+			public void done(List<Produto> objects, ParseException e) {
+				Log.e("Adaptador productos Catalogo", objects.size()+"");
+				productCatalogList = (ArrayList<Produto>) objects;
+				adapterProductoCatalog.clear();
+				adapterProductoCatalog.addAll(productCatalogList);
+			}
+		});*/
+		
 		
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -409,22 +429,36 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 //            }else {
 //            	idSuper = supermercados.get(position);
 //            }
+        	
+        	
           }
          });
+        
+        
 		
 	}
 	private void cargarProdutosLista(String nameList, boolean forzarRecarga) {
 		
-		adapter = new AdapterProducts(getActivity(), productLista);
+		listaUnidades.clear();
+		if(mListaSelected.get("AidUnits") != null){
+			listaUnidades.addAll((ArrayList<Units>)mListaSelected.get("AidUnits"));
+		}
+		
+		adapter = new AdapterUnits(getActivity(), listaUnidades);
 		list.setAdapter(adapter);
 		
-		if(!forzarRecarga && productLista.size() > 0){
-			Log.d(TAG, "No se vuelve a ejecutar un find de productos");
+		if(listaUnidades.size()==0){
+			Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
+		}
+		
+		if(!forzarRecarga && listaUnidades.size() > 0){
+			Log.d(TAG, "Non se volve a executar un find de produtos");
 			return;
 		}
 		
-
-		ParseQuery<Produto> parseQueryProduto = mListaSelected.getIdProducts().getQuery();//mListaSelected.getIdProducts().getQuery();
+		
+		//ParseObject precio = mListaSelected.getParseObject("Products");
+		/*ParseQuery<Produto> parseQueryProduto = mListaSelected.getIdProducts().getQuery();//mListaSelected.getIdProducts().getQuery();
 		parseQueryProduto.include("Price.price");
 		parseQueryProduto.findInBackground(new FindCallback<Produto>() {
 
@@ -435,23 +469,12 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
 				}
 				
-				@SuppressWarnings("unused")
-				ParseObject parseObjectPrice = objects.get(0).getParseObject("Price");
-				ParseObject parseObjectPrezo = objects.get(0).getParseObject("Prezo");
-				ParseObject parseObjectPriceMarket = objects.get(0).getParseObject("PriceMarket");
-				ParseObject parseObjectprice = objects.get(0).getParseObject("price");
 				
-				//productLista = (ArrayList<Produto>) objects;
-				
-				//ParseObject prezoPrimero = (ParseObject) productLista.get(0)
-				//prezoPrimero = (Prezo) productLista.get(0).getParseObject("Prezo");
-				//prezoPrimero = (Prezo) productLista.get(0).getParseObject("PriceMarket");
-				//Log.d(TAG, "Prezo do primeiro producto"+prezoPrimero.getPrice());
-				
+				listaUnidades = (ArrayList<Produto>) objects;
 				adapter.clear();
-				if(productLista != null){
+				if(listaUnidades != null){
 					Log.e("Adaptador productos", objects.size()+"");
-					adapter.addAll(productLista);
+					adapter.addAll(listaUnidades);
 					
 				}else{
 					Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
@@ -460,41 +483,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			}
 	     	  
 			
-	    });
+	    });*/
 		
 		
-		
-/*		ParseQuery<Produto> query = ParseQuery.getQuery(Produto.class);
-//		query.include("Market");
-//		query.whereEqualTo("objectId", "wYjus2o7TZ");
-//		//Filtramos as lista para cada usuario logueado na app
-//		query.include("User");
-//		query.whereEqualTo("idUser", currentUser);
-//		FIXME filtrar por lista revisar BD
-		query.include("List");
-		Log.e("Adaptador productos", nameList+"");
-		query.whereEqualTo("name", nameList);
-		ParseQuery<Lista> listaProducto = ParseQuery.getQuery(Lista.class);
-		listaProducto.whereEqualTo("name", nameList);
-		query.whereMatchesKeyInQuery("idProducts", "name", listaProducto);
-		
-		//query.whereMatchesQuery("idProducts", listaProducto);
-		//		query.whereEqualTo("name", nameList);
-		query.findInBackground(new FindCallback<Produto>() {
-			
-			@Override
-			public void done(List<Produto> objects, ParseException e) {
-				Log.e("Adaptador productos", objects.size()+"");
-				productLista = (ArrayList<Produto>) objects;
-				adapter.clear();
-				if(productLista != null){
-					adapter.addAll(productLista);
-				}else{
-					Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
-				}
-				
-			}
-		});*/
 	}
 	
 	@Override

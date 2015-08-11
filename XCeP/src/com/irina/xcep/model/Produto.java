@@ -39,6 +39,7 @@ public class Produto extends ParseObject {
 
 	public void setNome(String nome) {
 		put("title", nome);
+		saveInBackground();
 	}
 
 	public String getDescripcion() {

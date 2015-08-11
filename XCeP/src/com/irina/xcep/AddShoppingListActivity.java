@@ -20,6 +20,7 @@ import com.irina.xcep.model.Supermercado;
 import com.irina.xcep.utils.Utils;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -30,12 +31,10 @@ public class AddShoppingListActivity extends Activity{
 	ButtonRectangle btncancel, btnacept;
 	ArrayList<Supermercado> supermercados = new ArrayList<Supermercado>();
 	GridView grid;
-	Supermercado market;
 	AdapterGridAddShoppingList adapter;
-	boolean click_item = false;
 	private EditText nameList;
 	private String nameListtxt;
-	private Supermercado idSuper;
+	private Supermercado supermercadoNuevaLista;
 	
 	
 	@Override
@@ -78,7 +77,7 @@ public class AddShoppingListActivity extends Activity{
 		                startActivity(intent);
 		                
 		            }else {
-		            	idSuper = supermercados.get(position);
+		            	supermercadoNuevaLista = supermercados.get(position);
 		            }
 		          }
 		});
@@ -117,7 +116,7 @@ public class AddShoppingListActivity extends Activity{
 	
 	protected void engadirLista() {
 			
-		Lista addlist = new Lista();
+		Lista novaLista = new Lista();
 		
 		//Nome da lista
 		nameList = (EditText) findViewById(R.id.text_name_list);
@@ -127,22 +126,22 @@ public class AddShoppingListActivity extends Activity{
 		boolean allfilled = true;
 		allfilled =  Utils.isNotEmpty(nameList, nameListtxt);
 		if(!allfilled){
-			idSuper = null;
+			supermercadoNuevaLista = null;
 			return;
 		}
 		
-		addlist.setNome(nameListtxt);
+		novaLista.setNome(nameListtxt);
 		
 		//Id supermercado seleccionado
-		if (idSuper == null ){
+		if (supermercadoNuevaLista == null ){
 			
 			Toast.makeText(AddShoppingListActivity.this, "Non seleccionou ningún supermercado", Toast.LENGTH_SHORT).show();
 		}else{
-			addlist.setIdSupermercado(idSuper);
-			//Id usuario logeuado
-			addlist.setIdUser(ParseUser.getCurrentUser());
-			
-			addlist.saveInBackground(new SaveCallback() {
+			novaLista.setIdSupermercado(supermercadoNuevaLista);
+			novaLista.setIdUser(ParseUser.getCurrentUser());
+			novaLista.put("PidMarket", ParseObject.createWithoutData("Market", supermercadoNuevaLista.getObjectId()));
+			novaLista.saveInBackground();
+			novaLista.saveInBackground(new SaveCallback() {
 				@Override
 				public void done(ParseException arg0) {
 					if (arg0 == null){
