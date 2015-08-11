@@ -449,17 +449,14 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	@Override
 	public void onPause() {
 		super.onPause();
-		if(cam!=null)
-			cam.stopPreview();
+		desconectarCamara();
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
 		//reloadUserShoppingLists();
-		if((tabHost.getCurrentTab() == 2) && (cam != null)){
-			cam.startPreview();
-		}
+		prepararCamara();
 	}
 	
 	
