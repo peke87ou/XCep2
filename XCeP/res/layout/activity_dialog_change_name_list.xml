@@ -19,7 +19,7 @@
         android:id="@+id/NameListNew"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtTitleUsername"
+        android:layout_below="@+id/txtNameListNew"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="7dp"
         android:ems="10" >
