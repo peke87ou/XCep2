@@ -60,7 +60,6 @@ import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
 
-//FIXME Controlar la activacion/desactivación de la cámara
 //FIXME Agregar correctamente un producto nuevo. Agregar al array de productos del market, agregar el objeto a la tabla de productos, y completar bien los field.
 
 public class DetailListFragment extends Fragment implements SurfaceHolder.Callback{
@@ -159,7 +158,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
         try {
 			cam.reconnect();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			Toast.makeText(getActivity(), "No se pudo acceder a la camara", Toast.LENGTH_LONG).show();
 		}
@@ -383,7 +381,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			@Override
 			public void done(List<Tag> objects, ParseException e) {
 					tagList = (ArrayList<Tag>) objects;
-					//FIXME Ver como actualizar la lista de supermercados dentro del adapter
 					adapterTag.clear();
 					adapterTag.addAll(tagList);
 					grid.setAdapter(adapterTag);
