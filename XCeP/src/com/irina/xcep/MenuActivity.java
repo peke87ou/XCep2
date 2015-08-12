@@ -27,7 +27,6 @@ import com.irina.xcep.menu.navitems.NavDrawerItem;
 import com.irina.xcep.menu.navitems.NavMenuItem;
 import com.irina.xcep.menu.navitems.NavTitleItem;
 import com.irina.xcep.model.Lista;
-import com.irina.xcep.model.Supermercado;
 import com.irina.xcep.utils.FragmentIndexes;
 
 
@@ -45,7 +44,6 @@ public class MenuActivity extends Activity implements MenuAdapter.SelectedListBu
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     public String mNameList= "";
-    public Supermercado mMarketSelected = null;
     public Lista mListSelected=null;
 
 

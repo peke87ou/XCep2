@@ -147,7 +147,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		ImageView imageMarket =  (ImageView) home.findViewById(R.id.imageMarket);
 		if(mMarketSelected ==null){
-			mMarketSelected = mListaSelected.getSupermercado();//((MenuActivity)getActivity()).mMarketSelected;
+			mMarketSelected = mListaSelected.getSupermercado();
 		}
 
 		Picasso.with(getActivity()).load(mMarketSelected.getImage().getUrl()).into(imageMarket);
@@ -234,11 +234,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		//Comprobar si existe en la lista, si existe sumar una unidad más.
 		
 		boolean isProductoAlreadyAdd=false;
-		boolean listaVacia = true;
 		Units unidadSeleccionada=null;
 		if(mListaSelected.getAIdUnits() != null){
 			for(Units unitProducto:mListaSelected.getAIdUnits()){
-				listaVacia = false;
 				if(unitProducto.getProduct().getObjectId().equals(producto.getObjectId())){
 					isProductoAlreadyAdd = true;
 					unidadSeleccionada = unitProducto; 
@@ -321,7 +319,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
         
 		productCatalogList.clear();
 		if(mMarketSelected == null){
-			mMarketSelected = mListaSelected.getSupermercado();//((MenuActivity)getActivity()).mMarketSelected;
+			mMarketSelected = mListaSelected.getSupermercado();
 		}
 		Supermercado supermercado = mMarketSelected;
 		List<Produto> productosSupermercado = supermercado.getAProduct();

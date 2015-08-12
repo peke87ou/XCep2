@@ -26,7 +26,6 @@ import android.widget.Toast;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.irina.xcep.adapters.AdapterListas;
 import com.irina.xcep.model.Lista;
-import com.irina.xcep.model.Supermercado;
 import com.irina.xcep.utils.FragmentIndexes;
 import com.irina.xcep.utils.Utils;
 import com.parse.FindCallback;
@@ -123,7 +122,6 @@ public class HomeFragment extends Fragment {
 	        @Override
 	        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 	        	((MenuActivity)getActivity()).mNameList = misListas.get(position).getName();
-				((MenuActivity)getActivity()).mMarketSelected = (Supermercado)misListas.get(position).getSupermercado();
 				((MenuActivity)getActivity()).mListSelected = misListas.get(position);
 	        	((MenuActivity)getActivity()).loadFragment(FragmentIndexes.FRAGMENT_LIST);
 	        }
