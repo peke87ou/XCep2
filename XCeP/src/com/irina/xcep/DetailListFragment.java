@@ -141,18 +141,17 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		nameList = ((MenuActivity)getActivity()).mNameList;
 		txtNameList.setText(nameList);
 		
+		if(mListaSelected ==null){
+			mListaSelected = ((MenuActivity)getActivity()).mListSelected;
+		}
 		
 		ImageView imageMarket =  (ImageView) home.findViewById(R.id.imageMarket);
 		if(mMarketSelected ==null){
-			mMarketSelected = ((MenuActivity)getActivity()).mMarketSelected;
+			mMarketSelected = mListaSelected.getSupermercado();//((MenuActivity)getActivity()).mMarketSelected;
 		}
 
 		Picasso.with(getActivity()).load(mMarketSelected.getImage().getUrl()).into(imageMarket);
 		
-		
-		if(mListaSelected ==null){
-			mListaSelected = ((MenuActivity)getActivity()).mListSelected;
-		}
 		
 		tabHost.setOnTabChangedListener(new OnTabChangeListener() {
 			
@@ -322,7 +321,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
         
 		productCatalogList.clear();
 		if(mMarketSelected == null){
-			mMarketSelected = ((MenuActivity)getActivity()).mMarketSelected;
+			mMarketSelected = mListaSelected.getSupermercado();//((MenuActivity)getActivity()).mMarketSelected;
 		}
 		Supermercado supermercado = mMarketSelected;
 		List<Produto> productosSupermercado = supermercado.getAProduct();
@@ -381,7 +380,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		cam=Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
         Camera.Parameters parameters = cam.getParameters();
         cam.setDisplayOrientation(90);
-        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+        //parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
         cam.setParameters(parameters);
         
         cam.setPreviewCallback(new PreviewCallback(){

@@ -141,12 +141,17 @@ public class HomeFragment extends Fragment {
 			final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), "Actualizando listas");
      	   	progress.show();
 			ParseQuery<Lista> query = ParseQuery.getQuery(Lista.class);
+			
 			query.include("PidMarket");
 			query.include("PidMarket.AProduct");
+			query.include("PidMarket.AProduct.APrice");
+			query.include("PidMarket.AProduct.APrice.PidMarket");
+			
 			query.include("AidUnits");
 			query.include("AidUnits.PidProduct");
 			query.include("AidUnits.PidProduct.APrice");
 			query.include("AidUnits.PidProduct.APrice.PidMarket");
+			
 			//Filtramos as lista para cada usuario logueado na app
 			//query.include("User");
 			query.whereEqualTo("idUser", currentUser);
