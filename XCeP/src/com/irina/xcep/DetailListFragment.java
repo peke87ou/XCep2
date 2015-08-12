@@ -79,18 +79,18 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	
 	AdapterProductsCatalog adapterProductoCatalog;
 	ArrayList<Produto> productCatalogList = new ArrayList<Produto>();
-	ListView listCatalog;
-	ListView list;
+	ListView catalogoListView;
+	ListView productosListaListView;
 	ParseUser currentUser = ParseUser.getCurrentUser();
 	String nameList ;
 	
 	
 	ArrayList<Tag> tagList = new ArrayList<Tag>();
-	GridView grid;
+	GridView gridTags;
 	TextView emptyList;
 	AdapterTags adapterTag;
 	CheckBox checkboxTag;
-	AlertDialog dialogo;
+	AlertDialog dialogoAgregarProducto;
 	
 	AdapterUnits adapter;
 	ArrayList<Units> listaUnidades = new ArrayList<Units>();
@@ -108,121 +108,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		return fragment;
 	}
 	
-	public void prepararCamara(){
-		cam=Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
-        Camera.Parameters parameters = cam.getParameters();
-        cam.setDisplayOrientation(90);
-        //parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
-        cam.setParameters(parameters);
-        
-        cam.setPreviewCallback(new PreviewCallback(){
-			
-        	public void onPreviewFrame(byte[] data, Camera camera){
-				
-				int ancho=camera.getParameters().getPreviewSize().width;
-				int alto=camera.getParameters().getPreviewSize().height;
-				int formato=camera.getParameters().getPreviewFormat();
-				YuvImage imagen=new YuvImage(data, formato, ancho, alto, null);
-				previewImagePath = getActivity().getFilesDir().toString();
-				File archivo=new File(previewImagePath+"/preview.jpg");
-		        FileOutputStream filecon;
-				try{
-					filecon=new FileOutputStream(archivo);
-					imagen.compressToJpeg(new Rect(0,0,imagen.getWidth(),imagen.getHeight()),90,filecon);
-					Bitmap imagenBmp=BitmapFactory.decodeFile(archivo.toString(), null);
-					Matrix imagenMatrix=new Matrix();
-					imagenMatrix.postRotate(-90);
-					imagenBmp=Bitmap.createBitmap(imagenBmp,0,0,imagenBmp.getWidth(),imagenBmp.getHeight(),imagenMatrix,true);
-					LuminanceSource source=new RGBLuminanceSource(imagenBmp);
-			        BinaryBitmap bmp=new BinaryBitmap(new HybridBinarizer(source));
-					Reader barCodeReader=new MultiFormatReader();
-					try{
-						Result resultado=barCodeReader.decode(bmp);
-						
-						Log.e("valor de resultado",resultado.getText());
-						if (resultado != null && resultadoBarCode == null){
-							//Toast.makeText(getActivity(), resultado.getText(), Toast.LENGTH_LONG).show();
-							resultadoBarCode = resultado.getText();
-							showDialogoAgregarProducto();
-							
-							
-						}
-						
-					}catch(Exception e){}
-				}catch(Exception e){}
-				
-				
-			}
-		});
-        
-        try {
-			cam.reconnect();
-		} catch (IOException e) {
-			e.printStackTrace();
-			Toast.makeText(getActivity(), "No se pudo acceder a la camara", Toast.LENGTH_LONG).show();
-		}
-        SurfaceView cameraPreview=(SurfaceView)getActivity().findViewById(R.id.surfaceView1);
-        
-        surfaceholder=cameraPreview.getHolder();
-        //surfaceholder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        surfaceholder.setSizeFromLayout();
-        surfaceholder.addCallback(this);
-	}
-	
-	public void desconectarCamara(){
-
-
-		if(surfaceholder != null)
-			surfaceholder.removeCallback(this);
-		
-		if(cam != null){
-			cam.setPreviewCallback(null);
-			cam.release();
-			cam = null;
-		}
-	}
-	
-	public void showDialogoAgregarProducto(){
-		
-		// Mirar se existe na BD
-		ParseQuery<Produto> productos = ParseQuery.getQuery(Produto.class);
-		final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(), "Buscando producto en el sistema");
-		progressDialog.show();
-		
-		productos.whereEqualTo("idBarCode",resultadoBarCode);
-		productos.findInBackground(new FindCallback<Produto>() {
-			@Override
-			public void done(List<Produto> objects, ParseException e) {
-				progressDialog.dismiss();
-				if(e!=null){
-					Toast.makeText(getActivity(), "Erro ao consultar o producto", Toast.LENGTH_SHORT).show();
-				}else{
-					Log.i("jklsdfjklsdfsdfjkl",objects.size()+"resultado"+resultadoBarCode);
-					if (objects.size() > 0){
-						isProductoEnParse = true;
-						productBarcode =  objects.get(0);
-					}else{
-						isProductoEnParse = false;
-					}
-					
-					Log.i("Esta en parse", isProductoEnParse+"");
-					if(isProductoEnParse){
-						
-						dialogo.setTitle("Produto atopado");
-						dialogo.setMessage("Atopouse o produto "+resultadoBarCode +"\n¿Desexa engadilo a súa lista?");
-						
-					}else{
-						
-						dialogo.setTitle("Produto novo");
-						dialogo.setMessage("Atopouse o produto  "+resultadoBarCode +"\n¿Desexa engadilo o sistema para o supermercado ");
-					}
-					
-					dialogo.show();
-				}
-			}
-		});
-	
-	}
 	
 	
 	@Override
@@ -300,49 +185,25 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		});
 		
 		//Lista de produtos
-		list = (ListView) home.findViewById(R.id.list_products);
+		productosListaListView = (ListView) home.findViewById(R.id.list_products);
+		catalogoListView = (ListView) home.findViewById(R.id.listProductCatalog);
 		
-		grid=(GridView) home.findViewById(R.id.grid_tags);
+		gridTags=(GridView) home.findViewById(R.id.grid_tags);
+        gridTags.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
+        gridTags.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            	Toast.makeText(getActivity(), "You Clicked at " + tagList.get(position), Toast.LENGTH_SHORT).show();
+            	checkboxTag =  (CheckBox) view.findViewById(R.id.checkBoxTag);
+            	checkboxTag.setChecked(!checkboxTag.isCheck());
+            	gridTags.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            	
+              }
+            
+        });
 		
-//		emptyList=(TextView) home.findViewById(R.id.text_empty_list);
-		listCatalog = (ListView) home.findViewById(R.id.listProductCatalog);
-		
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		// Add the buttons
-		builder.setCancelable(false);
-		builder.setPositiveButton("Engadir produto", new DialogInterface.OnClickListener() {
-		           public void onClick(DialogInterface dialog, int id) {
-		        	   
-	        		   barcode = resultadoBarCode;
-	        		   resultadoBarCode = null;
-	        		   
-		        	   if(!isProductoEnParse){
-			        	   Intent intent = new Intent(getActivity(), AddProductActivity.class);
-			        	   Log.i("AddProduct QUE ENVIA", barcode);
-			        	   intent.putExtra("MESSAGE",barcode);  
-		                   startActivityForResult(intent, 1);
-		        	   }else{
-		        		   Log.i("DetailProduct QUE ENVIA", productBarcode.getNome());
-		        		   Intent intent = new Intent(getActivity(), DetailProduct.class);
-		        		   intent.putExtra("NOMEPRODUCTO",productBarcode.getNome());  
-		        		   //CATEGORIA
-		        		   //IMAGEN
-		        		   intent.putExtra("DESCRIPCIONPRODUCTO",productBarcode.getDescripcion()); 
-		        		   intent.putExtra("MARCAPRODUCTO",productBarcode.getMarca()); 
-		        		   //SUPERMERCADO Y PRECIO
-		                   startActivityForResult(intent, 1);
-		        	   }
-		        	  
-		           }
-		       });
-		
-		builder.setNegativeButton("Pechar", new DialogInterface.OnClickListener() {
-		           public void onClick(DialogInterface dialog, int id) {
-		              resultadoBarCode = null;
-		           }
-		       });
-		
-		dialogo = builder.create();
+
 		
 		if (tabHost.getCurrentTab() == 0){
 			cargarProdutosLista(nameList, false);
@@ -373,7 +234,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	private void getCatalogo(){
 		
 		adapterTag = new AdapterTags(getActivity(), tagList);
-        grid.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
         
         ParseQuery<Tag> query = ParseQuery.getQuery(Tag.class);
 		query.findInBackground(new FindCallback<Tag>() {
@@ -383,7 +243,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					tagList = (ArrayList<Tag>) objects;
 					adapterTag.clear();
 					adapterTag.addAll(tagList);
-					grid.setAdapter(adapterTag);
+					gridTags.setAdapter(adapterTag);
 			}
 		});
         
@@ -397,24 +257,11 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			productCatalogList.addAll(productosSupermercado);
 		}
 		adapterProductoCatalog = new AdapterProductsCatalog(getActivity(), productCatalogList);
-		listCatalog.setAdapter(adapterProductoCatalog);
-		
-		
-        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        	Toast.makeText(getActivity(), "You Clicked at " + tagList.get(position), Toast.LENGTH_SHORT).show();
-        	checkboxTag =  (CheckBox) view.findViewById(R.id.checkBoxTag);
-        	checkboxTag.setChecked(!checkboxTag.isCheck());
-        	grid.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-        	
-          }
-        
-       });
-         
-		
+		catalogoListView.setAdapter(adapterProductoCatalog);
+         	
 	}
+	
+	
 	@SuppressWarnings("unchecked")
 	private void cargarProdutosLista(String nameList, boolean forzarRecarga) {
 		
@@ -424,7 +271,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		}
 		
 		adapter = new AdapterUnits(getActivity(), listaUnidades);
-		list.setAdapter(adapter);
+		productosListaListView.setAdapter(adapter);
 		
 		if(listaUnidades.size()==0){
 			Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
@@ -456,6 +303,160 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		prepararCamara();
 	}
 	
+	
+	public void prepararCamara(){
+		cam=Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
+        Camera.Parameters parameters = cam.getParameters();
+        cam.setDisplayOrientation(90);
+        //parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+        cam.setParameters(parameters);
+        
+        cam.setPreviewCallback(new PreviewCallback(){
+			
+        	public void onPreviewFrame(byte[] data, Camera camera){
+				
+				int ancho=camera.getParameters().getPreviewSize().width;
+				int alto=camera.getParameters().getPreviewSize().height;
+				int formato=camera.getParameters().getPreviewFormat();
+				YuvImage imagen=new YuvImage(data, formato, ancho, alto, null);
+				previewImagePath = getActivity().getFilesDir().toString();
+				File archivo=new File(previewImagePath+"/preview.jpg");
+		        FileOutputStream filecon;
+				try{
+					filecon=new FileOutputStream(archivo);
+					imagen.compressToJpeg(new Rect(0,0,imagen.getWidth(),imagen.getHeight()),90,filecon);
+					Bitmap imagenBmp=BitmapFactory.decodeFile(archivo.toString(), null);
+					Matrix imagenMatrix=new Matrix();
+					imagenMatrix.postRotate(-90);
+					imagenBmp=Bitmap.createBitmap(imagenBmp,0,0,imagenBmp.getWidth(),imagenBmp.getHeight(),imagenMatrix,true);
+					LuminanceSource source=new RGBLuminanceSource(imagenBmp);
+			        BinaryBitmap bmp=new BinaryBitmap(new HybridBinarizer(source));
+					Reader barCodeReader=new MultiFormatReader();
+					try{
+						Result resultado=barCodeReader.decode(bmp);
+						
+						Log.e("valor de resultado",resultado.getText());
+						if (resultado != null && resultadoBarCode == null){
+							//Toast.makeText(getActivity(), resultado.getText(), Toast.LENGTH_LONG).show();
+							resultadoBarCode = resultado.getText();
+							showDialogoAgregarProducto();
+							
+							
+						}
+						
+					}catch(Exception e){}
+				}catch(Exception e){}
+				
+				
+			}
+		});
+        
+        try {
+			cam.reconnect();
+		} catch (IOException e) {
+			e.printStackTrace();
+			Toast.makeText(getActivity(), "No se pudo acceder a la camara", Toast.LENGTH_LONG).show();
+		}
+        SurfaceView cameraPreview=(SurfaceView)getActivity().findViewById(R.id.surfaceView1);
+        
+        surfaceholder=cameraPreview.getHolder();
+        //surfaceholder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        surfaceholder.setSizeFromLayout();
+        surfaceholder.addCallback(this);
+	}
+	
+	public void desconectarCamara(){
+
+
+		if(surfaceholder != null)
+			surfaceholder.removeCallback(this);
+		
+		if(cam != null){
+			cam.setPreviewCallback(null);
+			cam.release();
+			cam = null;
+		}
+	}
+	
+	public void showDialogoAgregarProducto(){
+		
+		if(dialogoAgregarProducto == null){
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setCancelable(false);
+			builder.setPositiveButton("Engadir produto", new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   
+		        		   barcode = resultadoBarCode;
+		        		   resultadoBarCode = null;
+		        		   
+			        	   if(!isProductoEnParse){
+				        	   Intent intent = new Intent(getActivity(), AddProductActivity.class);
+				        	   Log.i("AddProduct QUE ENVIA", barcode);
+				        	   intent.putExtra("MESSAGE",barcode);  
+			                   startActivityForResult(intent, 1);
+			        	   }else{
+			        		   Log.i("DetailProduct QUE ENVIA", productBarcode.getNome());
+			        		   Intent intent = new Intent(getActivity(), DetailProduct.class);
+			        		   intent.putExtra("NOMEPRODUCTO",productBarcode.getNome());  
+			        		   //CATEGORIA
+			        		   //IMAGEN
+			        		   intent.putExtra("DESCRIPCIONPRODUCTO",productBarcode.getDescripcion()); 
+			        		   intent.putExtra("MARCAPRODUCTO",productBarcode.getMarca()); 
+			        		   //SUPERMERCADO Y PRECIO
+			                   startActivityForResult(intent, 1);
+			        	   }
+			        	  
+			           }
+			       });
+			
+			builder.setNegativeButton("Pechar", new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			              resultadoBarCode = null;
+			           }
+			});
+			
+			dialogoAgregarProducto = builder.create();
+		}
+		
+		// Mirar se existe na BD
+		ParseQuery<Produto> productos = ParseQuery.getQuery(Produto.class);
+		final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(), "Buscando producto en el sistema");
+		progressDialog.show();
+		
+		productos.whereEqualTo("idBarCode",resultadoBarCode);
+		productos.findInBackground(new FindCallback<Produto>() {
+			@Override
+			public void done(List<Produto> objects, ParseException e) {
+				progressDialog.dismiss();
+				if(e!=null){
+					Toast.makeText(getActivity(), "Erro ao consultar o producto", Toast.LENGTH_SHORT).show();
+				}else{
+					Log.i(TAG,objects.size()+"resultado"+resultadoBarCode);
+					if (objects.size() > 0){
+						isProductoEnParse = true;
+						productBarcode =  objects.get(0);
+					}else{
+						isProductoEnParse = false;
+					}
+					
+					Log.i("Esta en parse", isProductoEnParse+"");
+					if(isProductoEnParse){
+						
+						dialogoAgregarProducto.setTitle("Produto atopado");
+						dialogoAgregarProducto.setMessage("Atopouse o produto "+resultadoBarCode +"\n¿Desexa engadilo a súa lista?");
+						
+					}else{
+						
+						dialogoAgregarProducto.setTitle("Produto novo");
+						dialogoAgregarProducto.setMessage("Atopouse o produto  "+resultadoBarCode +"\n¿Desexa engadilo o sistema para o supermercado ");
+					}
+					
+					dialogoAgregarProducto.show();
+				}
+			}
+		});
+	
+	}
 	
 	/**
 	 * Surfaceholder callback de la cámara
