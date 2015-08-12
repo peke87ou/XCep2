@@ -24,6 +24,7 @@ import com.gc.materialdesign.views.ButtonRectangle;
 import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Tag;
 import com.irina.xcep.utils.MultiSelectionSpinner;
+import com.irina.xcep.utils.Utils;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -35,7 +36,10 @@ public class AddProductActivity extends Activity{
 	
 	ButtonRectangle btncancel, btnacept;
 	private String barcode;
-	
+	EditText nameProduto ;
+	EditText markProduto;
+	EditText descriptionProduto;
+	EditText priceProduto;
 	
 	protected static final int CAMERA_REQUEST = 0;
 	protected static final int GALLERY_PICTURE = 1;
@@ -45,6 +49,8 @@ public class AddProductActivity extends Activity{
 	ImageView fotoProducto;
 	TextView txtengadirImaxe;
 	private MultiSelectionSpinner multiSelectionSpinner;
+	TextView nameLista;
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +58,7 @@ public class AddProductActivity extends Activity{
 		
 		setContentView(R.layout.activity_new_product);
 		
-		TextView nameLista = (TextView) findViewById(R.id.idNameMarket);
+		nameLista = (TextView) findViewById(R.id.idNameMarket);
 		String snameLista= getIntent().getExtras().getString("SUPERNAME");
 		nameLista.setText(snameLista);
 		
@@ -62,6 +68,11 @@ public class AddProductActivity extends Activity{
 		
 		fotoProducto = (ImageView) findViewById(R.id.image_view_product);
 		txtengadirImaxe = (TextView) findViewById(R.id.txt_engadir_imaxe);
+		
+		nameProduto = (EditText) findViewById(R.id.text_name_product);
+		markProduto = (EditText) findViewById(R.id.text_mark_product);
+		descriptionProduto = (EditText) findViewById(R.id.text_description_product);
+		
 		
 		clickfotoProducto = (LinearLayout) findViewById(R.id.button_camera_product);
 		clickfotoProducto.setOnClickListener(new OnClickListener() {
@@ -102,6 +113,24 @@ public class AddProductActivity extends Activity{
 			
 			@Override
 			public void onClick(View v) {
+				
+				if(bitmap == null){ //Se comprueba imagen del supermercado
+					Toast.makeText(getApplicationContext(), "Non se obtuvo a fotografía", Toast.LENGTH_SHORT).show();
+					return;
+				}else{ //Se comprueba nombre del supermercado
+					
+					boolean allfilled = true;
+					allfilled =  Utils.isNotEmpty(nameProduto, nameProduto.getText().toString());
+					allfilled =  Utils.isNotEmpty(markProduto, markProduto.getText().toString());
+					allfilled =  Utils.isNotEmpty(descriptionProduto, descriptionProduto.getText().toString());
+					//FIXME PREZO
+					//allfilled =  Utils.isNotEmpty(priceProduto, priceProduto.getText().toString());
+					if(!allfilled){
+						return;
+					}
+				}
+				
+				
 				//Engadimos a nova lista a BD
 				engadirProducto();
 			}
@@ -125,39 +154,39 @@ public class AddProductActivity extends Activity{
 				addProduct.setIdentificadorScan(barcode);
 				
 				//Nome
-				EditText nameProduto = (EditText) findViewById(R.id.text_name_product);
+				
 				nameProductTxt = nameProduto.getText().toString();
 				addProduct.setTitle(nameProductTxt);
 							
 				//Marca
-				EditText markProduto = (EditText) findViewById(R.id.text_mark_product);
+				
 				String markProductTxt = markProduto.getText().toString();
 				addProduct.setMarca(markProductTxt);
 				 
 				//Descrición
-				EditText descriptionProduto = (EditText) findViewById(R.id.text_description_product);
+				
 				String descriptionProdutoTxt = descriptionProduto.getText().toString();
 				addProduct.setDescripcion(descriptionProdutoTxt);
 				 
 				//foto
-				 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-				 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-				 byte[] byteArray = stream.toByteArray();
-				 if(byteArray == null){
-					 Toast.makeText(this, "Error al adjuntar imagen", Toast.LENGTH_SHORT).show();
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+				byte[] byteArray = stream.toByteArray();
+				if(byteArray == null){
+					Toast.makeText(this, "Error al adjuntar imagen", Toast.LENGTH_SHORT).show();
 					 return;
-				 }
-				 //FIXME Error en imagenes al rotar
-				 //http://www.chinabtp.com/how-to-save-rotated-photos-in-parse-android/
+				}
+				//FIXME Error en imagenes al rotar
+				//http://www.chinabtp.com/how-to-save-rotated-photos-in-parse-android/
 				 
-				 ParseFile imagenProduct = new ParseFile(fotoProducto.toString() +".png", byteArray);
-				 imagenProduct.saveInBackground();
+				ParseFile imagenProduct = new ParseFile(fotoProducto.toString() +".png", byteArray);
+				imagenProduct.saveInBackground();
 				 
-				 addProduct.setIcon(imagenProduct);
+				addProduct.setIcon(imagenProduct);
 				
-				 //FIXME falta guardar precio y arraytags
+				//FIXME falta guardar precio y arraytags
 				//Prezo
-				//EditText priceProduto = (EditText) findViewById(R.id.text_name_product);
+				//priceProduto = (EditText) findViewById(R.id.text_name_product);
 				
 				 
 				//ArrayTags
