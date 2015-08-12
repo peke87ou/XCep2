@@ -10,11 +10,11 @@ import com.parse.ParseObject;
 public class Supermercado extends ParseObject{
 	
 	public Supermercado() {
-		
+		super("Market");
 	}
-	
-	public Supermercado(String nome, ParseFile urlLogo) {
-		
+
+	public Supermercado(String theClassName) {
+		super("Market");
 	}
 
 	public String getName() {

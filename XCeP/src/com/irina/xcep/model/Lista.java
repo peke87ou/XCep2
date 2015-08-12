@@ -9,8 +9,13 @@ import com.parse.ParseUser;
 @ParseClassName("List")
 public class Lista extends ParseObject {
 
+
 	public Lista() {
-		
+		super("List");
+	}
+
+	public Lista(String theClassName) {
+		super("List");
 	}
 
 	/**
@@ -50,8 +55,9 @@ public class Lista extends ParseObject {
 		return (ArrayList<Units>)get("AidUnits");
 	}
 
-	public void addAidUnits(Units unitProduct) {
-		//TODO generar código
+	public void addAidUnits(String objectId) {
+		ParseObject punteroUnidad = ParseObject.createWithoutData("UnitsProduct", objectId);
+		add("AidUnits", punteroUnidad);
 	}
 
 	public void deleteAidUnits(Units unitProduct){

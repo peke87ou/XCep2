@@ -56,8 +56,10 @@ import com.irina.xcep.model.Units;
 import com.irina.xcep.utils.Utils;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
 
@@ -209,7 +211,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					long id) {
 
 				Toast.makeText(getActivity(), "Presionado producto "+position, Toast.LENGTH_SHORT).show();
-				
+				addProductToList(productCatalogList.get(position));
 			}
 		});
         
@@ -219,6 +221,68 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		}
 		
 		return home;
+	}
+	
+	/**
+	 * Se agrega un producto a la lista. Si ya está en la lista, agrega una unidad.
+	 * @param producto
+	 */
+	public void addProductToList(Produto producto){
+		
+		if(producto == null)
+			return;
+		
+		//Comprobar si existe en la lista, si existe sumar una unidad más.
+		
+		boolean isProductoAlreadyAdd=false;
+		boolean listaVacia = true;
+		Units unidadSeleccionada=null;
+		if(mListaSelected.getAIdUnits() != null){
+			for(Units unitProducto:mListaSelected.getAIdUnits()){
+				listaVacia = false;
+				if(unitProducto.getProduct().getObjectId().equals(producto.getObjectId())){
+					isProductoAlreadyAdd = true;
+					unidadSeleccionada = unitProducto; 
+					break;
+				}
+			}
+		}
+		
+		if(isProductoAlreadyAdd){ //Aumentar una unidad al producto de la lista
+			
+			unidadSeleccionada.addNumberUnits(1);
+			unidadSeleccionada.saveInBackground();
+			
+		}else{ //Nuevo producto a la lista
+			
+			final Units unidadProducto = new Units();
+			unidadProducto.put("numberUnits", 1);
+			unidadProducto.put("PidProduct", ParseObject.createWithoutData("Products", producto.getObjectId()));
+			unidadProducto.saveInBackground(new SaveCallback() {
+				
+				@Override
+				public void done(ParseException e) {
+					if(e == null){
+						mListaSelected.addAidUnits(unidadProducto.getObjectId());
+						mListaSelected.saveInBackground(new SaveCallback() {
+							
+							@Override
+							public void done(ParseException e) {
+								
+								if(e!= null){
+									e.printStackTrace();
+								}else{
+									Log.d(TAG, "Se agrega la unidad a la lista");
+								}
+							}
+						});
+					}else{
+						e.printStackTrace();
+					}
+				}
+			});
+		}
+		
 	}
 	
 	private void getScan(String tabId){
@@ -265,7 +329,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		if(productosSupermercado != null){
 			productCatalogList.addAll(productosSupermercado);
 		}
-		adapterProductoCatalog = new AdapterProductsCatalog(getActivity(), productCatalogList);
+		adapterProductoCatalog = new AdapterProductsCatalog(getActivity(), productCatalogList, mMarketSelected);
 		catalogoListView.setAdapter(adapterProductoCatalog);
          	
 	}
