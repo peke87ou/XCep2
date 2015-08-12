@@ -135,7 +135,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		tabHost.setCurrentTab(0);
 		// Convertir currentUser en String
-		TextView txtNameList = (TextView) home.findViewById(R.id.idNameList);
+		TextView txtNameList = (TextView) home.findViewById(R.id.idNameMarket);
 		nameList = ((MenuActivity)getActivity()).mNameList;
 		txtNameList.setText(nameList);
 		
@@ -317,7 +317,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		cam=Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
         Camera.Parameters parameters = cam.getParameters();
         cam.setDisplayOrientation(90);
-        //parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
         cam.setParameters(parameters);
         
         cam.setPreviewCallback(new PreviewCallback(){
@@ -401,7 +401,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			        	   if(!isProductoEnParse){
 				        	   Intent intent = new Intent(getActivity(), AddProductActivity.class);
 				        	   Log.i("AddProduct QUE ENVIA", barcode);
-				        	   intent.putExtra("MESSAGE",barcode);  
+				        	   intent.putExtra("SUPERNAME",mMarketSelected.getName()); 
+				        	   intent.putExtra("SUPERIMAGE",mMarketSelected.getImage().getUrl());  
+				        	   intent.putExtra("BARCODE",barcode);  
 			                   startActivityForResult(intent, 1);
 			        	   }else{
 			        		   Log.i("DetailProduct QUE ENVIA", productBarcode.getTitle());
@@ -457,7 +459,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					}else{
 						
 						dialogoAgregarProducto.setTitle("Produto novo");
-						dialogoAgregarProducto.setMessage("Atopouse o produto  "+resultadoBarCode +"\n¿Desexa engadilo o sistema para o supermercado ");
+						dialogoAgregarProducto.setMessage("Atopouse o produto  "+resultadoBarCode +"\n¿Desexa engadilo o sistema para o supermercado? ");
 					}
 					
 					dialogoAgregarProducto.show();
