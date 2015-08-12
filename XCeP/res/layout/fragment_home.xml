@@ -60,10 +60,9 @@
        android:id="@+id/add_list"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
+       android:layout_above="@+id/txtuser"
        android:layout_alignParentRight="true"
-       android:layout_alignParentTop="true"
-       android:layout_marginRight="17dp"
-       android:layout_marginTop="12dp"
+       android:layout_marginRight="18dp"
        android:background="@android:color/transparent"
        android:scaleType="fitCenter"
        android:src="@drawable/add" />
