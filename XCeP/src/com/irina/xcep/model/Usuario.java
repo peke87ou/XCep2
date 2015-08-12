@@ -7,9 +7,13 @@ import com.parse.ParseObject;
 public class Usuario extends ParseObject {
 
 	public Usuario() {
-		
+		super("User");
 	}
-	
+
+	public Usuario(String theClassName) {
+		super("User");
+	}
+
 	public String getUserName() {
 		return getString("username");
 	}

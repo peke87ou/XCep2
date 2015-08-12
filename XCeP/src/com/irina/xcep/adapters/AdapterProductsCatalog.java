@@ -2,6 +2,7 @@ package com.irina.xcep.adapters;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
@@ -14,15 +15,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.irina.xcep.R;
+import com.irina.xcep.model.Prezo;
 import com.irina.xcep.model.Produto;
+import com.irina.xcep.model.Supermercado;
 import com.squareup.picasso.Picasso;
 
 public class AdapterProductsCatalog extends ArrayAdapter<Produto> {
 
 	private static Map<String, Bitmap> mImagenes = new HashMap<String, Bitmap>();
 
-	public AdapterProductsCatalog(Context context, ArrayList<Produto> productos) {
+	private Supermercado supermercado;
+	
+	public AdapterProductsCatalog(Context context, ArrayList<Produto> productos, Supermercado supermercado) {
 		super(context, 0, productos);
+		this.supermercado = supermercado;
 	}
 
 	@Override
@@ -41,8 +47,23 @@ public class AdapterProductsCatalog extends ArrayAdapter<Produto> {
 		// Recuperar o elemento de datos para esta posición
 		Produto producto = getItem(position);
 		
-		precioTextView.setText(producto.get("Price2")+" € ");
 		nombreProductoTextView.setText(producto.getTitle());
+
+		List<Prezo> listaPrezos = producto.getAPrice();
+		Prezo precioProducto=null;
+		
+		for(Prezo nPrezo:listaPrezos){
+			if(nPrezo.getPidMarket().getObjectId().equals(supermercado.getObjectId())){
+				precioProducto = nPrezo;
+				break;
+			}			
+		}
+		
+		if(precioProducto != null){
+			precioTextView.setText(precioProducto.getPrice().toString());
+		}else{
+			precioTextView.setText("Precio no disponible");
+		}
 		
 		Bitmap bmp = mImagenes.get(producto.getIcon());
 

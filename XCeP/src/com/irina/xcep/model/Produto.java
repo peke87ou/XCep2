@@ -15,12 +15,12 @@ public class Produto extends ParseObject {
 	Context mContext;
 	
 	public Produto(Context context, Produto producto) {
-			super();
+			super("Products");
 			mContext = context;
 	}
 	
 	public Produto() {
-		
+		super("Products");
 	}
 
 	/**

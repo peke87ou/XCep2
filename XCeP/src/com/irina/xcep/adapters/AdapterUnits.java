@@ -46,7 +46,6 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 		TextView precioTextView = ((TextView) celdaView.findViewById(R.id.price_product));
 		
 		nombreProductoTextView.setText(producto.getTitle());
-		//precioTextView.setText(producto.get("Price2")+" € ");
 		List<Prezo> listaPrezos = producto.getAPrice();
 		Prezo precioProducto=null;
 		
