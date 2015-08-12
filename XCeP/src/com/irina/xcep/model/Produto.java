@@ -1,13 +1,15 @@
 package com.irina.xcep.model;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
-import com.parse.ParseRelation;
 
 @ParseClassName("Products")
+@SuppressWarnings("unchecked")
 public class Produto extends ParseObject {
 
 	Context mContext;
@@ -31,14 +33,15 @@ public class Produto extends ParseObject {
 
 	public void setIdentificadorScan(String identificadorScan) {
 		put("idBarCode", identificadorScan);
+		saveInBackground();
 	}
 
-	public String getNome() {
+	public String getTitle() {
 		return getString("title");
 	}
 
-	public void setNome(String nome) {
-		put("title", nome);
+	public void setTitle(String title) {
+		put("title", title);
 		saveInBackground();
 	}
 
@@ -48,6 +51,7 @@ public class Produto extends ParseObject {
 
 	public void setDescripcion(String descripcion) {
 		put("description", descripcion);
+		saveInBackground();
 	}
 	
 	public ParseFile getIcon() {
@@ -56,6 +60,7 @@ public class Produto extends ParseObject {
 
 	public void setIcon(ParseFile icon) {
 		put("icon", icon);
+		saveInBackground();
 	}
 
 	public String getMarca() {
@@ -64,25 +69,16 @@ public class Produto extends ParseObject {
 
 	public void setMarca(String marca) {
 		put("mark", marca);
-	}
-
-	public ParseRelation<Prezo> getPrezoPorSupermercado() {
-		return getRelation("PriceMarket");
-	}
-
-	public void setPrezoPorSupermercado(Prezo prezoPorSupermercado) {
-		getPrezoPorSupermercado().add(prezoPorSupermercado);
 		saveInBackground();
 	}
-
-	public ParseRelation<Tag> getTags() {
-		return getRelation("tags");
+	
+	
+	public ArrayList<Tag> getATags() {
+		return (ArrayList<Tag>)get("ATags");
 	}
 
-	public void setTags(Tag tags) {
-		getTags().add(tags);
-		saveInBackground();
+	public ArrayList<Prezo> getAPrice() {
+		return (ArrayList<Prezo>)get("APrice");
 	}
-
 	
 }

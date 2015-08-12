@@ -6,11 +6,16 @@ import com.parse.ParseObject;
 @ParseClassName("UnitsProduct")
 public class Units extends ParseObject {
 	
-	public Number getNumberProduct() {
-		return getNumber("numberProduct");
+	public Number getNumberUnits() {
+		return getNumber("numberUnits");
 	}
 
-	public void setNumberProduct(Number numberProduct) {
-		put("numberProduct", numberProduct);
+	public void setNumberUnits(Number numberUnits) {
+		put("numberUnits", numberUnits);
+		saveInBackground();
+	}
+	
+	public Produto getProduct(){
+		return (Produto)get("PidProduct");
 	}
 }

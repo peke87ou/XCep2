@@ -32,20 +32,20 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 		
 		// Recuperar o elemento de datos para esta posición
 		Units productoUnidad = getItem(position);
-		Produto producto = (Produto)productoUnidad.get("PidProduct");
+		Produto producto = (Produto)productoUnidad.getProduct();
 		
 		TextView nombreProductoTextView = ((TextView) celdaView.findViewById(R.id.name_product));
 		ImageView productoImageView = (ImageView) celdaView.findViewById(R.id.image_product);
 		TextView unidadesTextView = ((TextView) celdaView.findViewById(R.id.products_list));
 		TextView precioTextView = ((TextView) celdaView.findViewById(R.id.price_product));
 		
-		nombreProductoTextView.setText(producto.getNome());
+		nombreProductoTextView.setText(producto.getTitle());
 		precioTextView.setText(producto.get("Price2")+" € ");
 
- 		if (productoUnidad.getNumberProduct().intValue() == 1){
-			unidadesTextView.setText(productoUnidad.getNumberProduct()+" Unidade");
+ 		if (productoUnidad.getNumberUnits().intValue() == 1){
+			unidadesTextView.setText(productoUnidad.getNumberUnits()+" Unidade");
 		}else {
-				unidadesTextView.setText(productoUnidad.getNumberProduct()+" Unidades");
+				unidadesTextView.setText(productoUnidad.getNumberUnits()+" Unidades");
 		}
  			
 

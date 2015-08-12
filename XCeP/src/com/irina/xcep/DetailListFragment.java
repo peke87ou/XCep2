@@ -27,6 +27,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -97,13 +98,10 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	
 	public static DetailListFragment newInstance (int Index){
 		DetailListFragment fragment = new DetailListFragment();
+		
 		Bundle args = new Bundle();
-		
 		args.putInt("Index", Index);
-		
 		fragment.setArguments(args);
-		
-		
 		
 		return fragment;
 	}
@@ -147,7 +145,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			mMarketSelected = ((MenuActivity)getActivity()).mMarketSelected;
 		}
 
-		Picasso.with(getActivity()).load(mMarketSelected.getUrlLogo().getUrl()).into(imageMarket);
+		Picasso.with(getActivity()).load(mMarketSelected.getImage().getUrl()).into(imageMarket);
 		
 		
 		if(mListaSelected ==null){
@@ -186,7 +184,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		//Lista de produtos
 		productosListaListView = (ListView) home.findViewById(R.id.list_products);
-		catalogoListView = (ListView) home.findViewById(R.id.listProductCatalog);
 		
 		gridTags=(GridView) home.findViewById(R.id.grid_tags);
         gridTags.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
@@ -204,6 +201,18 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
         });
 		
 
+        catalogoListView = (ListView) home.findViewById(R.id.listProductCatalog);
+        catalogoListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+
+				Toast.makeText(getActivity(), "Presionado producto "+position, Toast.LENGTH_SHORT).show();
+				
+			}
+		});
+        
 		
 		if (tabHost.getCurrentTab() == 0){
 			cargarProdutosLista(nameList, false);
@@ -230,7 +239,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+
 	private void getCatalogo(){
 		
 		adapterTag = new AdapterTags(getActivity(), tagList);
@@ -252,7 +261,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			mMarketSelected = ((MenuActivity)getActivity()).mMarketSelected;
 		}
 		Supermercado supermercado = mMarketSelected;
-		List<Produto> productosSupermercado = (ArrayList<Produto>) supermercado.get("AProduct");
+		List<Produto> productosSupermercado = supermercado.getAProduct();
 		if(productosSupermercado != null){
 			productCatalogList.addAll(productosSupermercado);
 		}
@@ -262,12 +271,12 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	}
 	
 	
-	@SuppressWarnings("unchecked")
+
 	private void cargarProdutosLista(String nameList, boolean forzarRecarga) {
 		
 		listaUnidades.clear();
 		if(mListaSelected.get("AidUnits") != null){
-			listaUnidades.addAll((ArrayList<Units>)mListaSelected.get("AidUnits"));
+			listaUnidades.addAll(mListaSelected.getAIdUnits());
 		}
 		
 		adapter = new AdapterUnits(getActivity(), listaUnidades);
@@ -395,9 +404,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				        	   intent.putExtra("MESSAGE",barcode);  
 			                   startActivityForResult(intent, 1);
 			        	   }else{
-			        		   Log.i("DetailProduct QUE ENVIA", productBarcode.getNome());
+			        		   Log.i("DetailProduct QUE ENVIA", productBarcode.getTitle());
 			        		   Intent intent = new Intent(getActivity(), DetailProduct.class);
-			        		   intent.putExtra("NOMEPRODUCTO",productBarcode.getNome());  
+			        		   intent.putExtra("NOMEPRODUCTO",productBarcode.getTitle());  
 			        		   //CATEGORIA
 			        		   //IMAGEN
 			        		   intent.putExtra("DESCRIPCIONPRODUCTO",productBarcode.getDescripcion()); 

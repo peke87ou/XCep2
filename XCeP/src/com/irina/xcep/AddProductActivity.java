@@ -71,7 +71,7 @@ public class AddProductActivity extends Activity{
 				//Nome
 				 EditText nameProduto = (EditText) findViewById(R.id.text_name_product);
 				 nameProductTxt = nameProduto.getText().toString();
-				 addProduct.setNome(nameProductTxt);
+				 addProduct.setTitle(nameProductTxt);
 							
 				//Marca
 				 EditText markProduto = (EditText) findViewById(R.id.text_mark_product);

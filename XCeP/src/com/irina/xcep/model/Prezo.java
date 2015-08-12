@@ -2,11 +2,11 @@ package com.irina.xcep.model;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
-import com.parse.ParseRelation;
 
 @ParseClassName("Price")
 public class Prezo extends ParseObject {
 
+	
 	public Number getPrice() {
 		return getNumber("price");
 	}
@@ -14,11 +14,14 @@ public class Prezo extends ParseObject {
 	public void setPrice(Number price) {
 		put("price", price);
 	}
-	public ParseRelation<Units> getUnits() {
-		return getRelation("idUnits");
+	
+	public Supermercado getPidMarket() {
+		return (Supermercado)get("PidMarket");
 	}
-	public void setUnits(Units idUnits) {
-		getUnits().add(idUnits);
+
+	public void setPidMarket(ParseObject supermercado) {
+		put("PidMarket", supermercado);
 		saveInBackground();
 	}
+	
 }

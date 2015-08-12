@@ -5,13 +5,13 @@ import com.parse.ParseObject;
 
 @ParseClassName("Tag")
 public class Tag extends ParseObject {
-
-	public String getNome() {
+	
+	public String getName() {
 		return getString("name");
 	}
 
-	public void setNome(String nome) {
-		put("name", nome);
+	public void setName(String name) {
+		put("name", name);
 	}
 	
 }

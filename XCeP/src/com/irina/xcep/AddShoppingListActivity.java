@@ -130,17 +130,17 @@ public class AddShoppingListActivity extends Activity{
 			return;
 		}
 		
-		novaLista.setNome(nameListtxt);
+		novaLista.setName(nameListtxt);
 		
 		//Id supermercado seleccionado
 		if (supermercadoNuevaLista == null ){
 			
 			Toast.makeText(AddShoppingListActivity.this, "Non seleccionou ningún supermercado", Toast.LENGTH_SHORT).show();
 		}else{
-			novaLista.setIdSupermercado(supermercadoNuevaLista);
+			novaLista.setSupermercado(supermercadoNuevaLista);
 			novaLista.setIdUser(ParseUser.getCurrentUser());
-			novaLista.put("PidMarket", ParseObject.createWithoutData("Market", supermercadoNuevaLista.getObjectId()));
-			novaLista.saveInBackground();
+			novaLista.setSupermercado(ParseObject.createWithoutData("Market", supermercadoNuevaLista.getObjectId()));
+			//novaLista.put("PidMarket", ParseObject.createWithoutData("Market", supermercadoNuevaLista.getObjectId()));
 			novaLista.saveInBackground(new SaveCallback() {
 				@Override
 				public void done(ParseException arg0) {

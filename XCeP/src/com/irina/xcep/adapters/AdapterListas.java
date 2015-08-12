@@ -26,7 +26,6 @@ public class AdapterListas extends ArrayAdapter<Lista> {
        mContext = context;
     }
 
-    @SuppressWarnings("unchecked")
 	@Override
     public View getView(int position, View celdaView, ViewGroup parent) {
        //Recuperar o elemento de datos para esta posición
@@ -38,15 +37,15 @@ public class AdapterListas extends ArrayAdapter<Lista> {
        }
        
        //Buscar Vista para recheo de datos
-       ((TextView) celdaView.findViewById(R.id.name_list)).setText(lista.getNome());
+       ((TextView) celdaView.findViewById(R.id.name_list)).setText(lista.getName());
        final ImageView imageView = (ImageView)celdaView.findViewById(R.id.imageMarketList);
        TextView textViewProductos = ((TextView) celdaView.findViewById(R.id.products_list));
-       Supermercado supermercado = (Supermercado)lista.get("PidMarket");
-       List<Units> unidadesProducto = (ArrayList<Units>)lista.get("AidUnits");
+       Supermercado supermercado = (Supermercado)lista.getSupermercado();
+       List<Units> unidadesProducto = (ArrayList<Units>)lista.getAIdUnits();
     
        
 	   if(supermercado!=null){
-		    Picasso.with(mContext ).load(supermercado.getUrlLogo().getUrl()).into(imageView);
+		    Picasso.with(mContext ).load(supermercado.getImage().getUrl()).into(imageView);
 	   }
 		
        

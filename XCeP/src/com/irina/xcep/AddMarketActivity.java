@@ -173,7 +173,7 @@ public class AddMarketActivity extends Activity{
 		Supermercado addmarket = new Supermercado();
 						
 		//Nome
-		addmarket.setNome(nameMarket.getText().toString());
+		addmarket.setName(nameMarket.getText().toString());
 					
 		//foto
 		 ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -189,7 +189,7 @@ public class AddMarketActivity extends Activity{
 		 ParseFile imagenSupermercado = new ParseFile(nameMarket.getText().toString() +".png", byteArray);
 		 imagenSupermercado.saveInBackground();
 		 
-		 addmarket.setUrlLogo(imagenSupermercado);
+		 addmarket.setImage(imagenSupermercado);
 		 
 		addmarket.saveInBackground(new SaveCallback() {
 			@Override

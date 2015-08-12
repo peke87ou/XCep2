@@ -1,9 +1,10 @@
 package com.irina.xcep.model;
 
+import java.util.ArrayList;
+
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
-import com.parse.ParseRelation;
 
 @ParseClassName("Market")
 public class Supermercado extends ParseObject{
@@ -16,29 +17,26 @@ public class Supermercado extends ParseObject{
 		
 	}
 
-	public String getNome() {
+	public String getName() {
 		return getString("name");
 	}
 
-	public void setNome(String nome) {
-		put("name", nome);
-	}
-
-	public ParseFile getUrlLogo() {
-		return getParseFile("Image");
-	}
-
-	public void setUrlLogo(ParseFile urlLogo) {
-		put("Image", urlLogo);
-	}
-
-	public ParseRelation<Produto> getProductos() {
-		return getRelation("Products");
-	}
-
-	public void setProductos(Produto productos) {
-		getProductos().add(productos);
+	public void setName(String name) {
+		put("name", name);
 		saveInBackground();
 	}
 
+	public ParseFile getImage() {
+		return getParseFile("Image");
+	}
+
+	public void setImage(ParseFile image) {
+		put("Image", image);
+		saveInBackground();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<Produto> getAProduct() {
+		return (ArrayList<Produto>)get("AProduct");
+	}
 }

@@ -31,7 +31,7 @@ public class AdapterTags extends ArrayAdapter<Tag> {
        
        //Buscar Vista para recheo de datos
     
-       ((TextView) celdaView.findViewById(R.id.products_list)).setText(tagList.getNome());
+       ((TextView) celdaView.findViewById(R.id.products_list)).setText(tagList.getName());
 
        return celdaView;
    }

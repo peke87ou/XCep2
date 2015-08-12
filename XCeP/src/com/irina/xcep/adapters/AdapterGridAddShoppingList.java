@@ -44,9 +44,9 @@ public class AdapterGridAddShoppingList extends ArrayAdapter<Supermercado>{
                   imageView.setBackgroundResource(R.drawable.ic_content_add_circle);
               }else{
             	  final Supermercado market = getItem(position);
-            	  textView.setText(market.getNome());
+            	  textView.setText(market.getName());
 
-                  final ParseFile fileObject = market.getUrlLogo(); 
+                  final ParseFile fileObject = market.getImage(); 
                   String urlBitmap = fileObject.getUrl(); 
                   Picasso.with(getContext()).load(urlBitmap).into(imageView);
               }

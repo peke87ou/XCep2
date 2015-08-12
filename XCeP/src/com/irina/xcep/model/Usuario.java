@@ -9,13 +9,7 @@ public class Usuario extends ParseObject {
 	public Usuario() {
 		
 	}
-	public String getObjectId() {
-		return getString("objectId");
-	}
-
-	public void setObjectId(String objectId) {
-		put("objectId", objectId);
-	}
+	
 	public String getUserName() {
 		return getString("username");
 	}

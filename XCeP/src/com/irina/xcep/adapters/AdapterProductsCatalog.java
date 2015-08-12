@@ -42,7 +42,7 @@ public class AdapterProductsCatalog extends ArrayAdapter<Produto> {
 		Produto producto = getItem(position);
 		
 		precioTextView.setText(producto.get("Price2")+" € ");
-		nombreProductoTextView.setText(producto.getNome());
+		nombreProductoTextView.setText(producto.getTitle());
 		
 		Bitmap bmp = mImagenes.get(producto.getIcon());
 

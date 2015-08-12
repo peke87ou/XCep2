@@ -1,5 +1,6 @@
 package com.irina.xcep.model;
 
+import java.util.ArrayList;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
@@ -16,21 +17,22 @@ public class Lista extends ParseObject {
 	 * Conxunto de getters e setters da clase
 	 *
 	 */
-	
-	public String getNome() {
+
+	public String getName() {
 		return getString("name");
 	}
 
-	public void setNome(String nome) {
-		put("name", nome);
+	public void setName(String name) {
+		put("name", name);
+		saveInBackground();
 	}
 
-	public ParseRelation<Supermercado> getIdSupermercado() {
-		return getRelation("idMarket");
+	public Supermercado getSupermercado() {
+		return (Supermercado)get("PidMarket");
 	}
 
-	public void setIdSupermercado(Supermercado idSupermercado) {
-		getIdSupermercado().add(idSupermercado);
+	public void setSupermercado(ParseObject supermercado) {
+		put("PidMarket", supermercado);
 		saveInBackground();
 	}
 	
@@ -43,12 +45,17 @@ public class Lista extends ParseObject {
 		saveInBackground();
 	}
 
-	public ParseRelation<Produto> getIdProducts() {
-		return getRelation("idProducts");
+	@SuppressWarnings("unchecked")
+	public ArrayList<Units> getAIdUnits() {
+		return (ArrayList<Units>)get("AidUnits");
 	}
 
-	public void setIdProducts(Produto idProducts) {
-		put("idProducts", idProducts);
+	public void addAidUnits(Units unitProduct) {
+		//TODO generar código
 	}
 
+	public void deleteAidUnits(Units unitProduct){
+		//TODO generar código
+	}
+	
 }

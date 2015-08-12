@@ -42,15 +42,14 @@ public class HomeFragment extends Fragment {
 	// Declaración de variables
 	public static final String TAG = HomeFragment.class.getName();
 	ButtonRectangle logout;
-	ListView list;
-	List<ParseObject> ob;
+	ListView listasListView;
 	AdapterListas adapter;
 	public static ArrayList<Lista> misListas = new ArrayList<Lista>();
 	ImageButton addlist;
 	// Solicitar usuario actual do Parse.com
 	ParseUser currentUser = ParseUser.getCurrentUser();
 	
-	String objid = "";
+	String objectIdLista = "";
 	String nameListtxt= "";
 	
 	
@@ -105,13 +104,13 @@ public class HomeFragment extends Fragment {
 		});
 		
 		//Listas da compra
-		list = (ListView) home.findViewById(R.id.lista_list);
+		listasListView = (ListView) home.findViewById(R.id.lista_list);
 		adapter = new AdapterListas(getActivity(), misListas);
 		//Click proglongado para a modificación dunha lista
-		list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+		listasListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int pos, long id) {
-            	objid = misListas.get(pos).getObjectId();
+            	objectIdLista = misListas.get(pos).getObjectId();
             	showDialogoModificarProducto();
             	return true;
             }
@@ -119,12 +118,12 @@ public class HomeFragment extends Fragment {
 		
 		
 		//Click para acceder o detalle da lista
-		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		listasListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 	        @Override
 	        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-	        	((MenuActivity)getActivity()).mNameList = misListas.get(position).getNome();
-				((MenuActivity)getActivity()).mMarketSelected = (Supermercado)misListas.get(position).get("PidMarket");
+	        	((MenuActivity)getActivity()).mNameList = misListas.get(position).getName();
+				((MenuActivity)getActivity()).mMarketSelected = (Supermercado)misListas.get(position).getSupermercado();
 				((MenuActivity)getActivity()).mListSelected = misListas.get(position);
 	        	((MenuActivity)getActivity()).loadFragment(FragmentIndexes.FRAGMENT_LIST);
 	        }
@@ -135,7 +134,7 @@ public class HomeFragment extends Fragment {
 	
 	public void reloadUserShoppingLists(boolean actualizarServidor) {
 		//Recreamos o conxunto de listas de compra do usuario
-		list.setAdapter(adapter);
+		listasListView.setAdapter(adapter);
 		Log.d(TAG, "reloadUserShoppingLists"); 
 
 		if(actualizarServidor){
@@ -157,7 +156,7 @@ public class HomeFragment extends Fragment {
 					}
 					
 					misListas = (ArrayList<Lista>) objects;
-
+					
 					
 					if(misListas != null){
 						
@@ -201,7 +200,7 @@ public class HomeFragment extends Fragment {
 		        	   		progress.show();
 		        	   		
 		        		    ParseQuery<Lista> query=ParseQuery.getQuery(Lista.class);
-		        		    query.whereEqualTo("objectId",objid);
+		        		    query.whereEqualTo("objectId",objectIdLista);
 		        		    query.findInBackground(new FindCallback<Lista>() {
 		        		        @Override
 		        		        public void done(List<Lista> parseObjects, ParseException e) {
@@ -241,7 +240,7 @@ public class HomeFragment extends Fragment {
 				                   nameListtxt = newNameList.getText().toString();
 				                   
 				                   ParseQuery<Lista> query=ParseQuery.getQuery(Lista.class);
-				        		   query.whereEqualTo("objectId",objid);
+				        		   query.whereEqualTo("objectId",objectIdLista);
 				        		   query.findInBackground(new FindCallback<Lista>() {
 				        		   @Override
 				        		   public void done(List<Lista> parseObjects, ParseException e) {
@@ -253,7 +252,7 @@ public class HomeFragment extends Fragment {
 				        			   }
 				        			   
 				        		       if(parseObjects.size()==1)	{
-				        		            		parseObjects.get(0).setNome(nameListtxt);
+				        		            		parseObjects.get(0).setName(nameListtxt);
 				        		            		parseObjects.get(0).saveInBackground(new SaveCallback() {
 														
 														@Override
@@ -292,8 +291,5 @@ public class HomeFragment extends Fragment {
 		AlertDialog dialogo = builder.create();
 		dialogo.show();
 	}
-	
-	
-
 
 }
