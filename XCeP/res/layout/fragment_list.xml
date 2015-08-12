@@ -27,7 +27,7 @@
                >
 
                 <TextView
-                    android:id="@+id/idNameList"
+                    android:id="@+id/idNameMarket"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.36"

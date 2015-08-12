@@ -62,9 +62,8 @@ public class AddMarketActivity extends Activity{
 				
 				if(bitmap == null){ //Se comprueba imagen del supermercado
 					
-					 Toast.makeText(getApplicationContext(), "Non se obtuvo a fotografía", Toast.LENGTH_SHORT).show();
-					 return;
-					 
+					Toast.makeText(getApplicationContext(), "Non se obtuvo a fotografía", Toast.LENGTH_SHORT).show();
+					return;
 				}else{ //Se comprueba nombre del supermercado
 					
 					boolean allfilled = true;
@@ -82,13 +81,9 @@ public class AddMarketActivity extends Activity{
 		
 		fotomarket.setOnClickListener(new OnClickListener() {
 		        public void onClick(View v) {
-		            //openImageIntent();
 		        	 startDialog();
-		            
 		        }
-
 		    });
-		
 	}
 	
 	private void startDialog() {
