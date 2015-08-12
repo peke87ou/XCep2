@@ -76,9 +76,18 @@ public class Produto extends ParseObject {
 	public ArrayList<Tag> getATags() {
 		return (ArrayList<Tag>)get("ATags");
 	}
+	
+	public void addATags(String objectId) {
+		ParseObject punteroTag = ParseObject.createWithoutData("Tag", objectId);
+		add("ATags", punteroTag);
+	}
 
 	public ArrayList<Prezo> getAPrice() {
 		return (ArrayList<Prezo>)get("APrice");
 	}
 	
+	public void addAPrice(String objectId) {
+		ParseObject punteroPrecio = ParseObject.createWithoutData("Price", objectId);
+		add("APrice", punteroPrecio);
+	}
 }

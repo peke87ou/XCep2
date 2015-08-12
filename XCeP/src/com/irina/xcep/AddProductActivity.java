@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.irina.xcep.model.Prezo;
 import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Tag;
 import com.irina.xcep.utils.MultiSelectionSpinner;
@@ -28,12 +29,13 @@ import com.irina.xcep.utils.Utils;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
 public class AddProductActivity extends Activity{
-	
+	public static final String TAG = AddProductActivity.class.getName();
 	ButtonRectangle btncancel, btnacept;
 	private String barcode;
 	EditText nameProduto ;
@@ -147,7 +149,7 @@ public class AddProductActivity extends Activity{
 			public void engadirProducto(){
 				
 				String nameProductTxt ="";
-				Produto addProduct = new Produto();
+				final Produto addProduct = new Produto();
 				
 				//Barcode
 				barcode=getIntent().getExtras().getString("BARCODE");
@@ -179,16 +181,46 @@ public class AddProductActivity extends Activity{
 				//FIXME Error en imagenes al rotar
 				//http://www.chinabtp.com/how-to-save-rotated-photos-in-parse-android/
 				 
-				ParseFile imagenProduct = new ParseFile(fotoProducto.toString() +".png", byteArray);
+				ParseFile imagenProduct = new ParseFile("imagen"+nameProductTxt+Math.random()+".png", byteArray);
 				imagenProduct.saveInBackground();
 				 
 				addProduct.setIcon(imagenProduct);
 				
-				//FIXME falta guardar precio y arraytags
-				//Prezo
-				//priceProduto = (EditText) findViewById(R.id.text_name_product);
 				
-				 
+				//Prezo
+				priceProduto = (EditText) findViewById(R.id.text_name_product);
+				
+				final Prezo precioProducto = new Prezo();
+				precioProducto.setPrice(Double.parseDouble(priceProduto.getText().toString()));
+				String idMarket= getIntent().getExtras().getString("SUPERID");
+				precioProducto.setPidMarket(ParseObject.createWithoutData("Market", idMarket));
+				precioProducto.saveInBackground(new SaveCallback() {
+					
+					@Override
+					public void done(ParseException e) {
+						if(e == null){
+							addProduct.addAPrice(precioProducto.getObjectId());
+							addProduct.saveInBackground(new SaveCallback() {
+								
+								@Override
+								public void done(ParseException e) {
+									
+									if(e!= null){
+										e.printStackTrace();
+									}else{
+										Log.d(TAG, "Se agrega o produto o supermercado");
+									}
+								}
+							});
+						}else{
+							e.printStackTrace();
+						}
+					}
+				});
+				
+				
+				
+				 //FIXME TAGS
 				//ArrayTags
 				 
 				 addProduct.saveInBackground(new SaveCallback() {

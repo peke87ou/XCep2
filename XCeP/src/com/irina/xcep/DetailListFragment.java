@@ -378,7 +378,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		cam=Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
         Camera.Parameters parameters = cam.getParameters();
         cam.setDisplayOrientation(90);
-        //parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
         cam.setParameters(parameters);
         
         cam.setPreviewCallback(new PreviewCallback(){
@@ -463,7 +463,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				        	   Intent intent = new Intent(getActivity(), AddProductActivity.class);
 				        	   Log.i("AddProduct QUE ENVIA", barcode);
 				        	   intent.putExtra("SUPERNAME",mMarketSelected.getName()); 
-				        	   intent.putExtra("SUPERIMAGE",mMarketSelected.getImage().getUrl());  
+				        	   intent.putExtra("SUPERIMAGE",mMarketSelected.getImage().getUrl()); 
+				        	   intent.putExtra("SUPERID",mMarketSelected.getObjectId());  
 				        	   intent.putExtra("BARCODE",barcode);  
 			                   startActivityForResult(intent, 1);
 			        	   }else{

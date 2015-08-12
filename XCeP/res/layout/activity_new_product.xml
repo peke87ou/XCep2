@@ -48,7 +48,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="7.67"
-            android:ems="10" />
+            android:ems="10"
+            android:numeric="decimal" />
     </LinearLayout>
 
     <LinearLayout
