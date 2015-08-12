@@ -1,6 +1,7 @@
 package com.irina.xcep.adapters;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,15 +12,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.irina.xcep.R;
+import com.irina.xcep.model.Lista;
+import com.irina.xcep.model.Prezo;
 import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Units;
 import com.squareup.picasso.Picasso;
 
 public class AdapterUnits extends ArrayAdapter<Units> {
 
+	//private static final String TAG = AdapterUnits.class.getName();
+	Lista listaPadre;
 
-	public AdapterUnits(Context context, ArrayList<Units> productos) {
+	public AdapterUnits(Context context, ArrayList<Units> productos, Lista listaPadre) {
 		super(context, 0, productos);
+		this.listaPadre = listaPadre;
 	}
 
 	@Override
@@ -40,17 +46,30 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 		TextView precioTextView = ((TextView) celdaView.findViewById(R.id.price_product));
 		
 		nombreProductoTextView.setText(producto.getTitle());
-		precioTextView.setText(producto.get("Price2")+" € ");
-
+		//precioTextView.setText(producto.get("Price2")+" € ");
+		List<Prezo> listaPrezos = producto.getAPrice();
+		Prezo precioProducto=null;
+		
+		for(Prezo nPrezo:listaPrezos){
+			if(nPrezo.getPidMarket().getObjectId().equals(listaPadre.getSupermercado().getObjectId())){
+				precioProducto = nPrezo;
+				break;
+			}			
+		}
+		
+		if(precioProducto != null){
+			precioTextView.setText(precioProducto.getPrice().toString());
+		}else{
+			precioTextView.setText("Precio no disponible");
+		}
+		
  		if (productoUnidad.getNumberUnits().intValue() == 1){
 			unidadesTextView.setText(productoUnidad.getNumberUnits()+" Unidade");
-		}else {
-				unidadesTextView.setText(productoUnidad.getNumberUnits()+" Unidades");
+		}else{
+			unidadesTextView.setText(productoUnidad.getNumberUnits()+" Unidades");
 		}
  			
-
  		Picasso.with(getContext()).load(producto.getIcon().getUrl()).into(productoImageView);
-
 		return celdaView;
 	}
 

@@ -279,7 +279,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			listaUnidades.addAll(mListaSelected.getAIdUnits());
 		}
 		
-		adapter = new AdapterUnits(getActivity(), listaUnidades);
+		adapter = new AdapterUnits(getActivity(), listaUnidades, mListaSelected);
 		productosListaListView.setAdapter(adapter);
 		
 		if(listaUnidades.size()==0){

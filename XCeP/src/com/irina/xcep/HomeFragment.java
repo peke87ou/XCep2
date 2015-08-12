@@ -145,6 +145,8 @@ public class HomeFragment extends Fragment {
 			query.include("PidMarket.AProduct");
 			query.include("AidUnits");
 			query.include("AidUnits.PidProduct");
+			query.include("AidUnits.PidProduct.APrice");
+			query.include("AidUnits.PidProduct.APrice.PidMarket");
 			//Filtramos as lista para cada usuario logueado na app
 			//query.include("User");
 			query.whereEqualTo("idUser", currentUser);
