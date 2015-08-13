@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -100,7 +101,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	AdapterUnits adapter;
 	ArrayList<Units> listaUnidades = new ArrayList<Units>();
 	
-	String pricetxt= "";
+	String newPriceString = "";
 	
 	public static DetailListFragment newInstance (int Index){
 		DetailListFragment fragment = new DetailListFragment();
@@ -565,65 +566,53 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	 */
 	public void showDialogoAgregarPrecio(){
 		
-		//TODO Irina. El diálogo debe tener un
-		if(dialogoAgregarPrecio == null){
-			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-			final LayoutInflater inflater = getActivity().getLayoutInflater();
-			
-			builder.setCancelable(false);
-			builder.setView(inflater.inflate(R.layout.activity_dialog_add_price_product_market, null))
-					.setPositiveButton("Engadir prezo", new DialogInterface.OnClickListener() {
-			           public void onClick(DialogInterface dialog, int id) {
-			        	   Utils.hideSoftKeyboard(getActivity());
-		            	   final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), productBarcode.getTitle());
-		            	   progress.show();
-		            	   EditText newPrice = (EditText) ((AlertDialog) dialog).findViewById(R.id.txtMarket);
-		                   pricetxt = newPrice.getText().toString();
-		                   
-//		                   ParseQuery<Lista> query=ParseQuery.getQuery(Lista.class);
-//		        		   query.whereEqualTo("objectId",objectIdLista);
-//		        		   query.findInBackground(new FindCallback<Lista>() {
-//		        		   @Override
-//		        		   public void done(List<Lista> parseObjects, ParseException e) {
-//		        			   
-//		        			   if(e!= null){
-//		        				   progress.dismiss();
-//		        				   Toast.makeText(getActivity(), "Produciuse un erro: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-//		        				   return;
-//		        			   }
-//		        			   
-//		        		       if(parseObjects.size()==1)	{
-//		        		            		parseObjects.get(0).setName(pricetxt);
-//		        		            		parseObjects.get(0).saveInBackground(new SaveCallback() {
-//												
-//												@Override
-//												public void done(ParseException e) {
-//													progress.dismiss();
-//													if(e!= null){
-//														Toast.makeText(getActivity(), "Produciuse un erro: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-//													}else{
-//														reloadUserShoppingLists(true);
-//													}
-//												}
-//												
-//											});
-//		        		            }    				        		           
-//		        		        }
-//		        		    });
-		               }
-		           })
-		           .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-		               public void onClick(DialogInterface dialog, int id) {
-		                   dialog.cancel();
-		               }
-		           });      
-		
-			dialogoAgregarPrecio = builder.create();
-		}
-		
-		dialogoAgregarPrecio.setTitle(productBarcode.getTitle());
-		dialogoAgregarPrecio.setMessage(productBarcode.getTitle() + " " +productBarcode.getMarca()+"\n"+productBarcode.getDescripcion());
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		final LayoutInflater inflater = getActivity().getLayoutInflater();
+
+		builder.setCancelable(false);
+		final View viewDialog = inflater.inflate(R.layout.activity_dialog_add_price_product_market, null);
+		builder.setView(viewDialog);
+		builder.setPositiveButton("Engadir prezo", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+
+					}
+		}).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+		});
+
+		TextView supermercadoTextView = (TextView) viewDialog.findViewById(R.id.txtMarket);
+		supermercadoTextView.setText(mMarketSelected.getName());
+		EditText newPriceEditText = (EditText) viewDialog.findViewById(R.id.priceProductNew);
+		newPriceEditText.setHint(productBarcode.getAPrice().get(0).getPrice().toString());
+		dialogoAgregarPrecio = builder.create();
+		dialogoAgregarPrecio.setTitle(productBarcode.getTitle() + "  "+ productBarcode.getMarca());
 		dialogoAgregarPrecio.show();
+		
+		dialogoAgregarPrecio.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() { //Se sobreescribe el onclick para evitar cierre del diálogo
+				@Override
+				public void onClick(View v) {
+
+					Utils.hideSoftKeyboard(getActivity());
+					EditText newPriceEditText = (EditText) viewDialog.findViewById(R.id.priceProductNew);
+					boolean isEmpty;
+					if (newPriceEditText.getText() != null) {
+						newPriceString = newPriceEditText.getText().toString();
+						isEmpty = !Utils.isNotEmpty(newPriceEditText,newPriceString);
+					} else {
+						isEmpty = true;
+					}
+
+					if (!isEmpty) {
+
+							// 1º Engadir un precio-supermercado en la tabla de
+							// precios para este producto
+							// 2º Agregar en la tabla market, al array AProducts
+							dialogoAgregarPrecio.dismiss();
+					}
+				}
+		});
 	}
 	
 	/**

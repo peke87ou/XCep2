@@ -16,7 +16,7 @@
         android:text="Supermercado " />
 
     <EditText
-        android:id="@+id/NameListNew"
+        android:id="@+id/priceProductNew"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/txtMarket"
