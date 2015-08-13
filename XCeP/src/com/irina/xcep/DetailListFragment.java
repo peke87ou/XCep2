@@ -324,10 +324,12 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				if (e != null) {
 					Toast.makeText(getActivity(), "Error ao engadir produto",
 							Toast.LENGTH_SHORT).show();
+					e.printStackTrace();
 				}
 
 				if(objects.size() > 0){
 					mListaSelected = objects.get(0);
+					Log.d(TAG, "Error en la query, no se pudo recargar la lista!!!");
 				}
 				
 				if(progressDialog.isShowing()){
@@ -374,17 +376,15 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		});
         
 		productCatalogList.clear();
-		if(mMarketSelected == null){
-			mMarketSelected = mListaSelected.getSupermercado();
-		}
+		mMarketSelected = mListaSelected.getSupermercado();
 		Supermercado supermercado = mMarketSelected;
 		List<Produto> productosSupermercado = supermercado.getAProduct();
 		if(productosSupermercado != null){
 			productCatalogList.addAll(productosSupermercado);
 		}
+		
 		adapterProductoCatalog = new AdapterProductsCatalog(getActivity(), productCatalogList, mMarketSelected);
-		catalogoListView.setAdapter(adapterProductoCatalog);
-         	
+		catalogoListView.setAdapter(adapterProductoCatalog); 	
 	}
 	
 	
@@ -560,7 +560,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		progressDialog.show();
 		queryProductos.include("APrice");
 		queryProductos.include("APrice.PidMarket");
-		queryProductos.whereEqualTo("idBarCode",resultadoBarCode/*"3545664346"*/);
+		queryProductos.whereEqualTo("idBarCode",/*resultadoBarCode*/"850006000012");
 		queryProductos.findInBackground(new FindCallback<Produto>() {
 			@Override
 			public void done(List<Produto> objects, ParseException e) {
@@ -636,7 +636,11 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		TextView supermercadoTextView = (TextView) viewDialog.findViewById(R.id.txtMarket);
 		supermercadoTextView.setText(mMarketSelected.getName());
 		EditText newPriceEditText = (EditText) viewDialog.findViewById(R.id.priceProductNew);
-		newPriceEditText.setHint(productBarcode.getAPrice().get(0).getPrice().toString());
+		if(productBarcode.getAPrice().size() > 0){
+			newPriceEditText.setHint(productBarcode.getAPrice().get(0).getPrice().toString());
+		}else{
+			newPriceEditText.setHint("prezo");
+		}
 		dialogoAgregarPrecio = builder.create();
 		dialogoAgregarPrecio.setTitle(productBarcode.getTitle() + "  "+ productBarcode.getMarca());
 		dialogoAgregarPrecio.show();
@@ -654,23 +658,50 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					} else {
 						isEmpty = true;
 					}
-
+					
+					
 					if (!isEmpty) {
 
+						final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(),
+								"Agregando "+productBarcode.getTitle()+" a "+mMarketSelected.getName());
+						progressDialog.show();
 							// 1º Engadir un precio-supermercado en la tabla de precios para este producto
-							Prezo prezoProductoBarcode = new Prezo();
-							prezoProductoBarcode.setPrice(Double.parseDouble(newPriceString));
+							final Prezo prezoProductoBarcode = new Prezo();
+							prezoProductoBarcode.setPrice((Number)Double.parseDouble(newPriceString));
 							prezoProductoBarcode.setPidMarket(ParseObject.createWithoutData("Market", mMarketSelected.getObjectId()));
-							prezoProductoBarcode.saveInBackground();
+							prezoProductoBarcode.saveInBackground(new SaveCallback() {
+								
+								@Override
+								public void done(ParseException e) {
+
+									if(e==null){
+										productBarcode.addAPrice(prezoProductoBarcode.getObjectId());
+										productBarcode.saveInBackground( new SaveCallback() {
+											
+											@Override
+											public void done(ParseException e) {
+												
+												// 2º Agregar en la tabla market, al array AProducts
+												mMarketSelected.addAproduct(productBarcode.getObjectId());
+												mMarketSelected.saveInBackground( new SaveCallback() {
+													
+													@Override
+													public void done(ParseException e) {
+														//dialogoAgregarPrecio.dismiss();
+														reloadUserShoppingList(progressDialog);
+													}
+												});
+												
+											}
+										});
+									}
+									
+								}
+							});		
 							
-							productBarcode.addAPrice(prezoProductoBarcode.getObjectId());
-							productBarcode.saveInBackground();
-							
-							// 2º Agregar en la tabla market, al array AProducts
-							mMarketSelected.addAproduct(productBarcode.getObjectId());
-							mMarketSelected.saveInBackground();
-							dialogoAgregarPrecio.dismiss();
 					}
+					
+					dialogoAgregarPrecio.dismiss();
 				}
 		});
 	}
