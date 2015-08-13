@@ -49,6 +49,7 @@ import com.irina.xcep.adapters.AdapterProductsCatalog;
 import com.irina.xcep.adapters.AdapterTags;
 import com.irina.xcep.adapters.AdapterUnits;
 import com.irina.xcep.model.Lista;
+import com.irina.xcep.model.Prezo;
 import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Supermercado;
 import com.irina.xcep.model.Tag;
@@ -77,7 +78,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	private TabHost tabHost;
 	String resultadoBarCode;
 	String barcode;
-	boolean isProductoEnParse;
+	boolean isProductoEnParse, isProductoEnSupermercado;
 	Produto productBarcode;
 	
 	AdapterProductsCatalog adapterProductoCatalog;
@@ -93,7 +94,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	TextView emptyList;
 	AdapterTags adapterTag;
 	CheckBox checkboxTag;
-	AlertDialog dialogoAgregarProducto;
+	AlertDialog dialogoAgregarProducto, dialogoAgregarPrecio;
 	
 	AdapterUnits adapter;
 	ArrayList<Units> listaUnidades = new ArrayList<Units>();
@@ -459,7 +460,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		        		   barcode = resultadoBarCode;
 		        		   resultadoBarCode = null;
 		        		   
-			        	   if(!isProductoEnParse){
+			        	   if(!isProductoEnParse){ //Producto novo
+			        		   
 				        	   Intent intent = new Intent(getActivity(), AddProductActivity.class);
 				        	   Log.i("AddProduct QUE ENVIA", barcode);
 				        	   intent.putExtra("SUPERNAME",mMarketSelected.getName()); 
@@ -467,7 +469,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				        	   intent.putExtra("SUPERID",mMarketSelected.getObjectId());  
 				        	   intent.putExtra("BARCODE",barcode);  
 			                   startActivityForResult(intent, 1);
-			        	   }else{
+			        	   
+			        	   }else if(isProductoEnSupermercado){ //Producto encontrado, e que pertence o supermercado
+			        		   
 			        		   Log.i("DetailProduct QUE ENVIA", productBarcode.getTitle());
 			        		   Intent intent = new Intent(getActivity(), DetailProduct.class);
 			        		   intent.putExtra("NOMEPRODUCTO",productBarcode.getTitle());  
@@ -477,6 +481,10 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			        		   intent.putExtra("MARCAPRODUCTO",productBarcode.getMarca()); 
 			        		   //SUPERMERCADO Y PRECIO
 			                   startActivityForResult(intent, 1);
+			                   
+			        	   }else{ //producto encontrado, pero non pertence o supermercado 
+			        		   
+			        		   showDialogoAgregarPrecio();
 			        	   }
 			        	  
 			           }
@@ -492,12 +500,13 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		}
 		
 		// Mirar se existe na BD
-		ParseQuery<Produto> productos = ParseQuery.getQuery(Produto.class);
+		ParseQuery<Produto> queryProductos = ParseQuery.getQuery(Produto.class);
 		final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(), "Buscando producto en el sistema");
 		progressDialog.show();
-		
-		productos.whereEqualTo("idBarCode",resultadoBarCode);
-		productos.findInBackground(new FindCallback<Produto>() {
+		queryProductos.include("APrice");
+		queryProductos.include("APrice.PidMarket");
+		queryProductos.whereEqualTo("idBarCode",resultadoBarCode);
+		queryProductos.findInBackground(new FindCallback<Produto>() {
 			@Override
 			public void done(List<Produto> objects, ParseException e) {
 				progressDialog.dismiss();
@@ -507,18 +516,34 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					Log.i(TAG,objects.size()+"resultado"+resultadoBarCode);
 					if (objects.size() > 0){
 						isProductoEnParse = true;
+						isProductoEnSupermercado = false;
 						productBarcode =  objects.get(0);
+						
+						List<Prezo> precioPorSupermercado = productBarcode.getAPrice();
+						
+						for(Prezo nPrecio:precioPorSupermercado){
+							if(nPrecio.getPidMarket().getObjectId().equals(mMarketSelected.getObjectId())){
+								isProductoEnSupermercado = true;
+								break;
+							}
+						}
+						
 					}else{
 						isProductoEnParse = false;
 					}
 					
 					Log.i("Esta en parse", isProductoEnParse+"");
-					if(isProductoEnParse){
+					if(isProductoEnParse && isProductoEnSupermercado){ //Producto en el sistema, y en el supermercado de la lista
 						
 						dialogoAgregarProducto.setTitle("Produto atopado");
 						dialogoAgregarProducto.setMessage("Atopouse o produto "+resultadoBarCode +"\n¿Desexa engadilo a súa lista?");
 						
-					}else{
+					}else if(isProductoEnParse){ //Producto en el sistema, pero no en el supermercado
+						
+						dialogoAgregarProducto.setTitle("Producto atopado");
+						dialogoAgregarProducto.setMessage("Atopuse o producto "+resultadoBarCode + ", pero non consta no supermercado "+mMarketSelected.getName()+". \n"+"\n¿Desexa engadilo a súa lista?");
+					
+					}else{ //Producto que non se encontra no sistema
 						
 						dialogoAgregarProducto.setTitle("Produto novo");
 						dialogoAgregarProducto.setMessage("Atopouse o produto  "+resultadoBarCode +"\n¿Desexa engadilo o sistema para o supermercado? ");
@@ -529,6 +554,37 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			}
 		});
 	
+	}
+	
+	/**
+	 * Móstrase un diálogo para agregar un precio a un producto que non se encontra no supermercado da lista actual, pero si se encontra en parse
+	 */
+	public void showDialogoAgregarPrecio(){
+		
+		//TODO Irina. El diálogo debe tener un
+		if(dialogoAgregarPrecio == null){
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setCancelable(false);
+			builder.setPositiveButton("Agregar precio", new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   
+			        	  
+			           }
+			       });
+			
+			builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+
+			           }
+			});
+			
+			dialogoAgregarPrecio = builder.create();
+			
+		}
+		
+		dialogoAgregarPrecio.setTitle(productBarcode.getTitle());
+		dialogoAgregarPrecio.setMessage(productBarcode.getTitle() + " " +productBarcode.getMarca()+"\n"+productBarcode.getDescripcion());
+		dialogoAgregarPrecio.show();
 	}
 	
 	/**
