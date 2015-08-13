@@ -74,12 +74,12 @@ public class Produto extends ParseObject {
 	
 	
 	public ArrayList<Tag> getATags() {
-		return (ArrayList<Tag>)get("ATags");
+		return (ArrayList<Tag>)get("Atags");
 	}
 	
 	public void addATags(String objectId) {
 		ParseObject punteroTag = ParseObject.createWithoutData("Tag", objectId);
-		add("ATags", punteroTag);
+		add("Atags", punteroTag);
 	}
 
 	public ArrayList<Prezo> getAPrice() {

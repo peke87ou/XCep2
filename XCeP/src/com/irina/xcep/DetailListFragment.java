@@ -504,6 +504,22 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		}
 	}
 	
+	
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(),
+				"Recargando catálogo del supermercado "+mMarketSelected.getName());
+		progressDialog.show();
+		
+		//FIXME recargar correctamente el catálogo, no se está mostrando el último producto
+		reloadUserShoppingList(progressDialog);
+	}
+
+
+
 	public void showDialogoAgregarProducto(){
 		
 		if(dialogoAgregarProducto == null){
@@ -560,7 +576,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		progressDialog.show();
 		queryProductos.include("APrice");
 		queryProductos.include("APrice.PidMarket");
-		queryProductos.whereEqualTo("idBarCode",/*resultadoBarCode*/"850006000012");
+		queryProductos.whereEqualTo("idBarCode",resultadoBarCode);
 		queryProductos.findInBackground(new FindCallback<Produto>() {
 			@Override
 			public void done(List<Produto> objects, ParseException e) {

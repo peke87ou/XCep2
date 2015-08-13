@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.irina.xcep.model.Prezo;
 import com.irina.xcep.model.Produto;
+import com.irina.xcep.model.Supermercado;
 import com.irina.xcep.model.Tag;
 import com.irina.xcep.utils.MultiSelectionSpinner;
 import com.irina.xcep.utils.Utils;
@@ -232,18 +233,50 @@ public class AddProductActivity extends Activity{
 				//Guardar Producto
 				 addProduct.saveInBackground(new SaveCallback() {
 						@Override
-						public void done(ParseException arg0) {
-							if (arg0 == null){
-								Toast.makeText(AddProductActivity.this, "Engadimos O producto a BD ", Toast.LENGTH_SHORT).show();
-								Log.i("Producto", "Engadimos O producto a BD ");
-								finish();
+			public void done(ParseException arg0) {
+				if (arg0 == null) {
+
+					// Buscar el supermercado, y Agregar el producto al
+					// supermercado
+					ParseQuery<Supermercado> query = ParseQuery
+							.getQuery(Supermercado.class);
+					query.include("AProduct");
+
+					// Filtramos as lista para cada usuario logueado na app
+					// query.include("User");
+					query.whereEqualTo("objectId", getIntent().getExtras()
+							.getString("SUPERID"));
+					query.findInBackground(new FindCallback<Supermercado>() {
+						@Override
+						public void done(List<Supermercado> objects,
+								ParseException e) {
+							if (e != null || objects.size() == 0) {
+								Toast.makeText(
+										AddProductActivity.this,
+										"Error ao engadir o producto ao supermercado",
+										Toast.LENGTH_SHORT).show();
+							}
+
+							Supermercado supermercado = objects.get(0);
+							supermercado.addAproduct(addProduct.getObjectId());
+							supermercado.saveInBackground();
+
+						}
+					});
+
+							Toast.makeText(AddProductActivity.this, "Engadimos O producto a BD ", Toast.LENGTH_SHORT).show();
+							Log.i("Producto", "Engadimos O producto a BD ");
+							finish();	
 								
 							}else{
 								Toast.makeText(AddProductActivity.this, R.string.error_add_list+" " + arg0.getMessage(), Toast.LENGTH_SHORT).show();
 								Log.e("Producto", "ERROR O ENGADIR NA BD ");
 							}
 						}
-					});
+				});
+				 
+				 
+ 
 				
 			}
 			
