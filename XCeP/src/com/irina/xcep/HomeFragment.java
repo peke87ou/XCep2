@@ -130,52 +130,49 @@ public class HomeFragment extends Fragment {
 		return home;
 	}
 	
-	public void reloadUserShoppingLists(boolean actualizarServidor) {
+	public void reloadUserShoppingLists() {
 		//Recreamos o conxunto de listas de compra do usuario
 		listasListView.setAdapter(adapter);
 		Log.d(TAG, "reloadUserShoppingLists"); 
 
-		if(actualizarServidor){
-			final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), "Actualizando listas");
-     	   	progress.show();
-			ParseQuery<Lista> query = ParseQuery.getQuery(Lista.class);
-			
-			query.include("PidMarket");
-			query.include("PidMarket.AProduct");
-			query.include("PidMarket.AProduct.APrice");
-			query.include("PidMarket.AProduct.APrice.PidMarket");
-			
-			query.include("AidUnits");
-			query.include("AidUnits.PidProduct");
-			query.include("AidUnits.PidProduct.APrice");
-			query.include("AidUnits.PidProduct.APrice.PidMarket");
-			
-			//Filtramos as lista para cada usuario logueado na app
-			//query.include("User");
-			query.whereEqualTo("idUser", currentUser);
-			query.findInBackground(new FindCallback<Lista>() {
-				@Override
-				public void done(List<Lista> objects, ParseException e) {
-					if(e!= null){
-						Toast.makeText(getActivity(), "Error no borrado", Toast.LENGTH_SHORT).show();
-					}
-					
-					misListas = (ArrayList<Lista>) objects;
-					
-					
-					if(misListas != null){
-						
-						adapter.clear();
-						adapter.addAll(misListas);
-					}
-					
-					progress.dismiss();
+		final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(),
+				"Actualizando listas");
+		progress.show();
+		ParseQuery<Lista> query = ParseQuery.getQuery(Lista.class);
+
+		query.include("PidMarket");
+		query.include("PidMarket.AProduct");
+		query.include("PidMarket.AProduct.APrice");
+		query.include("PidMarket.AProduct.APrice.PidMarket");
+
+		query.include("AidUnits");
+		query.include("AidUnits.PidProduct");
+		query.include("AidUnits.PidProduct.APrice");
+		query.include("AidUnits.PidProduct.APrice.PidMarket");
+
+		// Filtramos as lista para cada usuario logueado na app
+		// query.include("User");
+		query.whereEqualTo("idUser", currentUser);
+		query.findInBackground(new FindCallback<Lista>() {
+			@Override
+			public void done(List<Lista> objects, ParseException e) {
+				if (e != null) {
+					Toast.makeText(getActivity(), "Error na actualización de listas",
+							Toast.LENGTH_SHORT).show();
 				}
-			});
-		}else{
-			adapter.setNotifyOnChange(true);
-		}
-				
+
+				misListas = (ArrayList<Lista>) objects;
+
+				if (misListas != null) {
+
+					adapter.clear();
+					adapter.addAll(misListas);
+				}
+
+				progress.dismiss();
+			}
+		});
+
 	}
 	
 	@Override
@@ -189,7 +186,7 @@ public class HomeFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		reloadUserShoppingLists(true);
+		reloadUserShoppingLists();
 	}
 
 
@@ -216,7 +213,7 @@ public class HomeFragment extends Fragment {
 		        		                }
 		        		                
 		        		                progress.dismiss();
-		        		                reloadUserShoppingLists(true);
+		        		                reloadUserShoppingLists();
 		        		            }else{
 		        		            	progress.dismiss();
 		        		                Toast.makeText(getActivity(), "Error no borrado", Toast.LENGTH_SHORT).show();
@@ -266,7 +263,7 @@ public class HomeFragment extends Fragment {
 															if(e!= null){
 																Toast.makeText(getActivity(), "Produciuse un erro: "+e.getMessage(), Toast.LENGTH_SHORT).show();
 															}else{
-																reloadUserShoppingLists(true);
+																reloadUserShoppingLists();
 															}
 														}
 														
