@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -68,6 +68,7 @@ import com.squareup.picasso.Picasso;
 
 //FIXME Agregar correctamente un producto nuevo. Agregar al array de productos del market, agregar el objeto a la tabla de productos, y completar bien los field.
 
+@SuppressLint("InflateParams")
 public class DetailListFragment extends Fragment implements SurfaceHolder.Callback{
 	
 	public static final String TAG = DetailListFragment.class.getName();
@@ -601,7 +602,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					}else{ //Producto que non se encontra no sistema
 						
 						dialogoAgregarProducto.setTitle("Produto novo");
-						dialogoAgregarProducto.setMessage("Atopouse o produto  "+productBarcode.getTitle()+"("+resultadoBarCode +"\n¿Desexa engadilo o sistema para o supermercado? ");
+						dialogoAgregarProducto.setMessage("Atopouse o produto  con identificador: "+resultadoBarCode+"\n¿Desexa engadilo o sistema para o supermercado? ");
 					}
 					
 					dialogoAgregarProducto.show();

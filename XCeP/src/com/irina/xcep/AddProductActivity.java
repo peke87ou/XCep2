@@ -52,6 +52,7 @@ public class AddProductActivity extends Activity{
 	TextView txtengadirImaxe;
 	private MultiSelectionSpinner multiSelectionSpinner;
 	TextView nameLista;
+	List<Tag> listaTagsProduct = new ArrayList<Tag>();
 	
 	
 	@Override
@@ -92,8 +93,10 @@ public class AddProductActivity extends Activity{
 			@Override
 			public void done(List<Tag> objects, ParseException e) {
 				ArrayList<String> listaTags = new ArrayList<String>();
+				listaTagsProduct.clear();
 				for(Tag tag:objects){
 					listaTags.add(tag.getName());
+					listaTagsProduct.add(tag);
 				}
 				multiSelectionSpinner.setItems(listaTags);
 				multiSelectionSpinner.setSelection(new int[]{});
@@ -188,12 +191,15 @@ public class AddProductActivity extends Activity{
 				
 				
 				//Prezo
-				priceProduto = (EditText) findViewById(R.id.text_name_product);
+				priceProduto = (EditText) findViewById(R.id.text_price_product);
 				
 				final Prezo precioProducto = new Prezo();
 				precioProducto.setPrice(Double.parseDouble(priceProduto.getText().toString()));
 				String idMarket= getIntent().getExtras().getString("SUPERID");
 				precioProducto.setPidMarket(ParseObject.createWithoutData("Market", idMarket));
+				//precioProducto.saveInBackground();
+				
+				
 				precioProducto.saveInBackground(new SaveCallback() {
 					
 					@Override
@@ -218,11 +224,12 @@ public class AddProductActivity extends Activity{
 					}
 				});
 				
+				//TAGS multiSelectionSpinner
+				for ( Integer indiceTag:multiSelectionSpinner.getSelectedIndices()){
+					addProduct.addATags(listaTagsProduct.get(indiceTag).getObjectId());
+				}
 				
-				
-				 //FIXME TAGS
-				//ArrayTags
-				 
+				//Guardar Producto
 				 addProduct.saveInBackground(new SaveCallback() {
 						@Override
 						public void done(ParseException arg0) {
