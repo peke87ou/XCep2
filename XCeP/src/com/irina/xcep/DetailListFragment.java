@@ -379,7 +379,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		cam=Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
         Camera.Parameters parameters = cam.getParameters();
         cam.setDisplayOrientation(90);
-        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+        //parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
         cam.setParameters(parameters);
         
         cam.setPreviewCallback(new PreviewCallback(){
@@ -505,7 +505,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		progressDialog.show();
 		queryProductos.include("APrice");
 		queryProductos.include("APrice.PidMarket");
-		queryProductos.whereEqualTo("idBarCode",resultadoBarCode);
+		queryProductos.whereEqualTo("idBarCode",/*resultadoBarCode*/"3545664346");
 		queryProductos.findInBackground(new FindCallback<Produto>() {
 			@Override
 			public void done(List<Produto> objects, ParseException e) {
@@ -536,17 +536,18 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					if(isProductoEnParse && isProductoEnSupermercado){ //Producto en el sistema, y en el supermercado de la lista
 						
 						dialogoAgregarProducto.setTitle("Produto atopado");
-						dialogoAgregarProducto.setMessage("Atopouse o produto "+resultadoBarCode +"\n¿Desexa engadilo a súa lista?");
+						dialogoAgregarProducto.setMessage("Atopouse o produto "+productBarcode.getTitle()+"("+resultadoBarCode +")\n¿Desexa engadilo a súa lista?");
 						
 					}else if(isProductoEnParse){ //Producto en el sistema, pero no en el supermercado
 						
 						dialogoAgregarProducto.setTitle("Producto atopado");
-						dialogoAgregarProducto.setMessage("Atopuse o producto "+resultadoBarCode + ", pero non consta no supermercado "+mMarketSelected.getName()+". \n"+"\n¿Desexa engadilo a súa lista?");
+						dialogoAgregarProducto.setMessage("Atopuse o producto "+productBarcode.getTitle()+"("+resultadoBarCode + ", pero non consta no supermercado "+mMarketSelected.getName()
+								+". \n"+"\n¿Desexa engadilo ao supermercado "+mMarketSelected.getName()+"?");
 					
 					}else{ //Producto que non se encontra no sistema
 						
 						dialogoAgregarProducto.setTitle("Produto novo");
-						dialogoAgregarProducto.setMessage("Atopouse o produto  "+resultadoBarCode +"\n¿Desexa engadilo o sistema para o supermercado? ");
+						dialogoAgregarProducto.setMessage("Atopouse o produto  "+productBarcode.getTitle()+"("+resultadoBarCode +"\n¿Desexa engadilo o sistema para o supermercado? ");
 					}
 					
 					dialogoAgregarProducto.show();
@@ -579,7 +580,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			});
 			
 			dialogoAgregarPrecio = builder.create();
-			
 		}
 		
 		dialogoAgregarPrecio.setTitle(productBarcode.getTitle());
