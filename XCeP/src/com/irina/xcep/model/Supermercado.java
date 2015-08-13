@@ -7,6 +7,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 
 @ParseClassName("Market")
+@SuppressWarnings("unchecked")
 public class Supermercado extends ParseObject{
 	
 	public Supermercado() {
@@ -35,8 +36,13 @@ public class Supermercado extends ParseObject{
 		saveInBackground();
 	}
 	
-	@SuppressWarnings("unchecked")
+
 	public ArrayList<Produto> getAProduct() {
 		return (ArrayList<Produto>)get("AProduct");
+	}
+	
+	public void addAproduct(String objectId) {
+		ParseObject punteroUnidad = ParseObject.createWithoutData("Products", objectId);
+		add("AProduct", punteroUnidad);
 	}
 }

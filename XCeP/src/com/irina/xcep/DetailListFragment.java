@@ -256,6 +256,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			unidadSeleccionada.saveInBackground();
 			
 		}else{ //Nuevo producto a la lista
+			final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(),
+					"Agregando producto nuevo a la lista");
+			progress.show();
 			
 			final Units unidadProducto = new Units();
 			unidadProducto.put("numberUnits", 1);
@@ -273,18 +276,65 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 								
 								if(e!= null){
 									e.printStackTrace();
+									progress.dismiss();
 								}else{
+									reloadUserShoppingList(progress);
 									Log.d(TAG, "Se agrega la unidad a la lista");
 								}
 							}
 						});
 					}else{
 						e.printStackTrace();
+						progress.dismiss();
 					}
 				}
 			});
 		}
 		
+	}
+	
+	/**
+	 * Se actualizan los datos de la lista actual
+	 */
+	
+	public void reloadUserShoppingList(final ProgressDialog progressDialog) {
+		//Recreamos o conxunto de listas de compra do usuario
+		Log.d(TAG, "reloadUserShoppingList"); 
+
+		ParseQuery<Lista> query = ParseQuery.getQuery(Lista.class);
+
+		query.include("PidMarket");
+		query.include("PidMarket.AProduct");
+		query.include("PidMarket.AProduct.APrice");
+		query.include("PidMarket.AProduct.APrice.PidMarket");
+
+		query.include("AidUnits");
+		query.include("AidUnits.PidProduct");
+		query.include("AidUnits.PidProduct.APrice");
+		query.include("AidUnits.PidProduct.APrice.PidMarket");
+
+		// Filtramos as lista para cada usuario logueado na app
+		// query.include("User");
+		query.whereEqualTo("objectId", mListaSelected.getObjectId());
+		query.findInBackground(new FindCallback<Lista>() {
+			
+			@Override
+			public void done(List<Lista> objects, ParseException e) {
+				if (e != null) {
+					Toast.makeText(getActivity(), "Error ao engadir produto",
+							Toast.LENGTH_SHORT).show();
+				}
+
+				if(objects.size() > 0){
+					mListaSelected = objects.get(0);
+				}
+				
+				if(progressDialog.isShowing()){
+					progressDialog.dismiss();
+				}
+			}
+		});
+
 	}
 	
 	private void getScan(String tabId){
@@ -509,7 +559,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		progressDialog.show();
 		queryProductos.include("APrice");
 		queryProductos.include("APrice.PidMarket");
-		queryProductos.whereEqualTo("idBarCode",/*resultadoBarCode*/"3545664346");
+		queryProductos.whereEqualTo("idBarCode",resultadoBarCode/*"3545664346"*/);
 		queryProductos.findInBackground(new FindCallback<Produto>() {
 			@Override
 			public void done(List<Produto> objects, ParseException e) {
@@ -606,9 +656,18 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 
 					if (!isEmpty) {
 
-							// 1º Engadir un precio-supermercado en la tabla de
-							// precios para este producto
+							// 1º Engadir un precio-supermercado en la tabla de precios para este producto
+							Prezo prezoProductoBarcode = new Prezo();
+							prezoProductoBarcode.setPrice(Double.parseDouble(newPriceString));
+							prezoProductoBarcode.setPidMarket(ParseObject.createWithoutData("Market", mMarketSelected.getObjectId()));
+							prezoProductoBarcode.saveInBackground();
+							
+							productBarcode.addAPrice(prezoProductoBarcode.getObjectId());
+							productBarcode.saveInBackground();
+							
 							// 2º Agregar en la tabla market, al array AProducts
+							mMarketSelected.addAproduct(productBarcode.getObjectId());
+							mMarketSelected.saveInBackground();
 							dialogoAgregarPrecio.dismiss();
 					}
 				}
@@ -626,10 +685,11 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	}
 
 	public void surfaceCreated(SurfaceHolder holder){
+		
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder){
+		
 	}
 	
-
 }

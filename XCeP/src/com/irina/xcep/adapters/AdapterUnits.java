@@ -15,7 +15,9 @@ import com.irina.xcep.R;
 import com.irina.xcep.model.Lista;
 import com.irina.xcep.model.Prezo;
 import com.irina.xcep.model.Produto;
+import com.irina.xcep.model.Supermercado;
 import com.irina.xcep.model.Units;
+import com.parse.ParseException;
 import com.squareup.picasso.Picasso;
 
 public class AdapterUnits extends ArrayAdapter<Units> {
@@ -38,7 +40,17 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 		
 		// Recuperar o elemento de datos para esta posición
 		Units productoUnidad = getItem(position);
-		Produto producto = (Produto)productoUnidad.getProduct();
+		Produto producto=null;
+		
+		try {
+			productoUnidad.fetchIfNeeded();
+			producto = (Produto)productoUnidad.getProduct();
+			producto.fetchIfNeeded();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		TextView nombreProductoTextView = ((TextView) celdaView.findViewById(R.id.name_product));
 		ImageView productoImageView = (ImageView) celdaView.findViewById(R.id.image_product);
@@ -50,7 +62,18 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 		Prezo precioProducto=null;
 		
 		for(Prezo nPrezo:listaPrezos){
-			if(nPrezo.getPidMarket().getObjectId().equals(listaPadre.getSupermercado().getObjectId())){
+			
+			Supermercado nSupermercado=null;
+			try {
+				nPrezo.fetchIfNeeded();
+				nSupermercado = (Supermercado)nPrezo.getPidMarket().fetchIfNeeded();
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			 
+			
+			if(nSupermercado.getObjectId().equals(listaPadre.getSupermercado().getObjectId())){
 				precioProducto = nPrezo;
 				break;
 			}			
