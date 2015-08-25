@@ -30,8 +30,8 @@ public class AddShoppingListActivity extends Activity{
 	
 	ButtonRectangle btncancel, btnacept;
 	ArrayList<Supermercado> supermercados = new ArrayList<Supermercado>();
-	GridView grid;
-	AdapterGridAddShoppingList adapter;
+	GridView gridSupermercados;
+	AdapterGridAddShoppingList adapterSupermercados;
 	private EditText nameList;
 	private String nameListtxt;
 	private Supermercado supermercadoNuevaLista;
@@ -64,10 +64,9 @@ public class AddShoppingListActivity extends Activity{
 			}
 		});
 		
-		grid=(GridView)findViewById(R.id.grid_logo_market);
-        grid.setAdapter(adapter);
-        grid.setChoiceMode(GridView.CHOICE_MODE_SINGLE);
-		grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		gridSupermercados=(GridView)findViewById(R.id.grid_logo_market);
+        gridSupermercados.setChoiceMode(GridView.CHOICE_MODE_SINGLE);
+		gridSupermercados.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 		        @Override
 		        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -82,38 +81,34 @@ public class AddShoppingListActivity extends Activity{
 		          }
 		});
 		 
-		 
-		reloadAddshoppingList();
 	}
 	
-	
-	protected void reloadAddshoppingList() {
-			
-		
-		adapter = new AdapterGridAddShoppingList(AddShoppingListActivity.this, supermercados);
-        
-        
-        ParseQuery<Supermercado> query = ParseQuery.getQuery(Supermercado.class);
-		query.findInBackground(new FindCallback<Supermercado>() {
-			
-			@Override
-			public void done(List<Supermercado> objects, ParseException e) {
-
-				supermercados = (ArrayList<Supermercado>) objects;
-				adapter = new AdapterGridAddShoppingList(AddShoppingListActivity.this, supermercados);
-		        grid.setAdapter(adapter);
-			}
-		});
-        
-		
-	}
-
 	@Override
 	public void onResume() {
 		super.onResume();
 		reloadAddshoppingList();
 	}
 	
+	protected void reloadAddshoppingList() {
+			
+		adapterSupermercados = new AdapterGridAddShoppingList(AddShoppingListActivity.this, supermercados);
+        gridSupermercados.setAdapter(adapterSupermercados);
+        
+        ParseQuery<Supermercado> query = ParseQuery.getQuery(Supermercado.class);
+		query.findInBackground(new FindCallback<Supermercado>() {
+			
+			@Override
+			public void done(List<Supermercado> objects, ParseException e) {
+				
+				supermercados = (ArrayList<Supermercado>) objects;
+				adapterSupermercados = new AdapterGridAddShoppingList(AddShoppingListActivity.this, supermercados);
+		        gridSupermercados.setAdapter(adapterSupermercados);
+			}
+		});
+        
+	}
+
+
 	protected void engadirLista() {
 			
 		Lista novaLista = new Lista();
