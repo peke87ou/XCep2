@@ -24,6 +24,7 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 
 	//private static final String TAG = AdapterUnits.class.getName();
 	Lista listaPadre;
+	double totalPrice = 0;
 
 	public AdapterUnits(Context context, ArrayList<Units> productos, Lista listaPadre) {
 		super(context, 0, productos);
@@ -90,7 +91,8 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 		}else{
 			unidadesTextView.setText(productoUnidad.getNumberUnits()+" Unidades");
 		}
- 			
+ 		totalPrice = totalPrice + (precioProducto.getPrice().doubleValue()* productoUnidad.getNumberUnits().doubleValue());
+ 		
  		Picasso.with(getContext()).load(producto.getIcon().getUrl()).into(productoImageView);
 		return celdaView;
 	}
