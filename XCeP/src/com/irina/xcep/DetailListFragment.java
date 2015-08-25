@@ -429,76 +429,101 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		prepararCamara();
 	}
 	
+	@Override
+	public void onStart() {
+		super.onStart();
+		prepararCamara();
+	}
+
 	
+
 	public void prepararCamara(){
-		cam=Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
-        Camera.Parameters parameters = cam.getParameters();
-        cam.setDisplayOrientation(90);
-        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
-        cam.setParameters(parameters);
-        
-        cam.setPreviewCallback(new PreviewCallback(){
-			
-        	public void onPreviewFrame(byte[] data, Camera camera){
-				
-				int ancho=camera.getParameters().getPreviewSize().width;
-				int alto=camera.getParameters().getPreviewSize().height;
-				int formato=camera.getParameters().getPreviewFormat();
-				YuvImage imagen=new YuvImage(data, formato, ancho, alto, null);
-				previewImagePath = getActivity().getFilesDir().toString();
-				File archivo=new File(previewImagePath+"/preview.jpg");
-		        FileOutputStream filecon;
-				try{
-					filecon=new FileOutputStream(archivo);
-					imagen.compressToJpeg(new Rect(0,0,imagen.getWidth(),imagen.getHeight()),90,filecon);
-					Bitmap imagenBmp=BitmapFactory.decodeFile(archivo.toString(), null);
-					Matrix imagenMatrix=new Matrix();
-					imagenMatrix.postRotate(-90);
-					imagenBmp=Bitmap.createBitmap(imagenBmp,0,0,imagenBmp.getWidth(),imagenBmp.getHeight(),imagenMatrix,true);
-					LuminanceSource source=new RGBLuminanceSource(imagenBmp);
-			        BinaryBitmap bmp=new BinaryBitmap(new HybridBinarizer(source));
-					Reader barCodeReader=new MultiFormatReader();
-					try{
-						Result resultado=barCodeReader.decode(bmp);
-						
-						Log.e("valor de resultado",resultado.getText());
-						if (resultado != null && resultadoBarCode == null){
-							//Toast.makeText(getActivity(), resultado.getText(), Toast.LENGTH_LONG).show();
-							resultadoBarCode = resultado.getText();
-							showDialogoAgregarProducto();
-							
-							
+		
+		if (cam == null) {
+			cam = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
+			Camera.Parameters parameters = cam.getParameters();
+			cam.setDisplayOrientation(90);
+			// parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+			cam.setParameters(parameters);
+
+			cam.setPreviewCallback(new PreviewCallback() {
+
+				public void onPreviewFrame(byte[] data, Camera camera) {
+
+					int ancho = camera.getParameters().getPreviewSize().width;
+					int alto = camera.getParameters().getPreviewSize().height;
+					int formato = camera.getParameters().getPreviewFormat();
+					YuvImage imagen = new YuvImage(data, formato, ancho, alto,
+							null);
+					previewImagePath = getActivity().getFilesDir().toString();
+					File archivo = new File(previewImagePath + "/preview.jpg");
+					FileOutputStream filecon;
+					try {
+						filecon = new FileOutputStream(archivo);
+						imagen.compressToJpeg(new Rect(0, 0, imagen.getWidth(),
+								imagen.getHeight()), 90, filecon);
+						Bitmap imagenBmp = BitmapFactory.decodeFile(
+								archivo.toString(), null);
+						Matrix imagenMatrix = new Matrix();
+						imagenMatrix.postRotate(-90);
+						imagenBmp = Bitmap.createBitmap(imagenBmp, 0, 0,
+								imagenBmp.getWidth(), imagenBmp.getHeight(),
+								imagenMatrix, true);
+						LuminanceSource source = new RGBLuminanceSource(
+								imagenBmp);
+						BinaryBitmap bmp = new BinaryBitmap(
+								new HybridBinarizer(source));
+						Reader barCodeReader = new MultiFormatReader();
+						try {
+							Result resultado = barCodeReader.decode(bmp);
+
+							Log.e("valor de resultado", resultado.getText());
+							if (resultado != null && resultadoBarCode == null) {
+								// Toast.makeText(getActivity(),
+								// resultado.getText(),
+								// Toast.LENGTH_LONG).show();
+								resultadoBarCode = resultado.getText();
+								showDialogoAgregarProducto();
+
+							}
+
+						} catch (Exception e) {
 						}
-						
-					}catch(Exception e){}
-				}catch(Exception e){}
-				
-				
-			}
-		});
+					} catch (Exception e) {
+					}
+
+				}
+			});
+		}
         
+		
         try {
 			cam.reconnect();
 		} catch (IOException e) {
 			e.printStackTrace();
 			Toast.makeText(getActivity(), "No se pudo acceder a la camara", Toast.LENGTH_LONG).show();
 		}
-        SurfaceView cameraPreview=(SurfaceView)getActivity().findViewById(R.id.surfaceView1);
         
+        SurfaceView cameraPreview=(SurfaceView)getActivity().findViewById(R.id.surfaceView1);
         surfaceholder=cameraPreview.getHolder();
         //surfaceholder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         surfaceholder.setSizeFromLayout();
         surfaceholder.addCallback(this);
+        surfaceChanged(surfaceholder, 0, 0, 0);
 	}
 	
 	public void desconectarCamara(){
 
-
-		if(surfaceholder != null)
+		if(surfaceholder != null){
 			surfaceholder.removeCallback(this);
+			surfaceholder = null;
+		}
+		
 		
 		if(cam != null){
+			cam.stopPreview();
 			cam.setPreviewCallback(null);
+			cam.lock();
 			cam.release();
 			cam = null;
 		}
@@ -733,11 +758,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	}
 
 	public void surfaceCreated(SurfaceHolder holder){
-		
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder){
-		
 	}
 	
 }
