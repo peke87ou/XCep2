@@ -26,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -95,6 +96,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	ArrayList<Tag> tagList = new ArrayList<Tag>();
 	GridView gridTags;
 	TextView emptyList;
+	TextView txtPrezoTotal;
+	TextView txtPrezoCarrito;
 	AdapterTags adapterTag;
 	CheckBox checkboxTag;
 	AlertDialog dialogoAgregarProducto, dialogoAgregarPrecio;
@@ -147,6 +150,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		nameList = ((MenuActivity)getActivity()).mNameList;
 		txtNameList.setText(nameList);
 		
+		txtPrezoTotal = (TextView) home.findViewById(R.id.prezoTotalTextView);
+		txtPrezoCarrito = (TextView) home.findViewById(R.id.prezoCarritoTextView);
+		
 		if(mListaSelected ==null){
 			mListaSelected = ((MenuActivity)getActivity()).mListSelected;
 		}
@@ -191,6 +197,45 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		//Lista de produtos
 		productosListaListView = (ListView) home.findViewById(R.id.list_products);
+		productosListaListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				
+				
+				CheckBox checkBox = (CheckBox)arg1.findViewById(R.id.checkBoxProdutoCarrito);
+				if(checkBox.isCheck()){
+					checkBox.setChecked(false);
+					
+				}else{
+					checkBox.setChecked(true);
+					//checkBox.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+				}
+				
+				double totalPrice = 0;
+				
+				for(int nPosicion = 0; nPosicion < listaUnidades.size(); nPosicion++){
+					
+					View view = productosListaListView.getChildAt(nPosicion);
+					checkBox = (CheckBox)view.findViewById(R.id.checkBoxProdutoCarrito);
+					if(checkBox.isCheck()){
+						Units unidadeProduto = listaUnidades.get(nPosicion);
+						for (Prezo prezo : unidadeProduto.getProduct().getAPrice()) {
+							if(prezo.getPidMarket().getObjectId().equals(mListaSelected.getSupermercado().getObjectId())){
+								Log.i("ENTRO", "ENTRO IF");
+								totalPrice = totalPrice + (prezo.getPrice().doubleValue()* unidadeProduto.getNumberUnits().doubleValue());
+								break;
+							}
+						}
+					}
+			
+				}
+				Log.i("PREZO", totalPrice+"·");
+				txtPrezoCarrito.setText(totalPrice+ " €");
+			}
+			
+		});
+				
 		
 		gridTags=(GridView) home.findViewById(R.id.grid_tags);
         gridTags.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
@@ -402,6 +447,21 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		if(listaUnidades.size()==0){
 			Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
 		}
+		
+		
+		double totalPrice = 0;
+		
+		for (Units unidadeProduto: listaUnidades) {
+			for (Prezo prezo : unidadeProduto.getProduct().getAPrice()) {
+				if(prezo.getPidMarket().getObjectId().equals(mListaSelected.getSupermercado().getObjectId())){
+					Log.i("ENTRO", "ENTRO IF");
+					totalPrice = totalPrice + (prezo.getPrice().doubleValue()* unidadeProduto.getNumberUnits().doubleValue());
+					break;
+				}
+			}
+		}
+		Log.i("PREZO", totalPrice+"·");
+		txtPrezoTotal.setText(totalPrice+ " €");
 		
 		if(!forzarRecarga && listaUnidades.size() > 0){
 			Log.d(TAG, "Non se volve a executar un find de produtos");

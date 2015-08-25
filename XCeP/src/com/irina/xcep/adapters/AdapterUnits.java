@@ -6,11 +6,14 @@ import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.gc.materialdesign.views.CheckBox;
 import com.irina.xcep.R;
 import com.irina.xcep.model.Lista;
 import com.irina.xcep.model.Prezo;
@@ -24,7 +27,7 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 
 	//private static final String TAG = AdapterUnits.class.getName();
 	Lista listaPadre;
-	double totalPrice = 0;
+
 
 	public AdapterUnits(Context context, ArrayList<Units> productos, Lista listaPadre) {
 		super(context, 0, productos);
@@ -32,7 +35,7 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 	}
 
 	@Override
-	public View getView(int position, View celdaView, ViewGroup parent) {
+	public View getView(int position, View celdaView, final ViewGroup parent) {
 		
 		if (celdaView == null) {
 			celdaView = LayoutInflater.from(getContext()).inflate(
@@ -57,6 +60,8 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 		ImageView productoImageView = (ImageView) celdaView.findViewById(R.id.image_product);
 		TextView unidadesTextView = ((TextView) celdaView.findViewById(R.id.products_list));
 		TextView precioTextView = ((TextView) celdaView.findViewById(R.id.price_product));
+		CheckBox productoCheckBox = (CheckBox) celdaView.findViewById(R.id.checkBoxProdutoCarrito);
+		productoCheckBox.setEnabled(false);
 		
 		nombreProductoTextView.setText(producto.getTitle());
 		List<Prezo> listaPrezos = producto.getAPrice();
@@ -81,9 +86,9 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 		}
 		
 		if(precioProducto != null){
-			precioTextView.setText(precioProducto.getPrice().toString());
+			precioTextView.setText(precioProducto.getPrice().toString() + " €");
 		}else{
-			precioTextView.setText("Precio no disponible");
+			precioTextView.setText("N.D.");
 		}
 		
  		if (productoUnidad.getNumberUnits().intValue() == 1){
@@ -91,7 +96,7 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 		}else{
 			unidadesTextView.setText(productoUnidad.getNumberUnits()+" Unidades");
 		}
- 		totalPrice = totalPrice + (precioProducto.getPrice().doubleValue()* productoUnidad.getNumberUnits().doubleValue());
+ 		
  		
  		Picasso.with(getContext()).load(producto.getIcon().getUrl()).into(productoImageView);
 		return celdaView;

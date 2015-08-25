@@ -9,14 +9,15 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_bottom_line_black"
         android:padding="5dp" >
-
-        <com.gc.materialdesign.views.CheckBox
-            android:id="@+id/checkBox1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="0.01" >
-
+        
+        
+       <com.gc.materialdesign.views.CheckBox
+            	android:id="@+id/checkBoxProdutoCarrito"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:layout_gravity="center"
+            	android:layout_weight="0.01"
+            	 >
         </com.gc.materialdesign.views.CheckBox>
 
         <LinearLayout

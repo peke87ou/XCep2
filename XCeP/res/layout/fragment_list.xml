@@ -107,7 +107,7 @@
                                     android:typeface="serif" />
 
                                 <TextView
-                                    android:id="@+id/textView4"
+                                    android:id="@+id/prezoCarritoTextView"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.50"
@@ -132,7 +132,7 @@
                                     android:typeface="serif"/>
 
                                 <TextView
-                                    android:id="@+id/textView5"
+                                    android:id="@+id/prezoTotalTextView"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.50"

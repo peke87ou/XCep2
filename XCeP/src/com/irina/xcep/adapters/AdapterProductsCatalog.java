@@ -60,9 +60,9 @@ public class AdapterProductsCatalog extends ArrayAdapter<Produto> {
 		}
 		
 		if(precioProducto != null){
-			precioTextView.setText(precioProducto.getPrice().toString());
+			precioTextView.setText(precioProducto.getPrice().toString()+ " €");
 		}else{
-			precioTextView.setText("Precio no disponible");
+			precioTextView.setText("N.D.");
 		}
 		
 		Bitmap bmp = mImagenes.get(producto.getIcon());
