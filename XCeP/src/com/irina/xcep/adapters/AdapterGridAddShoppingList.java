@@ -36,25 +36,26 @@ public class AdapterGridAddShoppingList extends ArrayAdapter<Supermercado>{
           if (convertView == null) {
               grid = new View(mContext);
               grid = inflater.inflate(R.layout.item_grid_add_shopping_list, null);
-              TextView textView = (TextView) grid.findViewById(R.id.title_market_add_list);
-              ImageView imageView = (ImageView)grid.findViewById(R.id.image_market_add_list);
-              
-              if (listaSuper.size() == position){ //ultima
-                  textView.setText("Novo");
-                  imageView.setBackgroundResource(R.drawable.ic_content_add_circle);
-              }else{
-            	  final Supermercado market = getItem(position);
-            	  textView.setText(market.getName());
-
-                  final ParseFile fileObject = market.getImage(); 
-                  String urlBitmap = fileObject.getUrl(); 
-                  Picasso.with(getContext()).load(urlBitmap).into(imageView);
-              }
           
           } else {
         	  grid = (View) convertView;
-
 	      }
+          
+          TextView textView = (TextView) grid.findViewById(R.id.title_market_add_list);
+          ImageView imageView = (ImageView)grid.findViewById(R.id.image_market_add_list);
+          
+          if (listaSuper.size() == position){ //ultima
+              textView.setText("Novo");
+              imageView.setBackgroundResource(R.drawable.ic_content_add_circle);
+          }else{
+        	  final Supermercado market = getItem(position);
+        	  textView.setText(market.getName());
+
+              final ParseFile fileObject = market.getImage(); 
+              String urlBitmap = fileObject.getUrl(); 
+              Picasso.with(getContext()).load(urlBitmap).into(imageView);
+          }
+          
           return grid;
       }
 
