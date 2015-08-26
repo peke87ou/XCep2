@@ -68,7 +68,9 @@ import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
 
-//FIXME Agregar correctamente un producto nuevo. Agregar al array de productos del market, agregar el objeto a la tabla de productos, y completar bien los field.
+//FIXME Buscador: primero obtener la lista de tags de todo el catálogo, y ponerla en la grid.
+//FIXME : Segúnda dar un filtrado mediante tags.
+//FIXME: Dar un filtrado mediante marca y título en la lupa.
 
 @SuppressLint("InflateParams")
 public class DetailListFragment extends Fragment implements SurfaceHolder.Callback{
