@@ -57,6 +57,7 @@ import com.irina.xcep.model.Supermercado;
 import com.irina.xcep.model.Tag;
 import com.irina.xcep.model.Units;
 import com.irina.xcep.utils.Utils;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -101,7 +102,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	CheckBox checkboxTag;
 	AlertDialog dialogoAgregarProducto, dialogoAgregarPrecio;
 	
-	AdapterUnits adapter;
+	AdapterUnits adapterUnidadesCarrito;
 	ArrayList<Units> listaUnidades = new ArrayList<Units>();
 	
 	String newPriceString = "";
@@ -232,6 +233,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		                    	 Log.i("Dialogos", "Opción elegida: " + items[item]);
 		                    }else{
 		                    	 Log.i("Dialogos", "Opción elegida: " + items[item]);
+		                    	 removeProductToList(mListaSelected.getAIdUnits().get(pos));
+		                    	 
 		                    }
 		                }
 		            });
@@ -387,7 +390,31 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					}
 				}
 			});
-		}
+		}	
+	}
+	
+	
+	public void removeProductToList(final Units unidadesProducto){
+		final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(),
+				"Eliminando producto de la lista");
+		progress.show();
+		
+		unidadesProducto.deleteInBackground(new DeleteCallback() { //Eliminamos unidades del producto de la tabla unidades
+			
+			@Override
+			public void done(ParseException e) {
+				
+				mListaSelected.deleteAidUnits(unidadesProducto); 
+				mListaSelected.saveInBackground(new SaveCallback() { //Eliminamos el puntero de la lista de punteros de unidades
+					
+					@Override
+					public void done(ParseException e) {
+						
+						reloadUserShoppingList(progress); //Recargamos la lista seleccionada por el usuario
+					}
+				});
+			}
+		});
 		
 	}
 	
@@ -431,6 +458,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				
 				if(progressDialog.isShowing()){
 					progressDialog.dismiss();
+					if(tabHost.getCurrentTabTag().equals("Lista da compra")){
+						adapterUnidadesCarrito.notifyDataSetChanged();
+					}
 				}
 			}
 		});
@@ -493,8 +523,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			listaUnidades.addAll(mListaSelected.getAIdUnits());
 		}
 		
-		adapter = new AdapterUnits(getActivity(), listaUnidades, mListaSelected, this);
-		productosListaListView.setAdapter(adapter);
+		adapterUnidadesCarrito = new AdapterUnits(getActivity(), listaUnidades, mListaSelected, this);
+		productosListaListView.setAdapter(adapterUnidadesCarrito);
 		
 		if(listaUnidades.size()==0){
 			Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();

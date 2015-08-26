@@ -61,7 +61,15 @@ public class Lista extends ParseObject {
 	}
 
 	public void deleteAidUnits(Units unitProduct){
-		//TODO generar código
+		
+		ArrayList<Units> listaUnidades = getAIdUnits();
+		for(Units units:listaUnidades){
+			if(units.getObjectId().equals(unitProduct.getObjectId())){
+				listaUnidades.remove(units);
+				break;
+			}
+		}
+		
+		put("AidUnits",listaUnidades);
 	}
-	
 }
