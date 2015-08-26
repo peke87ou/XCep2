@@ -68,7 +68,6 @@ import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
 
-//FIXME Buscador: primero obtener la lista de tags de todo el catálogo, y ponerla en la grid.
 //FIXME : Segúnda dar un filtrado mediante tags.
 //FIXME: Dar un filtrado mediante marca y título en la lupa.
 
