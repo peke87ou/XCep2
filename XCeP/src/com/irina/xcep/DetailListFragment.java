@@ -936,4 +936,4 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	public void surfaceDestroyed(SurfaceHolder holder){
 	}
 	
-}
+	}
