@@ -234,6 +234,35 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		                    }else 
 		                    	if(items[item].equalsIgnoreCase("Ver o detalle do Produto")){
 		                    	 Log.i("Dialogos", "Opción elegida: " + items[item]);
+		                    	 Intent intent = new Intent(getActivity(), DetailProduct.class);
+				        		 intent.putExtra("NOMEPRODUCTO",mListaSelected.getAIdUnits().get(pos).getProduct().getTitle());  
+				        		 //CATEGORIA
+				        		 Bundle b=new Bundle();
+				        		 ArrayList<String> listaTags = new ArrayList<String>();
+				        		 if(mListaSelected.getAIdUnits().get(pos).getProduct().getATags()!=null){
+				        			 for(Tag tag:mListaSelected.getAIdUnits().get(pos).getProduct().getATags()){
+					        			   listaTags.add(tag.getName());
+					        		 }
+				        		 }
+				        		 
+				        		 b.putStringArrayList("CATEGORIAPRODUCTO", listaTags);
+				        		 intent.putExtras(b);
+				        		 //IMAGEN
+				        		 intent.putExtra("IMAGEPRODUCTO",mListaSelected.getAIdUnits().get(pos).getProduct().getIcon().getUrl());
+				        		 intent.putExtra("DESCRIPCIONPRODUCTO",mListaSelected.getAIdUnits().get(pos).getProduct().getDescripcion()); 
+				        		 intent.putExtra("MARCAPRODUCTO",mListaSelected.getAIdUnits().get(pos).getProduct().getMarca()); 
+				        		 //SUPERMERCADO
+				        		 intent.putExtra("SUPERIMAGE",mMarketSelected.getImage().getUrl()); 
+				        		 //PRECIO
+				        		 ArrayList<String> listaPrice = new ArrayList<String>();
+				        		 for(Prezo price:mListaSelected.getAIdUnits().get(pos).getProduct().getAPrice()){
+				        			 listaPrice.add(price.getPrice().toString());
+				        		 }
+				        		 b.putStringArrayList("PREZOPRODUCTO", listaPrice);
+				        		 intent.putExtras(b);
+
+				        		 startActivityForResult(intent, 1);
+				                   
 		                    }else{
 		                    	 Log.i("Dialogos", "Opción elegida: " + items[item]);
 		                    	 removeProductToList(mListaSelected.getAIdUnits().get(pos));
