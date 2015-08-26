@@ -23,33 +23,38 @@ public class DetailProduct extends Activity{
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_detail_product);
-
 		
 		dato=getIntent().getExtras().getString("NOMEPRODUCTO");
 		((TextView) findViewById(R.id.detail_product_name)).setText( dato);
 		
-		
-		//dato = getIntent().getParcelableArrayListExtra("CATEGORIAPRODUCTO")
+		//Categoria
 		ArrayList<String> arrayTag;
 		arrayTag = getIntent().getStringArrayListExtra("CATEGORIAPRODUCTO");
-		
-		//for(S)
-		
-		((TextView) findViewById(R.id.detail_product_category)).setText( "Categoría:" + arrayTag );
+		dato = "";
+		for(String cadena: arrayTag ){
+			dato = dato + cadena+ "  ";
+		}
+		((TextView) findViewById(R.id.detail_product_category)).setText( "CATEGORÍA:   " + dato );
 		
 		//IMAGEN PRODUCTO
-		
+
 		dato=getIntent().getExtras().getString("DESCRIPCIONPRODUCTO");
-		((TextView) findViewById(R.id.detail_product_description)).setText( dato);
+		((TextView) findViewById(R.id.detail_product_description)).setText("DESCRICIÓN:   "+ dato);
 		
 		dato=getIntent().getExtras().getString("MARCAPRODUCTO");
-		((TextView) findViewById(R.id.detail_product_mark)).setText( dato);
+		((TextView) findViewById(R.id.detail_product_mark)).setText("MARCA: "+ dato);
 		
 		//SUPERMERCADO 
 		
 		//PRECIO
-//		dato=getIntent().getExtras().getString("PREZOPRODUCTO");
-//		((TextView) findViewById(R.id.priceProduct)).setText( "Prezo: " + dato + " €");
+		ArrayList<String> arrayPrice;
+		arrayPrice = getIntent().getStringArrayListExtra("PREZOPRODUCTO");
+		dato = "";
+		for(String cadena: arrayPrice ){
+			dato = dato + cadena+ "  ";
+		}		
+		((TextView) findViewById(R.id.priceProduct)).setText( "PREZO:   " + dato + " €");
+
 		//RESTO SUPERMERCADOS Y PRECIOS
 		
 		 

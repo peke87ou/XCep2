@@ -747,10 +747,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			        		   Intent intent = new Intent(getActivity(), DetailProduct.class);
 			        		   intent.putExtra("NOMEPRODUCTO",productBarcode.getTitle());  
 			        		   //CATEGORIA
-			        		   //intent.putParcelableArrayListExtra("CATEGORIAPRODUCTO", (ArrayList<? extends Parcelable>) productBarcode.getATags());  
 			        		   Bundle b=new Bundle();
 			        		   ArrayList<String> listaTags = new ArrayList<String>();
-			        		  
 			        		   for(Tag tag:productBarcode.getATags()){
 			        			   listaTags.add(tag.getName());
 			        		   }
@@ -763,8 +761,14 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			        		   //SUPERMERCADO
 			        		   intent.putExtra("SUPERIMAGE",mMarketSelected.getImage().getUrl()); 
 			        		   //PRECIO
-			        		  // intent.putExtra("PREZOPRODUCTO",productBarcode.getAPrice()); 
-			                   startActivityForResult(intent, 1);
+			        		   ArrayList<String> listaPrice = new ArrayList<String>();
+			        		   for(Prezo price:productBarcode.getAPrice()){
+			        			   listaPrice.add(price.getPrice().toString());
+			        		   }
+			        		   b.putStringArrayList("PREZOPRODUCTO", listaPrice);
+			        		   intent.putExtras(b);
+
+			        		   startActivityForResult(intent, 1);
 			                   
 			        	   }else{ //producto encontrado, pero non pertence o supermercado 
 			        		   
