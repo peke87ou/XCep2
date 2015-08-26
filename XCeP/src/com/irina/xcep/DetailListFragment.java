@@ -241,6 +241,10 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		         				            	   final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), "Cambiando unidades");
 		         				            	   progress.show();
 		         				            	   NumberPicker newUnitsProduct = (NumberPicker) ((AlertDialog) dialog).findViewById(R.id.numberPickerUnits);
+//		         				            	   newUnitsProduct.setMinValue(0);
+//		         				            	   newUnitsProduct.setMaxValue(10);
+//		         				            	   newUnitsProduct.setWrapSelectorWheel(false); 
+		         				            	   
 		         				            	   String TextonewUnitsProduct = String.valueOf(newUnitsProduct.getValue());
 		         				                   
 //		         				                   ParseQuery<Units> query=ParseQuery.getQuery(Units.class);
