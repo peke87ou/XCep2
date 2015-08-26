@@ -180,7 +180,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 //					getScan(tabId);
 //					break;
 				case "Lista da compra":
-					cargarProdutosLista(nameList, false);
+					cargarProdutosLista();
 					break;
 
 				case "Catálogo":
@@ -279,10 +279,22 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
         
 		
 		if (tabHost.getCurrentTab() == 0){
-			cargarProdutosLista(nameList, false);
+			cargarProdutosLista();
 		}
 		
 		return home;
+	}
+	
+	private void cargarProdutosLista() {
+		
+		adapterUnidadesCarrito = new AdapterUnits(getActivity(), mListaSelected, this);
+		productosListaListView.setAdapter(adapterUnidadesCarrito);
+		
+		if(mListaSelected.getAIdUnits().size() == 0){
+			Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
+		}
+		
+		actualizarPrecios();
 	}
 	
 	public void showDialogoModificarCantidadProducto(final Units unidadProducto){
@@ -557,25 +569,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		catalogoListView.setAdapter(adapterProductoCatalog); 	
 	}
 	
-	
 
-	private void cargarProdutosLista(String nameList, boolean forzarRecarga) {
-		
-		adapterUnidadesCarrito = new AdapterUnits(getActivity(), mListaSelected, this);
-		productosListaListView.setAdapter(adapterUnidadesCarrito);
-		
-		if(mListaSelected.getAIdUnits().size() == 0){
-			Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
-		}
-		
-		actualizarPrecios();
-		
-		if(!forzarRecarga && mListaSelected.getAIdUnits().size() > 0){
-			Log.d(TAG, "Non se volve a executar un find de produtos");
-			return;
-		}
-		
-	}
 	
 	@Override
 	public void onStop() {

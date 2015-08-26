@@ -61,7 +61,7 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 		TextView unidadesTextView = ((TextView) celdaView.findViewById(R.id.products_list));
 		TextView precioTextView = ((TextView) celdaView.findViewById(R.id.price_product));
 		CheckBox productoCheckBox = (CheckBox) celdaView.findViewById(R.id.checkBoxProdutoCarrito);
-		productoCheckBox.setChecked(productoUnidad.isChecked());
+		productoCheckBox.clearAnimation();
 		productoCheckBox.setOncheckListener(new OnCheckListener() {
 			
 			@Override
@@ -71,6 +71,9 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 				mFragmentLista.actualizarPrecios();
 			}
 		});
+		
+		productoCheckBox.setChecked(productoUnidad.isChecked());
+
 		
 		nombreProductoTextView.setText(producto.getTitle());
 		List<Prezo> listaPrezos = producto.getAPrice();
