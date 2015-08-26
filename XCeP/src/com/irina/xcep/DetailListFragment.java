@@ -8,6 +8,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -229,66 +230,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		                public void onClick(DialogInterface dialog, int item) {
 		                    Log.i("Dialogos", "Opción elegida: " + items[item]);
 		                    if (items[item].equalsIgnoreCase("Cambiar unidades")){
-		                    	AlertDialog.Builder popDialog = new AlertDialog.Builder(getActivity());
-		         				final LayoutInflater inflater = getActivity().getLayoutInflater();
-		         				
-		                    	popDialog.setTitle("Cambiar unidades ");
-		         				popDialog.setView(inflater.inflate(R.layout.activity_dialog_change_units_products, null))
-		         				           .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-		         				               @Override
-		         				               public void onClick(DialogInterface dialog, int id) {
-		         				              
-		         				            	   Utils.hideSoftKeyboard(getActivity());
-		         				            	   final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), "Cambiando unidades");
-		         				            	   progress.show();
-		         				            	   NumberPicker newUnitsProduct = (NumberPicker) ((AlertDialog) dialog).findViewById(R.id.numberPickerUnits);
-//		         				            	   newUnitsProduct.setMinValue(0);
-//		         				            	   newUnitsProduct.setMaxValue(10);
-//		         				            	   newUnitsProduct.setWrapSelectorWheel(false); 
-		         				            	   
-		         				            	   String TextonewUnitsProduct = String.valueOf(newUnitsProduct.getValue());
-		         				                   
-//		         				                   ParseQuery<Units> query=ParseQuery.getQuery(Units.class);
-//		         				        		   query.whereEqualTo("objectId",objectIdLista);
-//		         				        		   query.findInBackground(new FindCallback<Lista>() {
-//		         				        		   @Override
-//		         				        		   public void done(List<Lista> parseObjects, ParseException e) {
-//		         				        			   
-//		         				        			   if(e!= null){
-//		         				        				   progress.dismiss();
-//		         				        				   Toast.makeText(getActivity(), "Produciuse un erro: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-//		         				        				   return;
-//		         				        			   }
-//		         				        			   
-//		         				        		       if(parseObjects.size()==1)	{
-//		         				        		            		parseObjects.get(0).setName(nameListtxt);
-//		         				        		            		parseObjects.get(0).saveInBackground(new SaveCallback() {
-//		         														
-//		         														@Override
-//		         														public void done(ParseException e) {
-//		         															progress.dismiss();
-//		         															if(e!= null){
-//		         																Toast.makeText(getActivity(), "Produciuse un erro: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-//		         															}else{
-//		         																reloadUserShoppingLists();
-//		         															}
-//		         														}
-//		         														
-//		         													});
-//		         				        		            }    				        		           
-//		         				        		        }
-//		         				        		    });
-		         				               }
-		         				           })
-		         				           .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-		         				               public void onClick(DialogInterface dialog, int id) {
-		         				                   dialog.cancel();
-		         				               }
-		         				           });      
-		         				
-		         				 popDialog.create();
-		         				 popDialog.show(); 
-		         				 
+		                    	
+		         				showDialogoModificarCantidadProducto(); 
 		                    }else 
 		                    	if(items[item].equalsIgnoreCase("Ver o detalle do Produto")){
 		                    	 Log.i("Dialogos", "Opción elegida: " + items[item]);
@@ -342,28 +285,45 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		return home;
 	}
 	
-	//public void showDialogoModificarProducto(Bundle savedInstanceState){
+	public void showDialogoModificarCantidadProducto(){
+		
+		AlertDialog.Builder popDialog = new AlertDialog.Builder(getActivity());
+		final LayoutInflater inflater = getActivity().getLayoutInflater();
+		popDialog.setTitle("Cambiar unidades ");
+		View vistaDialogo = inflater.inflate(
+				R.layout.activity_dialog_change_units_products, null);
+		popDialog.setView(vistaDialogo);
+		popDialog.setPositiveButton(android.R.string.ok,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+
+						Utils.hideSoftKeyboard(getActivity());
+						final ProgressDialog progress = Utils
+								.crearDialogoEspera(getActivity(),
+										"Cambiando unidades");
+						//progress.show();
+						// String TextonewUnitsProduct =
+						// String.valueOf(newUnitsProduct.getValue());
+
+					}
+				}).setNegativeButton("Cancelar",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+
+		popDialog.create();
+		NumberPicker newUnitsProduct = (NumberPicker) (vistaDialogo)
+				.findViewById(R.id.numberPickerUnits);
+		newUnitsProduct.setMinValue(1);
+		newUnitsProduct.setMaxValue(100);
+		newUnitsProduct.setWrapSelectorWheel(false);
+		newUnitsProduct.setValue(1);
+		popDialog.show();
+	}
 	
-//		public class showDialogoModificarProducto extends Detai {
-//		    @Override
-//		    public Dialog onCreateDialog(Bundle savedInstanceState) {
-//		 
-//		     final String[] items = {"Español", "Inglés", "Francés"};
-//		 
-//		        AlertDialog.Builder builder =
-//		                new AlertDialog.Builder(getActivity());
-//		 
-//		        builder.setTitle("Selección")
-//		           .setItems(items, new DialogInterface.OnClickListener() {
-//		                public void onClick(DialogInterface dialog, int item) {
-//		                    Log.i("Dialogos", "Opción elegida: " + items[item]);
-//		                }
-//		            });
-//		 
-//		        return builder.create();
-//		    }
-//		}
-//	
 	
 	public void actualizarPrecioCarrito(){
 		

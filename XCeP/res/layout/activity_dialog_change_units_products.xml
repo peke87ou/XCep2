@@ -22,7 +22,8 @@
         android:layout_alignLeft="@+id/txtNameListNew"
         android:layout_below="@+id/txtNameListNew"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+         />
    
 </RelativeLayout>
 
