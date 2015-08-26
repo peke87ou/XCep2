@@ -33,6 +33,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
@@ -227,8 +228,64 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		                public void onClick(DialogInterface dialog, int item) {
 		                    Log.i("Dialogos", "Opción elegida: " + items[item]);
 		                    if (items[item].equalsIgnoreCase("Cambiar unidades")){
-		                    	 Log.i("Dialogos", "Opción elegida: " + items[item]);
-		                    }else if(items[item].equalsIgnoreCase("Ver o detalle do Produto")){
+		                    	AlertDialog.Builder popDialog = new AlertDialog.Builder(getActivity());
+		         				final LayoutInflater inflater = getActivity().getLayoutInflater();
+		         				
+		                    	popDialog.setTitle("Cambiar unidades ");
+		         				popDialog.setView(inflater.inflate(R.layout.activity_dialog_change_units_products, null))
+		         				           .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+		         				               @Override
+		         				               public void onClick(DialogInterface dialog, int id) {
+		         				              
+		         				            	   Utils.hideSoftKeyboard(getActivity());
+		         				            	   final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), "Cambiando unidades");
+		         				            	   progress.show();
+		         				            	   NumberPicker newUnitsProduct = (NumberPicker) ((AlertDialog) dialog).findViewById(R.id.numberPickerUnits);
+		         				            	   String TextonewUnitsProduct = String.valueOf(newUnitsProduct.getValue());
+		         				                   
+//		         				                   ParseQuery<Units> query=ParseQuery.getQuery(Units.class);
+//		         				        		   query.whereEqualTo("objectId",objectIdLista);
+//		         				        		   query.findInBackground(new FindCallback<Lista>() {
+//		         				        		   @Override
+//		         				        		   public void done(List<Lista> parseObjects, ParseException e) {
+//		         				        			   
+//		         				        			   if(e!= null){
+//		         				        				   progress.dismiss();
+//		         				        				   Toast.makeText(getActivity(), "Produciuse un erro: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+//		         				        				   return;
+//		         				        			   }
+//		         				        			   
+//		         				        		       if(parseObjects.size()==1)	{
+//		         				        		            		parseObjects.get(0).setName(nameListtxt);
+//		         				        		            		parseObjects.get(0).saveInBackground(new SaveCallback() {
+//		         														
+//		         														@Override
+//		         														public void done(ParseException e) {
+//		         															progress.dismiss();
+//		         															if(e!= null){
+//		         																Toast.makeText(getActivity(), "Produciuse un erro: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+//		         															}else{
+//		         																reloadUserShoppingLists();
+//		         															}
+//		         														}
+//		         														
+//		         													});
+//		         				        		            }    				        		           
+//		         				        		        }
+//		         				        		    });
+		         				               }
+		         				           })
+		         				           .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+		         				               public void onClick(DialogInterface dialog, int id) {
+		         				                   dialog.cancel();
+		         				               }
+		         				           });      
+		         				
+		         				 popDialog.create();
+		         				 popDialog.show(); 
+		         				 
+		                    }else 
+		                    	if(items[item].equalsIgnoreCase("Ver o detalle do Produto")){
 		                    	 Log.i("Dialogos", "Opción elegida: " + items[item]);
 		                    }else{
 		                    	 Log.i("Dialogos", "Opción elegida: " + items[item]);
