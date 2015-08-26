@@ -1,6 +1,5 @@
 package com.irina.xcep.adapters;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -30,8 +29,8 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 	DetailListFragment mFragmentLista;
 	
 
-	public AdapterUnits(Context context, ArrayList<Units> productos, Lista listaPadre, DetailListFragment fragmentLista) {
-		super(context, 0, productos);
+	public AdapterUnits(Context context, Lista listaPadre, DetailListFragment fragmentLista) {
+		super(context, 0, listaPadre.getAIdUnits());
 		mFragmentLista = fragmentLista;
 		this.listaPadre = listaPadre;
 	}
@@ -40,12 +39,11 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 	public View getView(int position, View celdaView, final ViewGroup parent) {
 		
 		if (celdaView == null) {
-			celdaView = LayoutInflater.from(getContext()).inflate(
-					R.layout.item_product_shopping_list, parent, false);
+			celdaView = LayoutInflater.from(getContext()).inflate(R.layout.item_product_shopping_list, parent, false);
 		}
 		
 		// Recuperar o elemento de datos para esta posición
-		Units productoUnidad = getItem(position);
+		final Units productoUnidad = listaPadre.getAIdUnits().get(position);//getItem(position);
 		Produto producto=null;
 		
 		try {
@@ -63,14 +61,19 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 		TextView unidadesTextView = ((TextView) celdaView.findViewById(R.id.products_list));
 		TextView precioTextView = ((TextView) celdaView.findViewById(R.id.price_product));
 		CheckBox productoCheckBox = (CheckBox) celdaView.findViewById(R.id.checkBoxProdutoCarrito);
+		productoCheckBox.clearAnimation();
 		productoCheckBox.setOncheckListener(new OnCheckListener() {
 			
 			@Override
 			public void onCheck(CheckBox view, boolean check) {
 				
-				mFragmentLista.actualizarPrecioCarrito();
+				productoUnidad.setChecked(check);
+				mFragmentLista.actualizarPrecios();
 			}
 		});
+		
+		productoCheckBox.setChecked(productoUnidad.isChecked());
+
 		
 		nombreProductoTextView.setText(producto.getTitle());
 		List<Prezo> listaPrezos = producto.getAPrice();
@@ -83,7 +86,6 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 				nPrezo.fetchIfNeeded();
 				nSupermercado = (Supermercado)nPrezo.getPidMarket().fetchIfNeeded();
 			} catch (ParseException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			 
