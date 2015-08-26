@@ -143,11 +143,13 @@ public class HomeFragment extends Fragment {
 		query.include("PidMarket");
 		query.include("PidMarket.AProduct");
 		query.include("PidMarket.AProduct.APrice");
+		query.include("PidMarket.AProduct.Atags");
 		query.include("PidMarket.AProduct.APrice.PidMarket");
 
 		query.include("AidUnits");
 		query.include("AidUnits.PidProduct");
 		query.include("AidUnits.PidProduct.APrice");
+		query.include("AidUnits.PidProduct.Atags");
 		query.include("AidUnits.PidProduct.APrice.PidMarket");
 
 		// Filtramos as lista para cada usuario logueado na app
