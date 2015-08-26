@@ -105,6 +105,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	ArrayList<Units> listaUnidades = new ArrayList<Units>();
 	
 	String newPriceString = "";
+	String objectIdProduct = "";
 	
 	public static DetailListFragment newInstance (int Index){
 		DetailListFragment fragment = new DetailListFragment();
@@ -215,7 +216,34 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			}
 			
 		});
-				
+		productosListaListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int pos, long id) {
+            	//objectIdProduct = productCatalogList.get(pos).getObjectId();
+            	//showDialogoModificarProducto();
+            	final String[] items = {"Cambiar unidades", "Ver o detalle do Produto", "Eliminar o Produto"};
+       		 
+		        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		 
+		        builder.setTitle("¿Que desexa facer?")
+		           .setItems(items, new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int item) {
+		                    Log.i("Dialogos", "Opción elegida: " + items[item]);
+		                    if (items[item].equalsIgnoreCase("Cambiar unidades")){
+		                    	 Log.i("Dialogos", "Opción elegida: " + items[item]);
+		                    }else if(items[item].equalsIgnoreCase("Ver o detalle do Produto")){
+		                    	 Log.i("Dialogos", "Opción elegida: " + items[item]);
+		                    }else{
+		                    	 Log.i("Dialogos", "Opción elegida: " + items[item]);
+		                    }
+		                }
+		            });
+		 
+		        builder.create();
+		        builder.show();
+            	return true;
+            }
+        }); 
 		
 		gridTags=(GridView) home.findViewById(R.id.grid_tags);
         gridTags.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
@@ -252,6 +280,29 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		return home;
 	}
+	
+	//public void showDialogoModificarProducto(Bundle savedInstanceState){
+	
+//		public class showDialogoModificarProducto extends Detai {
+//		    @Override
+//		    public Dialog onCreateDialog(Bundle savedInstanceState) {
+//		 
+//		     final String[] items = {"Español", "Inglés", "Francés"};
+//		 
+//		        AlertDialog.Builder builder =
+//		                new AlertDialog.Builder(getActivity());
+//		 
+//		        builder.setTitle("Selección")
+//		           .setItems(items, new DialogInterface.OnClickListener() {
+//		                public void onClick(DialogInterface dialog, int item) {
+//		                    Log.i("Dialogos", "Opción elegida: " + items[item]);
+//		                }
+//		            });
+//		 
+//		        return builder.create();
+//		    }
+//		}
+//	
 	
 	public void actualizarPrecioCarrito(){
 		
