@@ -616,7 +616,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			cam = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
 			Camera.Parameters parameters = cam.getParameters();
 			cam.setDisplayOrientation(90);
-			// parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+			parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
 			cam.setParameters(parameters);
 
 			cam.setPreviewCallback(new PreviewCallback() {
