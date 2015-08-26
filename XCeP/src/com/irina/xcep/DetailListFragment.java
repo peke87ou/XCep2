@@ -515,7 +515,10 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				
 				if(progressDialog.isShowing()){
 					progressDialog.dismiss();
+
 					if(tabHost.getCurrentTabTag().equals("Lista da compra")){
+						adapterUnidadesCarrito = new AdapterUnits(getActivity(), mListaSelected.getAIdUnits(), mListaSelected, DetailListFragment.this);
+						productosListaListView.setAdapter(adapterUnidadesCarrito);
 						adapterUnidadesCarrito.notifyDataSetChanged();
 					}
 				}
