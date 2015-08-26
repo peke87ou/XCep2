@@ -6,14 +6,14 @@ import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.gc.materialdesign.views.CheckBox;
+import com.gc.materialdesign.views.CheckBox.OnCheckListener;
+import com.irina.xcep.DetailListFragment;
 import com.irina.xcep.R;
 import com.irina.xcep.model.Lista;
 import com.irina.xcep.model.Prezo;
@@ -27,10 +27,12 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 
 	//private static final String TAG = AdapterUnits.class.getName();
 	Lista listaPadre;
+	DetailListFragment mFragmentLista;
+	
 
-
-	public AdapterUnits(Context context, ArrayList<Units> productos, Lista listaPadre) {
+	public AdapterUnits(Context context, ArrayList<Units> productos, Lista listaPadre, DetailListFragment fragmentLista) {
 		super(context, 0, productos);
+		mFragmentLista = fragmentLista;
 		this.listaPadre = listaPadre;
 	}
 
@@ -61,7 +63,14 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 		TextView unidadesTextView = ((TextView) celdaView.findViewById(R.id.products_list));
 		TextView precioTextView = ((TextView) celdaView.findViewById(R.id.price_product));
 		CheckBox productoCheckBox = (CheckBox) celdaView.findViewById(R.id.checkBoxProdutoCarrito);
-		productoCheckBox.setEnabled(false);
+		productoCheckBox.setOncheckListener(new OnCheckListener() {
+			
+			@Override
+			public void onCheck(CheckBox view, boolean check) {
+				
+				mFragmentLista.actualizarPrecioCarrito();
+			}
+		});
 		
 		nombreProductoTextView.setText(producto.getTitle());
 		List<Prezo> listaPrezos = producto.getAPrice();

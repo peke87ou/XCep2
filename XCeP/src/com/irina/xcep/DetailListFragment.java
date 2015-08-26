@@ -26,7 +26,6 @@ import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -212,26 +211,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					//checkBox.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
 				}
 				
-				double totalPrice = 0;
-				
-				for(int nPosicion = 0; nPosicion < listaUnidades.size(); nPosicion++){
-					
-					View view = productosListaListView.getChildAt(nPosicion);
-					checkBox = (CheckBox)view.findViewById(R.id.checkBoxProdutoCarrito);
-					if(checkBox.isCheck()){
-						Units unidadeProduto = listaUnidades.get(nPosicion);
-						for (Prezo prezo : unidadeProduto.getProduct().getAPrice()) {
-							if(prezo.getPidMarket().getObjectId().equals(mListaSelected.getSupermercado().getObjectId())){
-								Log.i("ENTRO", "ENTRO IF");
-								totalPrice = totalPrice + (prezo.getPrice().doubleValue()* unidadeProduto.getNumberUnits().doubleValue());
-								break;
-							}
-						}
-					}
-			
-				}
-				Log.i("PREZO", totalPrice+"·");
-				txtPrezoCarrito.setText(totalPrice+ " €");
+				actualizarPrecioCarrito();
 			}
 			
 		});
@@ -271,6 +251,30 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		}
 		
 		return home;
+	}
+	
+	public void actualizarPrecioCarrito(){
+		
+		double totalPrice = 0;
+		
+		for(int nPosicion = 0; nPosicion < listaUnidades.size(); nPosicion++){
+			
+			View view = productosListaListView.getChildAt(nPosicion);
+			CheckBox checkBox = (CheckBox)view.findViewById(R.id.checkBoxProdutoCarrito);
+			if(checkBox.isCheck()){
+				Units unidadeProduto = listaUnidades.get(nPosicion);
+				for (Prezo prezo : unidadeProduto.getProduct().getAPrice()) {
+					if(prezo.getPidMarket().getObjectId().equals(mListaSelected.getSupermercado().getObjectId())){
+						Log.i("ENTRO", "ENTRO IF");
+						totalPrice = totalPrice + (prezo.getPrice().doubleValue()* unidadeProduto.getNumberUnits().doubleValue());
+						break;
+					}
+				}
+			}
+	
+		}
+		Log.i("PREZO", totalPrice+"·");
+		txtPrezoCarrito.setText(totalPrice+ " €");
 	}
 	
 	/**
@@ -441,7 +445,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			listaUnidades.addAll(mListaSelected.getAIdUnits());
 		}
 		
-		adapter = new AdapterUnits(getActivity(), listaUnidades, mListaSelected);
+		adapter = new AdapterUnits(getActivity(), listaUnidades, mListaSelected, this);
 		productosListaListView.setAdapter(adapter);
 		
 		if(listaUnidades.size()==0){
