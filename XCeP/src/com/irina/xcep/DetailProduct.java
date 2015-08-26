@@ -7,10 +7,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.irina.xcep.model.Tag;
+import com.squareup.picasso.Picasso;
 
 public class DetailProduct extends Activity{
 	
@@ -25,7 +27,7 @@ public class DetailProduct extends Activity{
 		setContentView(R.layout.activity_detail_product);
 		
 		dato=getIntent().getExtras().getString("NOMEPRODUCTO");
-		((TextView) findViewById(R.id.detail_product_name)).setText( dato);
+		((TextView) findViewById(R.id.detail_product_name)).setText( dato.toUpperCase());
 		
 		//Categoria
 		ArrayList<String> arrayTag;
@@ -34,17 +36,24 @@ public class DetailProduct extends Activity{
 		for(String cadena: arrayTag ){
 			dato = dato + cadena+ "  ";
 		}
-		((TextView) findViewById(R.id.detail_product_category)).setText( "CATEGORÍA:   " + dato );
+		((TextView) findViewById(R.id.detail_product_category)).setText(  dato );
 		
 		//IMAGEN PRODUCTO
-
+		ImageView imageProduct =  (ImageView) findViewById(R.id.image_view_product);
+		dato=getIntent().getExtras().getString("IMAGEPRODUCTO");
+		Picasso.with(this).load(dato).into(imageProduct);
+		
+		//DESCRICION
 		dato=getIntent().getExtras().getString("DESCRIPCIONPRODUCTO");
-		((TextView) findViewById(R.id.detail_product_description)).setText("DESCRICIÓN:   "+ dato);
+		((TextView) findViewById(R.id.detail_product_description)).setText( dato);
 		
 		dato=getIntent().getExtras().getString("MARCAPRODUCTO");
-		((TextView) findViewById(R.id.detail_product_mark)).setText("MARCA: "+ dato);
+		((TextView) findViewById(R.id.detail_product_mark)).setText( dato);
 		
 		//SUPERMERCADO 
+		ImageView imageMarket =  (ImageView) findViewById(R.id.ImageMarket);
+		dato=getIntent().getExtras().getString("SUPERIMAGE");
+		Picasso.with(this).load(dato).into(imageMarket);
 		
 		//PRECIO
 		ArrayList<String> arrayPrice;
@@ -53,7 +62,7 @@ public class DetailProduct extends Activity{
 		for(String cadena: arrayPrice ){
 			dato = dato + cadena+ "  ";
 		}		
-		((TextView) findViewById(R.id.priceProduct)).setText( "PREZO:   " + dato + " €");
+		((TextView) findViewById(R.id.priceProduct)).setText( dato + " €");
 
 		//RESTO SUPERMERCADOS Y PRECIOS
 		
