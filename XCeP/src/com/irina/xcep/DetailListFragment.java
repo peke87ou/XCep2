@@ -8,7 +8,6 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -105,7 +104,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	AlertDialog dialogoAgregarProducto, dialogoAgregarPrecio;
 	
 	AdapterUnits adapterUnidadesCarrito;
-	ArrayList<Units> listaUnidades = new ArrayList<Units>();
 	
 	String newPriceString = "";
 	String objectIdProduct = "";
@@ -148,7 +146,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		tabHost.addTab(spec);
 		
 		tabHost.setCurrentTab(0);
-		// Convertir currentUser en String
+
 		TextView txtNameList = (TextView) home.findViewById(R.id.idNameMarket);
 		nameList = ((MenuActivity)getActivity()).mNameList;
 		txtNameList.setText(nameList);
@@ -201,7 +199,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		productosListaListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
 				
 				
 				CheckBox checkBox = (CheckBox)arg1.findViewById(R.id.checkBoxProdutoCarrito);
@@ -212,7 +210,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					checkBox.setChecked(true);
 				}
 				
-				actualizarPrecioCarrito();
+				mListaSelected.getAIdUnits().get(position).setChecked(checkBox.isCheck());
+				actualizarPrecios();
 			}
 			
 		});
@@ -231,7 +230,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		                    Log.i("Dialogos", "Opción elegida: " + items[item]);
 		                    if (items[item].equalsIgnoreCase("Cambiar unidades")){
 		                    	
-		         				showDialogoModificarCantidadProducto(); 
+		         				showDialogoModificarCantidadProducto(mListaSelected.getAIdUnits().get(pos)); 
 		                    }else 
 		                    	if(items[item].equalsIgnoreCase("Ver o detalle do Produto")){
 		                    	 Log.i("Dialogos", "Opción elegida: " + items[item]);
@@ -285,7 +284,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		return home;
 	}
 	
-	public void showDialogoModificarCantidadProducto(){
+	public void showDialogoModificarCantidadProducto(final Units unidadProducto){
 		
 		AlertDialog.Builder popDialog = new AlertDialog.Builder(getActivity());
 		final LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -297,15 +296,29 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
-
+						
+						dialog.dismiss();
+						final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(),"Cambiando unidades");
+						
 						Utils.hideSoftKeyboard(getActivity());
-						final ProgressDialog progress = Utils
-								.crearDialogoEspera(getActivity(),
-										"Cambiando unidades");
-						//progress.show();
-						// String TextonewUnitsProduct =
-						// String.valueOf(newUnitsProduct.getValue());
-
+						
+						NumberPicker unitsProductPicker = (NumberPicker) ((AlertDialog) dialog).findViewById(R.id.numberPickerUnits);
+						int newUnitProduct = unitsProductPicker.getValue();
+						
+						if(newUnitProduct == unidadProducto.getNumberUnits().intValue()){
+							Toast.makeText(getActivity(), "Se ha seleccionado la misma cantidad", Toast.LENGTH_SHORT).show();
+						}else{
+							Toast.makeText(getActivity(), "Se ha seleccionado "+newUnitProduct, Toast.LENGTH_SHORT).show();
+							unidadProducto.setNumberUnits(newUnitProduct);
+							unidadProducto.saveInBackground( new SaveCallback() {
+								
+								@Override
+								public void done(ParseException e) {
+									reloadUserShoppingList(progress); //Recargamos la lista seleccionada por el usuario
+								}
+							});
+						}
+						
 					}
 				}).setNegativeButton("Cancelar",
 				new DialogInterface.OnClickListener() {
@@ -315,38 +328,39 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				});
 
 		popDialog.create();
-		NumberPicker newUnitsProduct = (NumberPicker) (vistaDialogo)
+		NumberPicker unitsProductPicker = (NumberPicker) (vistaDialogo)
 				.findViewById(R.id.numberPickerUnits);
-		newUnitsProduct.setMinValue(1);
-		newUnitsProduct.setMaxValue(100);
-		newUnitsProduct.setWrapSelectorWheel(false);
-		newUnitsProduct.setValue(1);
+		unitsProductPicker.setMinValue(1);
+		unitsProductPicker.setMaxValue(100+unidadProducto.getNumberUnits().intValue());
+		unitsProductPicker.setWrapSelectorWheel(false);
+		unitsProductPicker.setValue(unidadProducto.getNumberUnits().intValue());
 		popDialog.show();
 	}
 	
 	
-	public void actualizarPrecioCarrito(){
+	public void actualizarPrecios(){
 		
-		double totalPrice = 0;
-		
-		for(int nPosicion = 0; nPosicion < listaUnidades.size(); nPosicion++){
-			
-			View view = productosListaListView.getChildAt(nPosicion);
-			CheckBox checkBox = (CheckBox)view.findViewById(R.id.checkBoxProdutoCarrito);
-			if(checkBox.isCheck()){
-				Units unidadeProduto = listaUnidades.get(nPosicion);
-				for (Prezo prezo : unidadeProduto.getProduct().getAPrice()) {
-					if(prezo.getPidMarket().getObjectId().equals(mListaSelected.getSupermercado().getObjectId())){
-						Log.i("ENTRO", "ENTRO IF");
-						totalPrice = totalPrice + (prezo.getPrice().doubleValue()* unidadeProduto.getNumberUnits().doubleValue());
-						break;
+		double precioTotalCarrito = 0;
+		double precioTotalLista = 0;
+
+		for (int nPosicion = 0; nPosicion < mListaSelected.getAIdUnits().size(); nPosicion++) {
+
+			Units unidadeProduto = mListaSelected.getAIdUnits().get(nPosicion);
+			for (Prezo prezo : unidadeProduto.getProduct().getAPrice()) {
+				if (prezo.getPidMarket().getObjectId().equals(mListaSelected.getSupermercado().getObjectId())) {
+					
+					if(unidadeProduto.isChecked()){
+						precioTotalCarrito = precioTotalCarrito + (prezo.getPrice().doubleValue() * unidadeProduto.getNumberUnits().doubleValue());
 					}
+					
+					precioTotalLista = precioTotalLista	+ (prezo.getPrice().doubleValue() * unidadeProduto.getNumberUnits().doubleValue());
+					break;
 				}
 			}
-	
 		}
-		Log.i("PREZO", totalPrice+"·");
-		txtPrezoCarrito.setText(totalPrice+ " €");
+		
+		txtPrezoCarrito.setText(precioTotalCarrito+ " €");
+		txtPrezoTotal.setText(precioTotalLista+" €");
 	}
 	
 	/**
@@ -481,9 +495,11 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					progressDialog.dismiss();
 
 					if(tabHost.getCurrentTabTag().equals("Lista da compra")){
-						adapterUnidadesCarrito = new AdapterUnits(getActivity(), mListaSelected.getAIdUnits(), mListaSelected, DetailListFragment.this); //FIXME sobran parámetros de entrada
+						adapterUnidadesCarrito = new AdapterUnits(getActivity(), mListaSelected, DetailListFragment.this); //FIXME sobran parámetros de entrada
 						productosListaListView.setAdapter(adapterUnidadesCarrito);
 						adapterUnidadesCarrito.notifyDataSetChanged();
+						//Actualizar precio parcial y total
+						actualizarPrecios();
 					}
 				}
 			}
@@ -542,34 +558,16 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 
 	private void cargarProdutosLista(String nameList, boolean forzarRecarga) {
 		
-		listaUnidades.clear();
-		if(mListaSelected.get("AidUnits") != null){
-			listaUnidades.addAll(mListaSelected.getAIdUnits());
-		}
-		
-		adapterUnidadesCarrito = new AdapterUnits(getActivity(), listaUnidades, mListaSelected, this);
+		adapterUnidadesCarrito = new AdapterUnits(getActivity(), mListaSelected, this);
 		productosListaListView.setAdapter(adapterUnidadesCarrito);
 		
-		if(listaUnidades.size()==0){
+		if(mListaSelected.getAIdUnits().size() == 0){
 			Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
 		}
 		
+		actualizarPrecios();
 		
-		double totalPrice = 0;
-		
-		for (Units unidadeProduto: listaUnidades) {
-			for (Prezo prezo : unidadeProduto.getProduct().getAPrice()) {
-				if(prezo.getPidMarket().getObjectId().equals(mListaSelected.getSupermercado().getObjectId())){
-					Log.i("ENTRO", "ENTRO IF");
-					totalPrice = totalPrice + (prezo.getPrice().doubleValue()* unidadeProduto.getNumberUnits().doubleValue());
-					break;
-				}
-			}
-		}
-		Log.i("PREZO", totalPrice+"·");
-		txtPrezoTotal.setText(totalPrice+ " €");
-		
-		if(!forzarRecarga && listaUnidades.size() > 0){
+		if(!forzarRecarga && mListaSelected.getAIdUnits().size() > 0){
 			Log.d(TAG, "Non se volve a executar un find de produtos");
 			return;
 		}
@@ -580,20 +578,18 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	public void onStop() {
 		super.onStop();
 		desconectarCamara();
-		//getScan(tabHost.getCurrentTabTag());
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 		desconectarCamara();
-		//getScan(tabHost.getCurrentTabTag());
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
-		//getScan(tabHost.getCurrentTabTag());
+
 		if (tabHost.getCurrentTabTag().equals("Escaner")){
 			prepararCamara();
 		}
@@ -605,7 +601,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		if (tabHost.getCurrentTabTag().equals("Escaner")){
 			prepararCamara();
 		}
-		//getScan(tabHost.getCurrentTabTag());
 	}
 
 	
@@ -652,9 +647,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 
 							Log.e("valor de resultado", resultado.getText());
 							if (resultado != null && resultadoBarCode == null) {
-								// Toast.makeText(getActivity(),
-								// resultado.getText(),
-								// Toast.LENGTH_LONG).show();
 								resultadoBarCode = resultado.getText();
 								showDialogoAgregarProducto();
 
@@ -923,17 +915,19 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	/**
 	 * Surfaceholder callback de la cámara
 	 */
-	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height){
-		try{
+	public void surfaceChanged(SurfaceHolder holder, int format, int width,
+			int height) {
+		try {
 			cam.setPreviewDisplay(surfaceholder);
-		}catch(IOException e){}
+		} catch (IOException e) {
+		}
 		cam.startPreview();
 	}
 
-	public void surfaceCreated(SurfaceHolder holder){
+	public void surfaceCreated(SurfaceHolder holder) {
 	}
 
-	public void surfaceDestroyed(SurfaceHolder holder){
+	public void surfaceDestroyed(SurfaceHolder holder) {
 	}
-	
-	}
+
+}
