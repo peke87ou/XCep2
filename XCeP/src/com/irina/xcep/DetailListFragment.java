@@ -169,7 +169,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			@Override
 			public void onTabChanged(String tabId) {
 				
-				getScan(tabId);
+				iniciarPararScan(tabId);
 				
 				switch (tabId) {
 				
@@ -189,8 +189,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					break;
 				}
 				
-				
-				
 			}
 		});
 		
@@ -208,7 +206,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					
 				}else{
 					checkBox.setChecked(true);
-					//checkBox.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
 				}
 				
 				actualizarPrecioCarrito();
@@ -389,7 +386,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 
 	}
 	
-	private void getScan(String tabId){
+	private void iniciarPararScan(String tabId){
 		if (tabId == "Escaner") {
 			if(cam==null){
 				prepararCamara();
@@ -478,25 +475,32 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	public void onStop() {
 		super.onStop();
 		desconectarCamara();
+		//getScan(tabHost.getCurrentTabTag());
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 		desconectarCamara();
+		//getScan(tabHost.getCurrentTabTag());
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
-		//reloadUserShoppingLists();
-		prepararCamara();
+		//getScan(tabHost.getCurrentTabTag());
+		if (tabHost.getCurrentTabTag().equals("Escaner")){
+			prepararCamara();
+		}
 	}
 	
 	@Override
 	public void onStart() {
 		super.onStart();
-		prepararCamara();
+		if (tabHost.getCurrentTabTag().equals("Escaner")){
+			prepararCamara();
+		}
+		//getScan(tabHost.getCurrentTabTag());
 	}
 
 	
