@@ -21,6 +21,7 @@ import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -467,10 +468,12 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		query.include("PidMarket.AProduct");
 		query.include("PidMarket.AProduct.APrice");
 		query.include("PidMarket.AProduct.APrice.PidMarket");
+		query.include("PidMarket.AProduct.Atags");
 
 		query.include("AidUnits");
 		query.include("AidUnits.PidProduct");
 		query.include("AidUnits.PidProduct.APrice");
+		query.include("AidUnits.PidProduct.Atags");
 		query.include("AidUnits.PidProduct.APrice.PidMarket");
 
 		// Filtramos as lista para cada usuario logueado na app
@@ -611,7 +614,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			cam = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
 			Camera.Parameters parameters = cam.getParameters();
 			cam.setDisplayOrientation(90);
-			// parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+			parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
 			cam.setParameters(parameters);
 
 			cam.setPreviewCallback(new PreviewCallback() {
@@ -737,10 +740,23 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			        		   Intent intent = new Intent(getActivity(), DetailProduct.class);
 			        		   intent.putExtra("NOMEPRODUCTO",productBarcode.getTitle());  
 			        		   //CATEGORIA
+			        		   //intent.putParcelableArrayListExtra("CATEGORIAPRODUCTO", (ArrayList<? extends Parcelable>) productBarcode.getATags());  
+			        		   Bundle b=new Bundle();
+			        		   ArrayList<String> listaTags = new ArrayList<String>();
+			        		  
+			        		   for(Tag tag:productBarcode.getATags()){
+			        			   listaTags.add(tag.getName());
+			        		   }
+			        		   b.putStringArrayList("CATEGORIAPRODUCTO", listaTags);
+			        		   intent.putExtras(b);
 			        		   //IMAGEN
+			        		   intent.putExtra("IMAGEPRODUCTO",productBarcode.getIcon().getUrl());
 			        		   intent.putExtra("DESCRIPCIONPRODUCTO",productBarcode.getDescripcion()); 
 			        		   intent.putExtra("MARCAPRODUCTO",productBarcode.getMarca()); 
-			        		   //SUPERMERCADO Y PRECIO
+			        		   //SUPERMERCADO
+			        		   intent.putExtra("SUPERIMAGE",mMarketSelected.getImage().getUrl()); 
+			        		   //PRECIO
+			        		  // intent.putExtra("PREZOPRODUCTO",productBarcode.getAPrice()); 
 			                   startActivityForResult(intent, 1);
 			                   
 			        	   }else{ //producto encontrado, pero non pertence o supermercado 
@@ -765,6 +781,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(), "Buscando producto en el sistema");
 		progressDialog.show();
 		queryProductos.include("APrice");
+		queryProductos.include("Atags");
 		queryProductos.include("APrice.PidMarket");
 		queryProductos.whereEqualTo("idBarCode",resultadoBarCode);
 		queryProductos.findInBackground(new FindCallback<Produto>() {

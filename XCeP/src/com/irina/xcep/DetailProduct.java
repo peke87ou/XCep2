@@ -1,5 +1,8 @@
 package com.irina.xcep;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,11 +10,12 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.irina.xcep.model.Tag;
 
 public class DetailProduct extends Activity{
 	
 	ButtonRectangle btncancel, btnacept;
-	private String barcode;
+	private String dato;
 	
 	
 	@Override
@@ -21,22 +25,31 @@ public class DetailProduct extends Activity{
 		setContentView(R.layout.activity_detail_product);
 
 		
-		barcode=getIntent().getExtras().getString("NOMEPRODUCTO");
-		((TextView) findViewById(R.id.detail_product_name)).setText( barcode);
+		dato=getIntent().getExtras().getString("NOMEPRODUCTO");
+		((TextView) findViewById(R.id.detail_product_name)).setText( dato);
 		
-		//barcode=getIntent().getExtras().getString("CATEGORIAPRODUCTO");
-		//((TextView) findViewById(R.id.detail_product_category)).setText( barcode);
+		
+		//dato = getIntent().getParcelableArrayListExtra("CATEGORIAPRODUCTO")
+		ArrayList<String> arrayTag;
+		arrayTag = getIntent().getStringArrayListExtra("CATEGORIAPRODUCTO");
+		
+		//for(S)
+		
+		((TextView) findViewById(R.id.detail_product_category)).setText( "Categoría:" + arrayTag );
 		
 		//IMAGEN PRODUCTO
 		
-		barcode=getIntent().getExtras().getString("DESCRIPCIONPRODUCTO");
-		((TextView) findViewById(R.id.detail_product_description)).setText( barcode);
+		dato=getIntent().getExtras().getString("DESCRIPCIONPRODUCTO");
+		((TextView) findViewById(R.id.detail_product_description)).setText( dato);
 		
-		barcode=getIntent().getExtras().getString("MARCAPRODUCTO");
-		((TextView) findViewById(R.id.detail_product_mark)).setText( barcode);
+		dato=getIntent().getExtras().getString("MARCAPRODUCTO");
+		((TextView) findViewById(R.id.detail_product_mark)).setText( dato);
 		
-		//SUPERMERCADO Y PRECIO
+		//SUPERMERCADO 
 		
+		//PRECIO
+//		dato=getIntent().getExtras().getString("PREZOPRODUCTO");
+//		((TextView) findViewById(R.id.priceProduct)).setText( "Prezo: " + dato + " €");
 		//RESTO SUPERMERCADOS Y PRECIOS
 		
 		 
