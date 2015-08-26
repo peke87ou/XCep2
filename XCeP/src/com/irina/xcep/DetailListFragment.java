@@ -300,7 +300,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 
-				Toast.makeText(getActivity(), "Presionado producto "+position, Toast.LENGTH_SHORT).show();
 				addProductToList(productCatalogList.get(position));
 			}
 		});
@@ -431,6 +430,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			
 			unidadSeleccionada.addNumberUnits(1);
 			unidadSeleccionada.saveInBackground();
+			Toast.makeText(getActivity(), "Agregada una unidad de "+unidadSeleccionada.getProduct().getTitle() + ". Total "+unidadSeleccionada.getNumberUnits(), Toast.LENGTH_SHORT).show();
 			
 		}else{ //Nuevo producto a la lista
 			final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(),
