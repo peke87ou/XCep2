@@ -21,7 +21,6 @@ import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -30,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -41,7 +41,6 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gc.materialdesign.views.CheckBox;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.LuminanceSource;
 import com.google.zxing.MultiFormatReader;
@@ -204,14 +203,14 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				
 				
 				CheckBox checkBox = (CheckBox)arg1.findViewById(R.id.checkBoxProdutoCarrito);
-				if(checkBox.isCheck()){
+				if(checkBox.isChecked()){
 					checkBox.setChecked(false);
 					
 				}else{
 					checkBox.setChecked(true);
 				}
 				
-				mListaSelected.getAIdUnits().get(position).setChecked(checkBox.isCheck());
+				mListaSelected.getAIdUnits().get(position).setChecked(checkBox.isChecked());
 				actualizarPrecios();
 			}
 			
@@ -257,7 +256,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             	Toast.makeText(getActivity(), "You Clicked at " + tagList.get(position), Toast.LENGTH_SHORT).show();
             	checkboxTag =  (CheckBox) view.findViewById(R.id.checkBoxTag);
-            	checkboxTag.setChecked(!checkboxTag.isCheck());
+            	checkboxTag.setChecked(!checkboxTag.isChecked());
             	gridTags.setBackgroundColor(getResources().getColor(android.R.color.transparent));
             	
               }

@@ -7,11 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.gc.materialdesign.views.CheckBox;
-import com.gc.materialdesign.views.CheckBox.OnCheckListener;
 import com.irina.xcep.DetailListFragment;
 import com.irina.xcep.R;
 import com.irina.xcep.model.Lista;
@@ -61,19 +62,17 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 		TextView unidadesTextView = ((TextView) celdaView.findViewById(R.id.products_list));
 		TextView precioTextView = ((TextView) celdaView.findViewById(R.id.price_product));
 		CheckBox productoCheckBox = (CheckBox) celdaView.findViewById(R.id.checkBoxProdutoCarrito);
-		productoCheckBox.clearAnimation();
-		productoCheckBox.setOncheckListener(new OnCheckListener() {
+		productoCheckBox.setChecked(productoUnidad.isChecked());
+		productoCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			
 			@Override
-			public void onCheck(CheckBox view, boolean check) {
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				
-				productoUnidad.setChecked(check);
+				productoUnidad.setChecked(isChecked);
 				mFragmentLista.actualizarPrecios();
 			}
 		});
 		
-		productoCheckBox.setChecked(productoUnidad.isChecked());
-
 		
 		nombreProductoTextView.setText(producto.getTitle());
 		List<Prezo> listaPrezos = producto.getAPrice();
