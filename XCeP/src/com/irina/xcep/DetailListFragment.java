@@ -330,7 +330,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 								
 								@Override
 								public void done(ParseException e) {
-									reloadUserShoppingList(progress); //Recargamos la lista seleccionada por el usuario
+									reloadUserShoppingList(progress, false); //Recargamos la lista seleccionada por el usuario
 								}
 							});
 						}
@@ -431,7 +431,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 									e.printStackTrace();
 									progress.dismiss();
 								}else{
-									reloadUserShoppingList(progress);
+									reloadUserShoppingList(progress, false);
 									Log.d(TAG, "Se agrega la unidad a la lista");
 								}
 							}
@@ -462,7 +462,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					@Override
 					public void done(ParseException e) {
 						
-						reloadUserShoppingList(progress); //Recargamos la lista seleccionada por el usuario
+						reloadUserShoppingList(progress, false); //Recargamos la lista seleccionada por el usuario
 					}
 				});
 			}
@@ -474,7 +474,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	 * Se actualizan los datos de la lista actual
 	 */
 	
-	public void reloadUserShoppingList(final ProgressDialog progressDialog) {
+	public void reloadUserShoppingList(final ProgressDialog progressDialog,final boolean reloadCatalogo) {
 		//Recreamos o conxunto de listas de compra do usuario
 		Log.d(TAG, "reloadUserShoppingList"); 
 
@@ -512,15 +512,19 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				
 				if(progressDialog.isShowing()){
 					progressDialog.dismiss();
-
-					if(tabHost.getCurrentTabTag().equals("Lista da compra")){
+				}
+				if(tabHost.getCurrentTabTag().equals("Lista da compra")){
 						adapterUnidadesCarrito = new AdapterUnits(getActivity(), mListaSelected, DetailListFragment.this); //FIXME sobran parámetros de entrada
 						productosListaListView.setAdapter(adapterUnidadesCarrito);
 						adapterUnidadesCarrito.notifyDataSetChanged();
 						//Actualizar precio parcial y total
 						actualizarPrecios();
-					}
 				}
+				
+				if(reloadCatalogo){
+					actualizarCatalogo();
+				}
+				
 			}
 		});
 
@@ -759,7 +763,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(),
 					"Recargando catálogo del supermercado "+mMarketSelected.getName());
 			progressDialog.show();	
-			reloadUserShoppingList(progressDialog);
+			reloadUserShoppingList(progressDialog, true);
+			//actualizarCatalogo();
 		}
 		
 	}
@@ -993,7 +998,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 													@Override
 													public void done(ParseException e) {
 														//dialogoAgregarPrecio.dismiss();
-														reloadUserShoppingList(progressDialog);
+														reloadUserShoppingList(progressDialog, true);
 													}
 												});
 												

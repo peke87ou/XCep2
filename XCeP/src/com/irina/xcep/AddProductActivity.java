@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -148,94 +149,105 @@ public class AddProductActivity extends Activity{
 	
 
 	
-	//Métodos empregados nesta clase
-			/**
-			 * Engade un producto a BD
-			 * @param producto: Producto que se engade a BD
-			 */
-			public void engadirProducto(){
-				
-				String nameProductTxt ="";
-				final Produto addProduct = new Produto();
-				
-				//Barcode
-				barcode=getIntent().getExtras().getString("BARCODE");
-				addProduct.setIdentificadorScan(barcode);
-				
-				//Nome
-				
-				nameProductTxt = nameProduto.getText().toString();
-				addProduct.setTitle(nameProductTxt);
-							
-				//Marca
-				
-				String markProductTxt = markProduto.getText().toString();
-				addProduct.setMarca(markProductTxt);
-				 
-				//Descrición
-				
-				String descriptionProdutoTxt = descriptionProduto.getText().toString();
-				addProduct.setDescripcion(descriptionProdutoTxt);
-				 
-				//foto
-				ByteArrayOutputStream stream = new ByteArrayOutputStream();
-				bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-				byte[] byteArray = stream.toByteArray();
-				if(byteArray == null){
-					Toast.makeText(this, "Error al adjuntar imagen", Toast.LENGTH_SHORT).show();
-					 return;
-				}
-				//FIXME Error en imagenes al rotar
-				//http://www.chinabtp.com/how-to-save-rotated-photos-in-parse-android/
-				 
-				ParseFile imagenProduct = new ParseFile("imagen"+nameProductTxt+Math.random()+".png", byteArray);
-				imagenProduct.saveInBackground();
-				 
-				addProduct.setIcon(imagenProduct);
-				
-				
-				//Prezo
-				priceProduto = (EditText) findViewById(R.id.text_price_product);
-				
-				final Prezo precioProducto = new Prezo();
-				precioProducto.setPrice(Double.parseDouble(priceProduto.getText().toString()));
-				String idMarket= getIntent().getExtras().getString("SUPERID");
-				precioProducto.setPidMarket(ParseObject.createWithoutData("Market", idMarket));
-				//precioProducto.saveInBackground();
-				
-				
-				precioProducto.saveInBackground(new SaveCallback() {
-					
-					@Override
-					public void done(ParseException e) {
-						if(e == null){
-							addProduct.addAPrice(precioProducto.getObjectId());
-							addProduct.saveInBackground(new SaveCallback() {
-								
-								@Override
-								public void done(ParseException e) {
-									
-									if(e!= null){
-										e.printStackTrace();
-									}else{
-										Log.d(TAG, "Se agrega o produto o supermercado");
-									}
-								}
-							});
-						}else{
-							e.printStackTrace();
-						}
-					}
-				});
-				
-				//TAGS multiSelectionSpinner
-				for ( Integer indiceTag:multiSelectionSpinner.getSelectedIndices()){
-					addProduct.addATags(listaTagsProduct.get(indiceTag).getObjectId());
-				}
-				
-				//Guardar Producto
-				 addProduct.saveInBackground(new SaveCallback() {
+	// Métodos empregados nesta clase
+	/**
+	 * Engade un producto a BD
+	 * 
+	 * @param producto
+	 *            : Producto que se engade a BD
+	 */
+	public void engadirProducto() {
+
+		String nameProductTxt = "";
+		final Produto addProduct = new Produto();
+
+		// Barcode
+		barcode = getIntent().getExtras().getString("BARCODE");
+		addProduct.setIdentificadorScan(barcode);
+
+		// Nome
+
+		nameProductTxt = nameProduto.getText().toString();
+		addProduct.setTitle(nameProductTxt);
+
+		// Marca
+
+		String markProductTxt = markProduto.getText().toString();
+		addProduct.setMarca(markProductTxt);
+
+		// Descrición
+
+		String descriptionProdutoTxt = descriptionProduto.getText().toString();
+		addProduct.setDescripcion(descriptionProdutoTxt);
+
+		// foto
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		byte[] byteArray = stream.toByteArray();
+		if (byteArray == null) {
+			Toast.makeText(this, "Error al adjuntar imagen", Toast.LENGTH_SHORT)
+					.show();
+			return;
+		}
+		// FIXME Error en imagenes al rotar
+		// http://www.chinabtp.com/how-to-save-rotated-photos-in-parse-android/
+		
+		final ProgressDialog progressDialog = Utils.crearDialogoEspera(this, "Agregando producto en el sistema");
+		progressDialog.show();
+
+		ParseFile imagenProduct = new ParseFile("imagen" + nameProductTxt
+				+ Math.random() + ".png", byteArray);
+		imagenProduct.saveInBackground();
+
+		addProduct.setIcon(imagenProduct);
+
+		// Prezo
+		priceProduto = (EditText) findViewById(R.id.text_price_product);
+
+		final Prezo precioProducto = new Prezo();
+		precioProducto.setPrice(Double.parseDouble(priceProduto.getText()
+				.toString()));
+		String idMarket = getIntent().getExtras().getString("SUPERID");
+		precioProducto.setPidMarket(ParseObject.createWithoutData("Market",
+				idMarket));
+		// precioProducto.saveInBackground();
+
+		precioProducto.saveInBackground(new SaveCallback() {
+
+			@Override
+			public void done(ParseException e) {
+				if (e == null) {
+					addProduct.addAPrice(precioProducto.getObjectId());
+					addProduct.saveInBackground(new SaveCallback() {
+
 						@Override
+						public void done(ParseException e) {
+
+							if (e != null) {
+								e.printStackTrace();
+								progressDialog.dismiss();
+								Toast.makeText(AddProductActivity.this, "Error al guardar precio", Toast.LENGTH_SHORT).show();
+							} else {
+								Log.d(TAG, "Se agrega o produto o supermercado");
+							}
+						}
+					});
+				} else {
+					progressDialog.dismiss();
+					Toast.makeText(AddProductActivity.this, "Error al guardar precio", Toast.LENGTH_SHORT).show();
+					e.printStackTrace();
+				}
+			}
+		});
+
+		// TAGS multiSelectionSpinner
+		for (Integer indiceTag : multiSelectionSpinner.getSelectedIndices()) {
+			addProduct.addATags(listaTagsProduct.get(indiceTag).getObjectId());
+		}
+
+		// Guardar Producto
+		addProduct.saveInBackground(new SaveCallback() {
+			@Override
 			public void done(ParseException arg0) {
 				if (arg0 == null) {
 
@@ -263,99 +275,101 @@ public class AddProductActivity extends Activity{
 							Supermercado supermercado = objects.get(0);
 							supermercado.addAproduct(addProduct.getObjectId());
 							supermercado.saveInBackground();
-
 						}
 					});
 
-							Toast.makeText(AddProductActivity.this, "Engadimos O producto a BD ", Toast.LENGTH_SHORT).show();
-							Log.i("Producto", "Engadimos O producto a BD ");
-							finish();	
-								
-							}else{
-								Toast.makeText(AddProductActivity.this, R.string.error_add_list+" " + arg0.getMessage(), Toast.LENGTH_SHORT).show();
-								Log.e("Producto", "ERROR O ENGADIR NA BD ");
-							}
-						}
+					progressDialog.dismiss();
+					Toast.makeText(AddProductActivity.this,
+							"Producto engadido", Toast.LENGTH_SHORT)
+							.show();
+					Log.i("Producto", "Engadimos O producto a BD ");
+					finish();
+
+				} else {
+					progressDialog.dismiss();
+					Toast.makeText(AddProductActivity.this,
+							R.string.error_add_list + " " + arg0.getMessage(),
+							Toast.LENGTH_SHORT).show();
+					Log.e("Producto", "ERROR O ENGADIR NA BD ");
+				}
+			}
+		});
+
+	}
+
+	private void startDialog() {
+		AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
+		myAlertDialog.setTitle("Adxuntar fotografía");
+		myAlertDialog.setMessage("Seleccione donde buscar a fotografía");
+
+		myAlertDialog.setPositiveButton("Galería",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface arg0, int arg1) {
+						pictureActionIntent = new Intent(
+								Intent.ACTION_GET_CONTENT, null);
+						pictureActionIntent.setType("image/*");
+						pictureActionIntent.putExtra("return-data", true);
+						startActivityForResult(pictureActionIntent,
+								GALLERY_PICTURE);
+					}
 				});
-				 
-				 
- 
-				
+
+		myAlertDialog.setNegativeButton("Camara",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface arg0, int arg1) {
+						pictureActionIntent = new Intent(
+								android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+						startActivityForResult(pictureActionIntent,
+								CAMERA_REQUEST);
+
+					}
+				});
+		myAlertDialog.show();
+	}
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// ImageView fotomarket = (ImageView)
+		// findViewById(R.id.image_view_market);
+
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == GALLERY_PICTURE) {
+			if (resultCode == RESULT_OK) {
+				if (data != null) {
+					fotoProducto.setImageURI(data.getData());
+					bitmap = ((BitmapDrawable) fotoProducto.getDrawable())
+							.getBitmap();
+					txtengadirImaxe.setVisibility(View.GONE);
+				} else {
+					Toast.makeText(getApplicationContext(), "Cancelled",
+							Toast.LENGTH_SHORT).show();
+				}
+			} else if (resultCode == RESULT_CANCELED) {
+				Toast.makeText(getApplicationContext(), "Cancelled",
+						Toast.LENGTH_SHORT).show();
 			}
-			
-			
-			private void startDialog() {
-			    AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
-			    myAlertDialog.setTitle("Adxuntar fotografía");
-			    myAlertDialog.setMessage("Seleccione donde buscar a fotografía");
+		} else if (requestCode == CAMERA_REQUEST) {
+			if (resultCode == RESULT_OK) {
+				if (data.hasExtra("data")) {
 
-			    myAlertDialog.setPositiveButton("Galería",
-			            new DialogInterface.OnClickListener() {
-			                public void onClick(DialogInterface arg0, int arg1) {
-			                    pictureActionIntent = new Intent(
-			                            Intent.ACTION_GET_CONTENT, null);
-			                    pictureActionIntent.setType("image/*");
-			                    pictureActionIntent.putExtra("return-data", true);
-			                    startActivityForResult(pictureActionIntent,
-			                            GALLERY_PICTURE);
-			                }
-			            });
+					bitmap = (Bitmap) data.getExtras().get("data");
+					bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false);
+					fotoProducto.setImageBitmap(bitmap);
+					txtengadirImaxe.setVisibility(View.GONE);
 
-			    myAlertDialog.setNegativeButton("Camara",
-			            new DialogInterface.OnClickListener() {
-			                public void onClick(DialogInterface arg0, int arg1) {
-			                    pictureActionIntent = new Intent(
-			                            android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-			                    startActivityForResult(pictureActionIntent,
-			                            CAMERA_REQUEST);
+				} else if (data.getExtras() == null) {
 
-			                }
-			            });
-			    myAlertDialog.show();
+					Toast.makeText(getApplicationContext(),
+							"Non se obtuvo a fotografía", Toast.LENGTH_SHORT)
+							.show();
+
+				}
+
+			} else if (resultCode == RESULT_CANCELED) {
+				Toast.makeText(getApplicationContext(),
+						"Cancelouse a fotografía", Toast.LENGTH_SHORT).show();
 			}
+		}
 
-			protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-				//ImageView fotomarket = (ImageView) findViewById(R.id.image_view_market);
-
-			    super.onActivityResult(requestCode, resultCode, data);
-			    if (requestCode == GALLERY_PICTURE) {
-			        if (resultCode == RESULT_OK) {
-			            if (data != null) {
-			            	fotoProducto.setImageURI(data.getData());
-		                    bitmap =  ((BitmapDrawable)fotoProducto.getDrawable()).getBitmap();
-		                    txtengadirImaxe.setVisibility(View.GONE);
-			            } else {
-			                Toast.makeText(getApplicationContext(), "Cancelled",
-			                        Toast.LENGTH_SHORT).show();
-			            }
-			        } else if (resultCode == RESULT_CANCELED) {
-			            Toast.makeText(getApplicationContext(), "Cancelled",
-			                    Toast.LENGTH_SHORT).show();
-			        }
-			    } else if (requestCode == CAMERA_REQUEST) {
-			        if (resultCode == RESULT_OK) {
-			            if (data.hasExtra("data")) {
-
-			                bitmap = (Bitmap) data.getExtras().get("data");
-			                bitmap = Bitmap.createScaledBitmap(bitmap, 100,
-			                        100, false);
-			                fotoProducto.setImageBitmap(bitmap);
-			                txtengadirImaxe.setVisibility(View.GONE);
-			                
-			            } else if (data.getExtras() == null) {
-
-			                Toast.makeText(getApplicationContext(),
-			                        "Non se obtuvo a fotografía", Toast.LENGTH_SHORT)
-			                        .show();
-
-			            }
-
-			        } else if (resultCode == RESULT_CANCELED) {
-			            Toast.makeText(getApplicationContext(), "Cancelouse a fotografía",
-			                    Toast.LENGTH_SHORT).show();
-			        }
-			    }
-
-			}
+	}
 
 }
