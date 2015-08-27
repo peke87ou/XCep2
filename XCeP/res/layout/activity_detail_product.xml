@@ -114,12 +114,12 @@
         android:orientation="horizontal" >
 
         <com.gc.materialdesign.views.ButtonRectangle
-            android:id="@+id/share_product"
+            android:id="@+id/close_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:background="@color/verde_oscuro"
-            android:text="Compartir"
+            android:text="Pechar"
             materialdesign:animate="true" >
         </com.gc.materialdesign.views.ButtonRectangle>
 

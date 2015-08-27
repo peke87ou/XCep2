@@ -73,7 +73,7 @@ public class DetailProduct extends Activity{
 		listViewMarketPrice.setAdapter(adapter);
 		
 		
-		btncancel = (ButtonRectangle) findViewById(R.id.share_product);
+		btncancel = (ButtonRectangle) findViewById(R.id.close_dialog);
 		btncancel.setOnClickListener(new OnClickListener() {
 			
 			@Override
