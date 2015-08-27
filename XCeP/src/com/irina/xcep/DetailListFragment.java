@@ -257,12 +257,22 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				        		 intent.putExtra("SUPERIMAGE",mMarketSelected.getImage().getUrl()); 
 				        		 //PRECIO
 				        		 ArrayList<String> listaPrice = new ArrayList<String>();
+				        		 ArrayList<String> listaNombresSupermercados = new ArrayList<String>();
+				        		 ArrayList<String> listaUrlsSupermercados = new ArrayList<String>();
+				        		 ArrayList<String> listaIdSupermercados = new ArrayList<String>();
 				        		 for(Prezo price:mListaSelected.getAIdUnits().get(pos).getProduct().getAPrice()){
 				        			 listaPrice.add(price.getPrice().toString());
+				        			 listaNombresSupermercados.add(price.getPidMarket().getName());
+				        			 listaUrlsSupermercados.add(price.getPidMarket().getImage().getUrl());
+				        			 listaIdSupermercados.add(price.getPidMarket().getObjectId());
 				        		 }
 				        		 b.putStringArrayList("PREZOPRODUCTO", listaPrice);
+				        		 //b.putStringArrayList("NOMESUPERMERCADO", listaNombresSupermercados);
+				        		 b.putStringArrayList("URLSUPERMERCADO", listaUrlsSupermercados);
+				        		 b.putStringArrayList("IDSUPERMERCADO", listaIdSupermercados);
+				        		 intent.putExtra("SUPERID",mMarketSelected.getObjectId()); 
 				        		 intent.putExtras(b);
-
+				        						        		
 				        		 startActivityForResult(intent, 1);
 				                   
 		                    }else{
