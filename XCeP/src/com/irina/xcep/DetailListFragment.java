@@ -185,7 +185,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 
 				case "Catálogo":
 					actualizarCatalogo();
-					getTags();
+					if(tagList.size() == 0){
+						getTags();
+					}
 					break;
 					
 				default:
@@ -296,10 +298,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            	Toast.makeText(getActivity(), "You Clicked at " + tagList.get(position), Toast.LENGTH_SHORT).show();
             	checkboxTag =  (CheckBox) view.findViewById(R.id.checkBoxTag);
             	checkboxTag.setChecked(!checkboxTag.isChecked());
-            	
             	actualizarCatalogo();
               }
             
