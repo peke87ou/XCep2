@@ -36,6 +36,9 @@ import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
 public class AddProductActivity extends Activity{
+	
+	public static final int requestCode = 2;
+	
 	public static final String TAG = AddProductActivity.class.getName();
 	ButtonRectangle btncancel, btnacept;
 	private String barcode;

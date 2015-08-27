@@ -16,6 +16,10 @@ import com.squareup.picasso.Picasso;
 
 public class DetailProduct extends Activity{
 	
+	public static final int requestCode = 1;
+	public static final int resultCodeAdd = 1;
+	public static final int resultCodeNoAdd = 0;
+	
 	ButtonRectangle btncancel, btnacept;
 	private String dato;
 	private String superIdLista;
@@ -52,18 +56,10 @@ public class DetailProduct extends Activity{
 		dato=getIntent().getExtras().getString("MARCAPRODUCTO");
 		((TextView) findViewById(R.id.detail_product_mark)).setText( dato);
 		
-		//SUPERMERCADO 
-//		ImageView imageMarket =  (ImageView) findViewById(R.id.ImageMarket);
-//		dato=getIntent().getExtras().getString("SUPERIMAGE");
-//		Picasso.with(this).load(dato).into(imageMarket);
-//		
 		//PRECIO
 		ArrayList<String> arrayPrice;
 		arrayPrice = getIntent().getStringArrayListExtra("PREZOPRODUCTO");
 		
-//		ArrayList<String> listaNombresSupermercados;
-//		listaNombresSupermercados = getIntent().getStringArrayListExtra("NOMESUPERMERCADO");
-//		
 		ArrayList<String> listaUrlsSupermercados;
 		listaUrlsSupermercados = getIntent().getStringArrayListExtra("URLSUPERMERCADO");
 		
@@ -71,7 +67,6 @@ public class DetailProduct extends Activity{
 		listaIdSupermercados = getIntent().getStringArrayListExtra("IDSUPERMERCADO");
 		
 		superIdLista=getIntent().getExtras().getString("SUPERID");
-		//dato = "";
 
 		listViewMarketPrice = (ListView) findViewById(R.id.listMarketPrice);
 		adapter = new AdapterMarketPrice(this, listaUrlsSupermercados, arrayPrice, superIdLista, listaIdSupermercados);
@@ -83,8 +78,9 @@ public class DetailProduct extends Activity{
 			
 			@Override
 			public void onClick(View v) {
-				//finish();
 				
+				setResult(resultCodeNoAdd);
+				finish();
 			}
 		});
 		
@@ -93,9 +89,9 @@ public class DetailProduct extends Activity{
 			
 			@Override
 			public void onClick(View v) {
-				//Engadimos a nova lista a BD
 				
-				
+				setResult(resultCodeAdd);
+				finish();
 			}
 		});
 	}

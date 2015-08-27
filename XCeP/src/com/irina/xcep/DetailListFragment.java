@@ -219,11 +219,11 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			}
 			
 		});
+		
 		productosListaListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int pos, long id) {
-            	//objectIdProduct = productCatalogList.get(pos).getObjectId();
-            	//showDialogoModificarProducto();
+
             	final String[] items = {"Cambiar unidades", "Ver o detalle do Produto", "Eliminar o Produto"};
        		 
 		        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -235,52 +235,15 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		                    if (items[item].equalsIgnoreCase("Cambiar unidades")){
 		                    	
 		         				showDialogoModificarCantidadProducto(mListaSelected.getAIdUnits().get(pos)); 
-		                    }else 
-		                    	if(items[item].equalsIgnoreCase("Ver o detalle do Produto")){
-		                    	 Log.i("Dialogos", "Opción elegida: " + items[item]);
-		                    	 Intent intent = new Intent(getActivity(), DetailProduct.class);
-				        		 intent.putExtra("NOMEPRODUCTO",mListaSelected.getAIdUnits().get(pos).getProduct().getTitle());  
-				        		 //CATEGORIA
-				        		 Bundle b=new Bundle();
-				        		 ArrayList<String> listaTags = new ArrayList<String>();
-				        		 if(mListaSelected.getAIdUnits().get(pos).getProduct().getATags()!=null){
-				        			 for(Tag tag:mListaSelected.getAIdUnits().get(pos).getProduct().getATags()){
-					        			   listaTags.add(tag.getName());
-					        		 }
-				        		 }
-				        		 
-				        		 b.putStringArrayList("CATEGORIAPRODUCTO", listaTags);
-				        		 intent.putExtras(b);
-				        		 //IMAGEN
-				        		 intent.putExtra("IMAGEPRODUCTO",mListaSelected.getAIdUnits().get(pos).getProduct().getIcon().getUrl());
-				        		 intent.putExtra("DESCRIPCIONPRODUCTO",mListaSelected.getAIdUnits().get(pos).getProduct().getDescripcion()); 
-				        		 intent.putExtra("MARCAPRODUCTO",mListaSelected.getAIdUnits().get(pos).getProduct().getMarca()); 
-				        		 //SUPERMERCADO
-				        		 intent.putExtra("SUPERIMAGE",mMarketSelected.getImage().getUrl()); 
-				        		 //PRECIO
-				        		 ArrayList<String> listaPrice = new ArrayList<String>();
-				        		 ArrayList<String> listaNombresSupermercados = new ArrayList<String>();
-				        		 ArrayList<String> listaUrlsSupermercados = new ArrayList<String>();
-				        		 ArrayList<String> listaIdSupermercados = new ArrayList<String>();
-				        		 for(Prezo price:mListaSelected.getAIdUnits().get(pos).getProduct().getAPrice()){
-				        			 listaPrice.add(price.getPrice().toString());
-				        			 listaNombresSupermercados.add(price.getPidMarket().getName());
-				        			 listaUrlsSupermercados.add(price.getPidMarket().getImage().getUrl());
-				        			 listaIdSupermercados.add(price.getPidMarket().getObjectId());
-				        		 }
-				        		 b.putStringArrayList("PREZOPRODUCTO", listaPrice);
-				        		 //b.putStringArrayList("NOMESUPERMERCADO", listaNombresSupermercados);
-				        		 b.putStringArrayList("URLSUPERMERCADO", listaUrlsSupermercados);
-				        		 b.putStringArrayList("IDSUPERMERCADO", listaIdSupermercados);
-				        		 intent.putExtra("SUPERID",mMarketSelected.getObjectId()); 
-				        		 intent.putExtras(b);
-				        						        		
-				        		 startActivityForResult(intent, 1);
+		                    
+		                    }else if(items[item].equalsIgnoreCase("Ver o detalle do Produto")){
+		                    		
+		                    	lanzarDetalleProducto(mListaSelected.getAIdUnits().get(pos).getProduct(), mMarketSelected);
 				                   
 		                    }else{
+		                    	
 		                    	 Log.i("Dialogos", "Opción elegida: " + items[item]);
 		                    	 removeProductToList(mListaSelected.getAIdUnits().get(pos));
-		                    	 
 		                    }
 		                }
 		            });
@@ -735,7 +698,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 							Log.e("valor de resultado", resultado.getText());
 							if (resultado != null && resultadoBarCode == null) {
 								resultadoBarCode = resultado.getText();
-								showDialogoAgregarProducto();
+								showDialogoBarcodeEncontrado();
 
 							}
 
@@ -787,87 +750,72 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
-		final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(),
-				"Recargando catálogo del supermercado "+mMarketSelected.getName());
-		progressDialog.show();
+		if((requestCode == DetailProduct.requestCode) && (resultCode == DetailProduct.resultCodeAdd)){
+			
+			addProductToList(productBarcode);
+			
+		}else if (requestCode == AddProductActivity.requestCode){
 		
-		//FIXME recargar correctamente el catálogo, no se está mostrando el último producto
-		reloadUserShoppingList(progressDialog);
+			final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(),
+					"Recargando catálogo del supermercado "+mMarketSelected.getName());
+			progressDialog.show();	
+			reloadUserShoppingList(progressDialog);
+		}
+		
 	}
 
 
 
-	public void showDialogoAgregarProducto(){
+	public void showDialogoBarcodeEncontrado(){
 		
-		if(dialogoAgregarProducto == null){
-			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-			builder.setCancelable(false);
-			builder.setPositiveButton("Engadir produto", new DialogInterface.OnClickListener() {
-			           public void onClick(DialogInterface dialog, int id) {
-			        	   
-		        		   barcode = resultadoBarCode;
-		        		   resultadoBarCode = null;
-		        		   
-			        	   if(!isProductoEnParse){ //Producto novo
-			        		   
-				        	   Intent intent = new Intent(getActivity(), AddProductActivity.class);
-				        	   Log.i("AddProduct QUE ENVIA", barcode);
-				        	   intent.putExtra("SUPERNAME",mMarketSelected.getName()); 
-				        	   intent.putExtra("SUPERIMAGE",mMarketSelected.getImage().getUrl()); 
-				        	   intent.putExtra("SUPERID",mMarketSelected.getObjectId());  
-				        	   intent.putExtra("BARCODE",barcode);  
-			                   startActivityForResult(intent, 1);
-			        	   
-			        	   }else if(isProductoEnSupermercado){ //Producto encontrado, e que pertence o supermercado
-			        		   
-			        		   Log.i("DetailProduct QUE ENVIA", productBarcode.getTitle());
-			        		   Intent intent = new Intent(getActivity(), DetailProduct.class);
-			        		   intent.putExtra("NOMEPRODUCTO",productBarcode.getTitle());  
-			        		   //CATEGORIA
-			        		   Bundle b=new Bundle();
-			        		   ArrayList<String> listaTags = new ArrayList<String>();
-			        		   for(Tag tag:productBarcode.getATags()){
-			        			   listaTags.add(tag.getName());
-			        		   }
-			        		   b.putStringArrayList("CATEGORIAPRODUCTO", listaTags);
-			        		   intent.putExtras(b);
-			        		   //IMAGEN
-			        		   intent.putExtra("IMAGEPRODUCTO",productBarcode.getIcon().getUrl());
-			        		   intent.putExtra("DESCRIPCIONPRODUCTO",productBarcode.getDescripcion()); 
-			        		   intent.putExtra("MARCAPRODUCTO",productBarcode.getMarca()); 
-			        		   //SUPERMERCADO
-			        		   intent.putExtra("SUPERIMAGE",mMarketSelected.getImage().getUrl()); 
-			        		   //PRECIO
-			        		   ArrayList<String> listaPrice = new ArrayList<String>();
-			        		   for(Prezo price:productBarcode.getAPrice()){
-			        			   listaPrice.add(price.getPrice().toString());
-			        		   }
-			        		   b.putStringArrayList("PREZOPRODUCTO", listaPrice);
-			        		   intent.putExtras(b);
 
-			        		   startActivityForResult(intent, 1);
-			                   
-			        	   }else{ //producto encontrado, pero non pertence o supermercado 
-			        		   
-			        		   showDialogoAgregarPrecio();
-			        	   }
-			        	  
-			           }
-			       });
-			
-			builder.setNegativeButton("Pechar", new DialogInterface.OnClickListener() {
-			           public void onClick(DialogInterface dialog, int id) {
-			              resultadoBarCode = null;
-			           }
-			});
-			
-			dialogoAgregarProducto = builder.create();
-		}
+		AlertDialog.Builder builderDialogoAgregarProducto = new AlertDialog.Builder(
+				getActivity());
+		builderDialogoAgregarProducto.setCancelable(false);
+		builderDialogoAgregarProducto.setPositiveButton("Engadir produto",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+
+						barcode = resultadoBarCode;
+						resultadoBarCode = null;
+
+						if (isProductoEnParse && isProductoEnSupermercado) { // Producto en el sistema, y en el supermercado de la lista
+
+							lanzarDetalleProducto(productBarcode, mMarketSelected);
+
+						} else if (isProductoEnParse) { // Producto en el sistema, pero no en el supermercado
+
+							showDialogoAgregarPrecio();
+
+						} else { // Producto que non se encontra no sistema
+
+							Intent intent = new Intent(getActivity(), AddProductActivity.class);
+							Log.i("AddProduct QUE ENVIA", barcode);
+							intent.putExtra("SUPERNAME", mMarketSelected.getName());
+							intent.putExtra("SUPERIMAGE", mMarketSelected.getImage().getUrl());
+							intent.putExtra("SUPERID", mMarketSelected.getObjectId());
+							intent.putExtra("BARCODE", barcode);
+							startActivityForResult(intent, AddProductActivity.requestCode);
+						}
+
+					}
+				});
+
+		builderDialogoAgregarProducto.setNegativeButton("Pechar",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						resultadoBarCode = null;
+					}
+				});
+
+		dialogoAgregarProducto = builderDialogoAgregarProducto.create();
+		
 		
 		// Mirar se existe na BD
 		ParseQuery<Produto> queryProductos = ParseQuery.getQuery(Produto.class);
 		final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(), "Buscando producto en el sistema");
 		progressDialog.show();
+		//FIXME ver si estamos incluyendo todo
 		queryProductos.include("APrice");
 		queryProductos.include("Atags");
 		queryProductos.include("APrice.PidMarket");
@@ -898,29 +846,75 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 						isProductoEnParse = false;
 					}
 					
+					
 					Log.i("Esta en parse", isProductoEnParse+"");
 					if(isProductoEnParse && isProductoEnSupermercado){ //Producto en el sistema, y en el supermercado de la lista
 						
 						dialogoAgregarProducto.setTitle("Produto atopado");
-						dialogoAgregarProducto.setMessage("Atopouse o produto "+productBarcode.getTitle()+"("+resultadoBarCode +")\n¿Desexa engadilo a súa lista?");
+						dialogoAgregarProducto.setMessage("Atopouse o produto "+productBarcode.getTitle()+"("+resultadoBarCode +")\n para o supermercado "+mMarketSelected.getName());
+						dialogoAgregarProducto.show();
+						dialogoAgregarProducto.getButton(AlertDialog.BUTTON_POSITIVE).setText("Ver detalle");
 						
 					}else if(isProductoEnParse){ //Producto en el sistema, pero no en el supermercado
 						
 						dialogoAgregarProducto.setTitle("Producto atopado");
 						dialogoAgregarProducto.setMessage("Atopuse o producto "+productBarcode.getTitle()+"("+resultadoBarCode + ", pero non consta no supermercado "+mMarketSelected.getName()
 								+". \n"+"\n¿Desexa engadilo ao supermercado "+mMarketSelected.getName()+"?");
-					
+						dialogoAgregarProducto.show();
+						
 					}else{ //Producto que non se encontra no sistema
 						
 						dialogoAgregarProducto.setTitle("Produto novo");
 						dialogoAgregarProducto.setMessage("Atopouse o produto  con identificador: "+resultadoBarCode+"\n¿Desexa engadilo o sistema para o supermercado? ");
+						dialogoAgregarProducto.show();
 					}
-					
-					dialogoAgregarProducto.show();
+
 				}
 			}
 		});
 	
+	}
+	
+	public void lanzarDetalleProducto(Produto producto, Supermercado supermercado){
+		
+		Intent intent = new Intent(getActivity(), DetailProduct.class);
+		 intent.putExtra("NOMEPRODUCTO",producto.getTitle());  
+		 //CATEGORIA
+		 Bundle b=new Bundle();
+		 ArrayList<String> listaTags = new ArrayList<String>();
+		 if(producto.getATags()!=null){
+			 for(Tag tag:producto.getATags()){
+   			   listaTags.add(tag.getName());
+   		 }
+		 }
+		 
+		 b.putStringArrayList("CATEGORIAPRODUCTO", listaTags);
+		 intent.putExtras(b);
+		 //IMAGEN
+		 intent.putExtra("IMAGEPRODUCTO",producto.getIcon().getUrl());
+		 intent.putExtra("DESCRIPCIONPRODUCTO",producto.getDescripcion()); 
+		 intent.putExtra("MARCAPRODUCTO",producto.getMarca()); 
+		 //SUPERMERCADO
+		 intent.putExtra("SUPERIMAGE",supermercado.getImage().getUrl()); 
+		 //PRECIO
+		 ArrayList<String> listaPrice = new ArrayList<String>();
+		 ArrayList<String> listaNombresSupermercados = new ArrayList<String>();
+		 ArrayList<String> listaUrlsSupermercados = new ArrayList<String>();
+		 ArrayList<String> listaIdSupermercados = new ArrayList<String>();
+		 for(Prezo price:producto.getAPrice()){
+			 listaPrice.add(price.getPrice().toString());
+			 listaNombresSupermercados.add(price.getPidMarket().getName());
+			 listaUrlsSupermercados.add(price.getPidMarket().getImage().getUrl());
+			 listaIdSupermercados.add(price.getPidMarket().getObjectId());
+		 }
+		 b.putStringArrayList("PREZOPRODUCTO", listaPrice);
+		 //b.putStringArrayList("NOMESUPERMERCADO", listaNombresSupermercados);
+		 b.putStringArrayList("URLSUPERMERCADO", listaUrlsSupermercados);
+		 b.putStringArrayList("IDSUPERMERCADO", listaIdSupermercados);
+		 intent.putExtra("SUPERID",supermercado.getObjectId()); 
+		 intent.putExtras(b);
+						        		
+		 startActivityForResult(intent, DetailProduct.requestCode);
 	}
 	
 	/**
