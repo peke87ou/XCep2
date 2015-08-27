@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" 
+    android:padding="1dp" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="1dp" >
 
         <CheckBox
             android:id="@+id/checkBoxTag"
@@ -17,22 +14,12 @@
             android:focusable="false">
 
         </CheckBox>
-
-        <LinearLayout
-            android:layout_width="136dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.74"
-            android:orientation="vertical"
-            android:padding="4dp" >
-
-            <TextView
-                android:id="@+id/products_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tag"
-                android:gravity="center"
-                android:textColor="#000000" />
-        </LinearLayout>
-    </LinearLayout>
+        <TextView 
+            android:id="@+id/tagNameGrid" 
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content" 
+            android:gravity="center"
+            android:layout_marginTop="4dp" 
+            android:textColor="#000000" />
 
 </LinearLayout>

@@ -184,7 +184,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					break;
 
 				case "Catálogo":
-					getCatalogo();
+					actualizarCatalogo();
+					getTags();
 					break;
 					
 				default:
@@ -280,6 +281,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		gridTags=(GridView) home.findViewById(R.id.grid_tags);
         gridTags.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
+        gridTags.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         gridTags.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -287,8 +289,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
             	Toast.makeText(getActivity(), "You Clicked at " + tagList.get(position), Toast.LENGTH_SHORT).show();
             	checkboxTag =  (CheckBox) view.findViewById(R.id.checkBoxTag);
             	checkboxTag.setChecked(!checkboxTag.isChecked());
-            	gridTags.setBackgroundColor(getResources().getColor(android.R.color.transparent));
             	
+            	actualizarCatalogo();
               }
             
         });
@@ -570,9 +572,25 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	}
 	
 
-	private void getCatalogo(){
+	public void actualizarCatalogo(){
+        
+		productCatalogList.clear();
+		mMarketSelected = mListaSelected.getSupermercado();
+		Supermercado supermercado = mMarketSelected;
+		List<Produto> productosSupermercado = supermercado.getAProduct();
 		
-		adapterTag = new AdapterTags(getActivity(), tagList);
+		productosSupermercado = filtrarProductos(productosSupermercado);
+		if(productosSupermercado != null){
+			productCatalogList.addAll(productosSupermercado);
+		}
+		
+		adapterProductoCatalog = new AdapterProductsCatalog(getActivity(), productCatalogList, mMarketSelected);
+		catalogoListView.setAdapter(adapterProductoCatalog); 	
+	}
+	
+	private void getTags(){
+		
+		adapterTag = new AdapterTags(getActivity(), tagList, this);
         
         ParseQuery<Tag> query = ParseQuery.getQuery(Tag.class);
 		query.findInBackground(new FindCallback<Tag>() {
@@ -585,19 +603,52 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					gridTags.setAdapter(adapterTag);
 			}
 		});
-        
-		productCatalogList.clear();
-		mMarketSelected = mListaSelected.getSupermercado();
-		Supermercado supermercado = mMarketSelected;
-		List<Produto> productosSupermercado = supermercado.getAProduct();
-		if(productosSupermercado != null){
-			productCatalogList.addAll(productosSupermercado);
-		}
-		
-		adapterProductoCatalog = new AdapterProductsCatalog(getActivity(), productCatalogList, mMarketSelected);
-		catalogoListView.setAdapter(adapterProductoCatalog); 	
 	}
 	
+	private List<Produto> filtrarProductos(List<Produto> listaProdutos){
+		
+		List<String> tagsSeleccionados = new ArrayList<String>();
+		List<Produto> tempListaProdutos = new ArrayList<Produto>();
+		
+		for(int i=0; i < gridTags.getChildCount(); i++){ //Calculamos tags seleccionados
+			
+			ViewGroup viewRow = (ViewGroup)gridTags.getChildAt(i);
+			
+			for (int n=0; n < viewRow.getChildCount(); n++){
+				
+				View viewTag = viewRow.getChildAt(n);
+				if(viewTag instanceof CheckBox){
+					if(((CheckBox)viewTag).isChecked()){
+						tagsSeleccionados.add((String)viewTag.getTag());
+						Log.d(TAG, "Tag en filtro: "+(String)viewTag.getTag());
+					}
+				}
+			}
+		}
+		
+		if(tagsSeleccionados.size() == 0){ //Ningún tag seleccionado, entonces no se filtra
+			Log.d(TAG, "Ningún tag seleccionado");
+			return listaProdutos;
+		}
+		
+		
+		for(Produto nProduto:listaProdutos){ //Filtramos por tag
+			
+			if(nProduto.getATags() == null)
+				continue;
+			
+			for (Tag tagProduto:nProduto.getATags()){
+				
+				if(tagsSeleccionados.contains(tagProduto.getName())){
+					tempListaProdutos.add(nProduto);
+					break;
+				}
+			}
+		}
+		
+		
+		return tempListaProdutos;
+	}
 
 	
 	@Override
