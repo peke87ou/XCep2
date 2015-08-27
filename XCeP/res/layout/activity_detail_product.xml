@@ -5,25 +5,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp" >
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center" >
 
-         <TextView
-             android:id="@+id/detail_product_name"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:gravity="center_horizontal"
-             android:padding="10dp"
-             android:text="Nome Producto"
-             android:textColor="@color/verde_oscuro"
-             android:textSize="20dp"
-             android:textStyle="bold|italic"
-             />
-
-	</LinearLayout>
+        <TextView
+            android:id="@+id/detail_product_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:text="Nome Producto"
+            android:textColor="@color/verde_oscuro"
+            android:textSize="20dp"
+            android:textStyle="bold|italic" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,16 +33,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="Categoría: " 
+            android:text="Categoría: "
             android:textColor="@color/verde_oscuro"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/detail_product_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -57,7 +54,6 @@
             android:layout_width="match_parent"
             android:layout_height="104dp"
             android:src="@drawable/abc_ic_clear" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -79,7 +75,6 @@
             android:layout_width="match_parent"
             android:layout_height="66dp"
             android:padding="10dp" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -100,46 +95,17 @@
             android:id="@+id/detail_product_mark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"  />
-
+            android:padding="10dp" />
     </LinearLayout>
 
-     <LinearLayout
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:layout_weight="0.76"
-         
-         android:orientation="horizontal" >
+    <ListView
+        android:id="@+id/listMarketPrice"
+        android:layout_width="188dp"
+        android:layout_height="112dp"
+        android:layout_gravity="right"
+        android:layout_weight="0.65" >
 
-         <ImageView
-             android:id="@+id/ImageMarket"
-             android:layout_width="50dp"
-             android:layout_height="wrap_content"
-             android:src="@drawable/abc_ic_clear" />
-
-         <TextView
-             android:id="@+id/TextView03"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:padding="10dp"
-             android:text="Prezo: "
-             android:textColor="@color/verde_oscuro"
-             android:textStyle="bold" />
-
-         <TextView
-             android:id="@+id/priceProduct"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:gravity="center_vertical"
-             android:text=" €" />
-
-    </LinearLayout>
-
-     <ListView
-         android:id="@+id/listView1"
-         android:layout_width="match_parent"
-         android:layout_height="86dp" >
-     </ListView>
+    </ListView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -155,7 +121,6 @@
             android:background="@color/verde_oscuro"
             android:text="Compartir"
             materialdesign:animate="true" >
-
         </com.gc.materialdesign.views.ButtonRectangle>
 
         <com.gc.materialdesign.views.ButtonRectangle
