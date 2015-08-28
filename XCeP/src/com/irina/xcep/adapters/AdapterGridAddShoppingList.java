@@ -19,7 +19,6 @@ import com.squareup.picasso.Picasso;
 public class AdapterGridAddShoppingList extends ArrayAdapter<Supermercado>{
 	 Context mContext;
 	 List<Supermercado> listaSuper;
-	 //private Supermercado addSuper;
 	 
       public AdapterGridAddShoppingList(Context context, List<Supermercado> lista) {
 		super(context,0, lista);
@@ -61,19 +60,16 @@ public class AdapterGridAddShoppingList extends ArrayAdapter<Supermercado>{
 
 	@Override
 	public int getCount() {
-		//return super.getCount();
 		return listaSuper.size() + 1;
 	}
 
 	@Override
 	public void addAll(Collection<? extends Supermercado> collection) {
-		// TODO Auto-generated method stub
 		super.addAll(collection);
 	}
 
 	@Override
 	public void addAll(Supermercado... items) {
-		// TODO Auto-generated method stub
 		super.addAll(items);
 	}
 
