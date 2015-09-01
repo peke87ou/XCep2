@@ -10,7 +10,9 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,22 +22,44 @@ import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Supermercado;
 import com.squareup.picasso.Picasso;
 
-public class AdapterProductsCatalog extends ArrayAdapter<Produto> {
+public class AdapterProductsCatalog extends BaseAdapter implements Filterable{
 
 	private static Map<String, Bitmap> mImagenes = new HashMap<String, Bitmap>();
-
 	private Supermercado supermercado;
+	private  List<Produto> mProductos, mProductosFiltrados;
+	private Context mContext;
 	
 	public AdapterProductsCatalog(Context context, ArrayList<Produto> productos, Supermercado supermercado) {
-		super(context, 0, productos);
+		super();
 		this.supermercado = supermercado;
+		mProductos = productos;
+		mProductosFiltrados = productos;
+		mContext = context;
+	}
+	
+	
+	@Override
+	public int getCount() {
+		
+		return mProductosFiltrados.size();
+	}
+
+	@Override
+	public Object getItem(int position) {
+		return mProductosFiltrados.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		
+		return 0;
 	}
 
 	@Override
 	public View getView(int position, View celdaView, ViewGroup parent) {
 		
 		if (celdaView == null) {
-			celdaView = LayoutInflater.from(getContext()).inflate(
+			celdaView = LayoutInflater.from(mContext).inflate(
 					R.layout.item_product_catalog_list, parent, false);
 		}
 		
@@ -45,7 +69,7 @@ public class AdapterProductsCatalog extends ArrayAdapter<Produto> {
 		
 		
 		// Recuperar o elemento de datos para esta posición
-		Produto producto = getItem(position);
+		Produto producto = (Produto)getItem(position);
 		
 		nombreProductoTextView.setText(producto.getTitle());
 
@@ -71,10 +95,62 @@ public class AdapterProductsCatalog extends ArrayAdapter<Produto> {
 			productoImageView.setImageBitmap(bmp);
 		} else {
 
-			Picasso.with(getContext()).load(producto.getIcon().getUrl()).into(productoImageView);
+			Picasso.with(mContext).load(producto.getIcon().getUrl()).into(productoImageView);
 		}
 
 		return celdaView;
 	}
+
+	@Override
+	public Filter getFilter() {
+		
+		return new Filter(){
+
+			@Override
+			protected FilterResults performFiltering(CharSequence constraint) {
+				
+				if((constraint == null) || (constraint.length() == 0)){
+					return null;
+				}
+				
+				String filtroTexto = constraint.toString().toLowerCase();
+				//mProductosFiltrados = mProductos;
+				List<Produto> listaProdutosTemp = new ArrayList<Produto>();
+				
+				for(Produto produto:mProductos){ //El texto escrito por el usuario se encuentre en el título, marca o descripción
+					if(produto.getTitle().toLowerCase().contains(filtroTexto) || 
+						produto.getDescripcion().toLowerCase().contains(filtroTexto) || 
+						produto.getMarca().toLowerCase().contains(filtroTexto)){
+						
+							listaProdutosTemp.add(produto);
+					}else{
+							continue;
+					}
+				}
+				
+				FilterResults results = new FilterResults();
+				results.values = listaProdutosTemp;
+				results.count = listaProdutosTemp.size();
+				
+				return results;
+			}
+
+			@Override
+			protected void publishResults(CharSequence constraint,
+					FilterResults results) {
+				
+				if(results == null){
+					mProductosFiltrados = mProductos;
+				}else{
+					mProductosFiltrados = (List<Produto>) results.values;
+				}
+				
+				notifyDataSetChanged();
+			}
+			
+		};
+		
+	}
+	
 
 }

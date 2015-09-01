@@ -21,6 +21,7 @@ import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -69,9 +70,6 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
-
-//FIXME : Segúnda dar un filtrado mediante tags.
-//FIXME: Dar un filtrado mediante marca y título en la lupa.
 
 @SuppressLint("InflateParams")
 public class DetailListFragment extends Fragment implements SurfaceHolder.Callback{
@@ -179,9 +177,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				
 				switch (tabId) {
 				
-//				case "Escaner":
-//					getScan(tabId);
-//					break;
 				case "Lista da compra":
 					cargarProdutosLista();
 					break;
@@ -194,7 +189,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					break;
 					
 				default:
-					//cargarProdutosLista(nameList);
 					break;
 				}
 				
@@ -287,23 +281,31 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
         
         mSearchView = (SearchView) home.findViewById(R.id.searchView1);
         mSearchView.setIconifiedByDefault(false);
+        mSearchView.setSubmitButtonEnabled(false); 
+        mSearchView.setQueryHint("Búsqueda aquí");
         mSearchView.setOnQueryTextListener(new OnQueryTextListener() {
 			
 			@Override
 			public boolean onQueryTextSubmit(String query) {
-				// TODO Auto-generated method stub
-				return false;
+				if (TextUtils.isEmpty(query)) {
+		            catalogoListView.clearTextFilter();
+		        } else {
+		        	catalogoListView.setFilterText(query.toString());
+		        }
+		        return true;
 			}
 			
 			@Override
-			public boolean onQueryTextChange(String newText) {
-				// TODO Auto-generated method stub
-				return false;
+			public boolean onQueryTextChange(String query) {
+				if (TextUtils.isEmpty(query)) {
+		            catalogoListView.clearTextFilter();
+		        } else {
+		        	catalogoListView.setFilterText(query.toString());
+		        }
+		        return true;
 			}
 		});
         
-        mSearchView.setSubmitButtonEnabled(true); 
-        mSearchView.setQueryHint("Search Here");
         
 		if (tabHost.getCurrentTab() == 0){
 			cargarProdutosLista();
@@ -631,9 +633,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			}
 		}
 		
-		if(tagsSeleccionados.size() != 0){ //algún tag seleccionado, entonces no se filtra
+		if(tagsSeleccionados.size() != 0){ //algún tag seleccionado, filtramos
 			
-			for(Produto nProduto:listaProdutos){ //Filtramos por tag
+			for(Produto nProduto:listaProdutos){
 				
 				if(nProduto.getATags() == null)
 					continue;
@@ -651,22 +653,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			
 			Log.d(TAG, "Ningún tag seleccionado");
 			tempListaProdutos = listaProdutos;
-		}
-		
-		
-		/**
-		 * Filtrado por nombre
-		 */
-		
-		String cadenaFiltradoEditText="joselito";
-		
-		for(Produto produto:tempListaProdutos){ //El texto escrito por el usuario se encuentre en el título, marca o descripción
-			if(produto.getTitle().contains(cadenaFiltradoEditText) || 
-					produto.getDescripcion().contains(cadenaFiltradoEditText) || produto.getMarca().contains(cadenaFiltradoEditText)){
-				continue;
-			}else{
-				tempListaProdutos.remove(produto);
-			}
 		}
 
 		return tempListaProdutos;
