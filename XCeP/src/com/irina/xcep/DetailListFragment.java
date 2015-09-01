@@ -36,6 +36,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
@@ -103,6 +105,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	AdapterTags adapterTag;
 	CheckBox checkboxTag;
 	AlertDialog dialogoAgregarProducto, dialogoAgregarPrecio;
+	SearchView mSearchView;
 	
 	AdapterUnits adapterUnidadesCarrito;
 	
@@ -270,6 +273,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 
         catalogoListView = (ListView) home.findViewById(R.id.listProductCatalog);
+        catalogoListView.setTextFilterEnabled(true);
         catalogoListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -280,7 +284,27 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			}
 		});
         
-		
+        
+        mSearchView = (SearchView) home.findViewById(R.id.searchView1);
+        mSearchView.setIconifiedByDefault(false);
+        mSearchView.setOnQueryTextListener(new OnQueryTextListener() {
+			
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		});
+        
+        mSearchView.setSubmitButtonEnabled(true); 
+        mSearchView.setQueryHint("Search Here");
+        
 		if (tabHost.getCurrentTab() == 0){
 			cargarProdutosLista();
 		}
@@ -587,6 +611,10 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		List<String> tagsSeleccionados = new ArrayList<String>();
 		List<Produto> tempListaProdutos = new ArrayList<Produto>();
 		
+		/**
+		 * Filtrado por tags
+		 */
+		
 		for(int i=0; i < gridTags.getChildCount(); i++){ //Calculamos tags seleccionados
 			
 			ViewGroup viewRow = (ViewGroup)gridTags.getChildAt(i);
@@ -603,27 +631,44 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			}
 		}
 		
-		if(tagsSeleccionados.size() == 0){ //Ningún tag seleccionado, entonces no se filtra
-			Log.d(TAG, "Ningún tag seleccionado");
-			return listaProdutos;
-		}
-		
-		
-		for(Produto nProduto:listaProdutos){ //Filtramos por tag
+		if(tagsSeleccionados.size() != 0){ //algún tag seleccionado, entonces no se filtra
 			
-			if(nProduto.getATags() == null)
-				continue;
-			
-			for (Tag tagProduto:nProduto.getATags()){
+			for(Produto nProduto:listaProdutos){ //Filtramos por tag
 				
-				if(tagsSeleccionados.contains(tagProduto.getName())){
-					tempListaProdutos.add(nProduto);
-					break;
+				if(nProduto.getATags() == null)
+					continue;
+				
+				for (Tag tagProduto:nProduto.getATags()){
+					
+					if(tagsSeleccionados.contains(tagProduto.getName())){
+						tempListaProdutos.add(nProduto);
+						break;
+					}
 				}
 			}
+		
+		}else{ //ningún tag seleccionado, entonces no se filtra
+			
+			Log.d(TAG, "Ningún tag seleccionado");
+			tempListaProdutos = listaProdutos;
 		}
 		
 		
+		/**
+		 * Filtrado por nombre
+		 */
+		
+		String cadenaFiltradoEditText="joselito";
+		
+		for(Produto produto:tempListaProdutos){ //El texto escrito por el usuario se encuentre en el título, marca o descripción
+			if(produto.getTitle().contains(cadenaFiltradoEditText) || 
+					produto.getDescripcion().contains(cadenaFiltradoEditText) || produto.getMarca().contains(cadenaFiltradoEditText)){
+				continue;
+			}else{
+				tempListaProdutos.remove(produto);
+			}
+		}
+
 		return tempListaProdutos;
 	}
 
