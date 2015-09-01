@@ -126,11 +126,11 @@ public class AddMarketActivity extends Activity{
                     fotomarket.setImageURI(data.getData());
                     bitmap =  ((BitmapDrawable)fotomarket.getDrawable()).getBitmap();
 	            } else {
-	                Toast.makeText(getApplicationContext(), "Cancelled",
+	                Toast.makeText(getApplicationContext(), "Cancelouse",
 	                        Toast.LENGTH_SHORT).show();
 	            }
 	        } else if (resultCode == RESULT_CANCELED) {
-	            Toast.makeText(getApplicationContext(), "Cancelled",
+	            Toast.makeText(getApplicationContext(), "Cancelouse",
 	                    Toast.LENGTH_SHORT).show();
 	        }
 	    } else if (requestCode == CAMERA_REQUEST) {
