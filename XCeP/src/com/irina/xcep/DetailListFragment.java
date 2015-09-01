@@ -1040,8 +1040,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 							});		
 					
 							dialogoAgregarPrecio.dismiss();
-					}else{
-						newPriceEditText.setError("Debe introducir un prezo válido");
 					}
 					
 				}
