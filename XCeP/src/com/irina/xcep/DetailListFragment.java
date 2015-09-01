@@ -992,7 +992,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					Utils.hideSoftKeyboard(getActivity());
 					EditText newPriceEditText = (EditText) viewDialog.findViewById(R.id.priceProductNew);
 					boolean isEmpty;
-					if (newPriceEditText.getText() != null) {
+					if ((newPriceEditText.getText() != null) && (newPriceEditText.getText().length() > 0)) {
 						newPriceString = newPriceEditText.getText().toString();
 						isEmpty = !Utils.isNotEmpty(newPriceEditText,newPriceString);
 					} else {
@@ -1038,10 +1038,12 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 									
 								}
 							});		
-							
+					
+							dialogoAgregarPrecio.dismiss();
+					}else{
+						newPriceEditText.setError("Debe introducir un prezo válido");
 					}
 					
-					dialogoAgregarPrecio.dismiss();
 				}
 		});
 	}
