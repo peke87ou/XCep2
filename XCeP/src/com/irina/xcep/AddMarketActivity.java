@@ -64,7 +64,7 @@ public class AddMarketActivity extends Activity{
 					
 					Toast.makeText(getApplicationContext(), "Non se obtuvo a fotografía", Toast.LENGTH_SHORT).show();
 					return;
-				}else{ //Se comprueba nombre del supermercado
+				}else{ //Compruebase o nome do supermercado
 					
 					boolean allfilled = true;
 					allfilled =  Utils.isNotEmpty(nameMarket, nameMarket.getText().toString());
