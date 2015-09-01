@@ -10,6 +10,8 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -278,11 +280,12 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			}
 		});
         
-        
+        SearchManager searchManager = (SearchManager)(getActivity().getSystemService( Context.SEARCH_SERVICE ));
         mSearchView = (SearchView) home.findViewById(R.id.searchView1);
         mSearchView.setIconifiedByDefault(false);
         mSearchView.setSubmitButtonEnabled(false); 
         mSearchView.setQueryHint("Búsqueda aquí");
+        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         mSearchView.setOnQueryTextListener(new OnQueryTextListener() {
 			
 			@Override
