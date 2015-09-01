@@ -23,7 +23,6 @@ import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -276,7 +275,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 
-				addProductToList(productCatalogList.get(position));
+				addProductToList((Produto)view.getTag());
 			}
 		});
         
@@ -290,21 +289,17 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			
 			@Override
 			public boolean onQueryTextSubmit(String query) {
-				if (TextUtils.isEmpty(query)) {
-		            catalogoListView.clearTextFilter();
-		        } else {
-		        	catalogoListView.setFilterText(query.toString());
-		        }
+				
+				AdapterProductsCatalog adapter = (AdapterProductsCatalog)catalogoListView.getAdapter();
+	            adapter.getFilter().filter(query);
 		        return true;
 			}
 			
 			@Override
 			public boolean onQueryTextChange(String query) {
-				if (TextUtils.isEmpty(query)) {
-		            catalogoListView.clearTextFilter();
-		        } else {
-		        	catalogoListView.setFilterText(query.toString());
-		        }
+				
+	        	AdapterProductsCatalog adapter = (AdapterProductsCatalog)catalogoListView.getAdapter();
+	            adapter.getFilter().filter(query);
 		        return true;
 			}
 		});
@@ -591,7 +586,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		}
 		
 		adapterProductoCatalog = new AdapterProductsCatalog(getActivity(), productCatalogList, mMarketSelected);
-		catalogoListView.setAdapter(adapterProductoCatalog); 	
+    	adapterProductoCatalog.getFilter().filter(mSearchView.getQuery());
+		catalogoListView.setAdapter(adapterProductoCatalog);
 	}
 	
 	private void getTags(){

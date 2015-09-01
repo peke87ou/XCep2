@@ -1,6 +1,7 @@
 package com.irina.xcep;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -35,7 +36,7 @@ public class DetailProduct extends Activity{
 		setContentView(R.layout.activity_detail_product);
 		
 		dato=getIntent().getExtras().getString("NOMEPRODUCTO");
-		((TextView) findViewById(R.id.detail_product_name)).setText( dato.toUpperCase());
+		((TextView) findViewById(R.id.detail_product_name)).setText( dato.toUpperCase(Locale.getDefault()));
 		
 		//Categoria
 		ArrayList<String> arrayTag;

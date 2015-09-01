@@ -3,6 +3,7 @@ package com.irina.xcep.adapters;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import android.content.Context;
@@ -22,6 +23,7 @@ import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Supermercado;
 import com.squareup.picasso.Picasso;
 
+@SuppressWarnings("unchecked")
 public class AdapterProductsCatalog extends BaseAdapter implements Filterable{
 
 	private static Map<String, Bitmap> mImagenes = new HashMap<String, Bitmap>();
@@ -98,6 +100,7 @@ public class AdapterProductsCatalog extends BaseAdapter implements Filterable{
 			Picasso.with(mContext).load(producto.getIcon().getUrl()).into(productoImageView);
 		}
 
+		celdaView.setTag(producto);
 		return celdaView;
 	}
 
@@ -113,14 +116,13 @@ public class AdapterProductsCatalog extends BaseAdapter implements Filterable{
 					return null;
 				}
 				
-				String filtroTexto = constraint.toString().toLowerCase();
-				//mProductosFiltrados = mProductos;
+				String filtroTexto = constraint.toString().toLowerCase(Locale.getDefault());
 				List<Produto> listaProdutosTemp = new ArrayList<Produto>();
 				
 				for(Produto produto:mProductos){ //El texto escrito por el usuario se encuentre en el título, marca o descripción
-					if(produto.getTitle().toLowerCase().contains(filtroTexto) || 
-						produto.getDescripcion().toLowerCase().contains(filtroTexto) || 
-						produto.getMarca().toLowerCase().contains(filtroTexto)){
+					if(produto.getTitle().toLowerCase(Locale.getDefault()).contains(filtroTexto) || 
+						produto.getDescripcion().toLowerCase(Locale.getDefault()).contains(filtroTexto) || 
+						produto.getMarca().toLowerCase(Locale.getDefault()).contains(filtroTexto)){
 						
 							listaProdutosTemp.add(produto);
 					}else{
@@ -134,6 +136,7 @@ public class AdapterProductsCatalog extends BaseAdapter implements Filterable{
 				
 				return results;
 			}
+
 
 			@Override
 			protected void publishResults(CharSequence constraint,
