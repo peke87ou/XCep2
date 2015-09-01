@@ -244,7 +244,7 @@ public class HomeFragment extends Fragment {
 		                   
 		                   if((nameListtxt != null) && (nameListtxt.length() > 0)){
 		                	   
-		                	   final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), "Cambiando nombre");
+		                	   final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), "Cambiando nome");
 			            	   progress.show();
 			                   ParseQuery<Lista> query=ParseQuery.getQuery(Lista.class);
 			        		   query.whereEqualTo("objectId",objectIdLista);
@@ -279,7 +279,7 @@ public class HomeFragment extends Fragment {
 			        		   
 		                   }else{
 		                	   
-		                	   Toast.makeText(getActivity(), "Introduzca un nombre válido", Toast.LENGTH_SHORT).show();
+		                	   Toast.makeText(getActivity(), "É necesario encher o campo nome", Toast.LENGTH_SHORT).show();
 		                   }
 				                   
 				                   

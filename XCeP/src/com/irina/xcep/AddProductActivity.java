@@ -127,7 +127,7 @@ public class AddProductActivity extends Activity{
 				if(bitmap == null){ //Se comprueba imagen del supermercado
 					Toast.makeText(getApplicationContext(), "Non se obtuvo a fotografía", Toast.LENGTH_SHORT).show();
 					return;
-				}else{ //Se comprueba nombre del supermercado
+				}else{ //Compruebase o nome do supermercado
 					
 					boolean allfilled = true;
 					allfilled =  Utils.isNotEmpty(nameProduto, nameProduto.getText().toString());
