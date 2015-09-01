@@ -284,8 +284,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
         mSearchView = (SearchView) home.findViewById(R.id.searchView1);
         mSearchView.setIconifiedByDefault(false);
         mSearchView.setSubmitButtonEnabled(false); 
-        mSearchView.setQueryHint("Búsqueda aquí");
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        mSearchView.setQueryHint("Búsqueda por palabras clave");
         mSearchView.setOnQueryTextListener(new OnQueryTextListener() {
 			
 			@Override
