@@ -29,7 +29,7 @@ public class Units extends ParseObject {
 	}
 	
 	/**
-	 * Incrementa el número de unidades del producto de la unidad
+	 * Incrementa o número de unidades do produto da unidade
 	 * @param n Número de unidades a incrementar
 	 */
 	
