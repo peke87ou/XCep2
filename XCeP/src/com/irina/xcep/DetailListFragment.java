@@ -108,7 +108,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	
 	AdapterUnits adapterUnidadesCarrito;
 	
-	String newPriceString = "";
 	String objectIdProduct = "";
 	
 	public static DetailListFragment newInstance (int Index){
@@ -991,56 +990,53 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 
 					Utils.hideSoftKeyboard(getActivity());
 					EditText newPriceEditText = (EditText) viewDialog.findViewById(R.id.priceProductNew);
-					boolean isEmpty;
-					if ((newPriceEditText.getText() != null) && (newPriceEditText.getText().length() > 0)) {
-						newPriceString = newPriceEditText.getText().toString();
-						isEmpty = !Utils.isNotEmpty(newPriceEditText,newPriceString);
-					} else {
-						isEmpty = true;
-					}
+					String newPriceString = newPriceEditText.getText().toString();
 					
-					
-					if (!isEmpty) {
-
+					if ((newPriceString != null) && (newPriceString.length() > 0)) {
+						
 						final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(),
 								"Agregando "+productBarcode.getTitle()+" a "+mMarketSelected.getName());
 						progressDialog.show();
-							// 1º Engadir un precio-supermercado en la tabla de precios para este producto
-							final Prezo prezoProductoBarcode = new Prezo();
-							prezoProductoBarcode.setPrice((Number)Double.parseDouble(newPriceString));
-							prezoProductoBarcode.setPidMarket(ParseObject.createWithoutData("Market", mMarketSelected.getObjectId()));
-							prezoProductoBarcode.saveInBackground(new SaveCallback() {
-								
-								@Override
-								public void done(ParseException e) {
+						// 1º Engadir un precio-supermercado en la tabla de precios para este producto
+						final Prezo prezoProductoBarcode = new Prezo();
+						prezoProductoBarcode.setPrice((Number)Double.parseDouble(newPriceString));
+						prezoProductoBarcode.setPidMarket(ParseObject.createWithoutData("Market", mMarketSelected.getObjectId()));
+						prezoProductoBarcode.saveInBackground(new SaveCallback() {
+							
+							@Override
+							public void done(ParseException e) {
 
-									if(e==null){
-										productBarcode.addAPrice(prezoProductoBarcode.getObjectId());
-										productBarcode.saveInBackground( new SaveCallback() {
+								if(e==null){
+									productBarcode.addAPrice(prezoProductoBarcode.getObjectId());
+									productBarcode.saveInBackground( new SaveCallback() {
+										
+										@Override
+										public void done(ParseException e) {
 											
-											@Override
-											public void done(ParseException e) {
+											// 2º Agregar en la tabla market, al array AProducts
+											mMarketSelected.addAproduct(productBarcode.getObjectId());
+											mMarketSelected.saveInBackground( new SaveCallback() {
 												
-												// 2º Agregar en la tabla market, al array AProducts
-												mMarketSelected.addAproduct(productBarcode.getObjectId());
-												mMarketSelected.saveInBackground( new SaveCallback() {
-													
-													@Override
-													public void done(ParseException e) {
-														//dialogoAgregarPrecio.dismiss();
-														reloadUserShoppingList(progressDialog, true);
-													}
-												});
-												
-											}
-										});
-									}
-									
+												@Override
+												public void done(ParseException e) {
+													//dialogoAgregarPrecio.dismiss();
+													reloadUserShoppingList(progressDialog, true);
+												}
+											});
+											
+										}
+									});
 								}
-							});		
+								
+							}
+						});		
 					
-							dialogoAgregarPrecio.dismiss();
+						dialogoAgregarPrecio.dismiss();
+					} else {
+						
+						Toast.makeText(getActivity(), "Necesario introducir un precio válido", Toast.LENGTH_SHORT).show();
 					}
+
 					
 				}
 		});

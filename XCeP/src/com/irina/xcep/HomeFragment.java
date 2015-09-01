@@ -233,59 +233,69 @@ public class HomeFragment extends Fragment {
 				
 				popDialog.setTitle("Cambiar o nome da lista ");
 				popDialog.setView(inflater.inflate(R.layout.activity_dialog_change_name_list, null))
-				           .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-				               @Override
-				               public void onClick(DialogInterface dialog, int id) {
+				.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				    @Override
+				    public void onClick(DialogInterface dialog, int id) {
 				              
-				            	   Utils.hideSoftKeyboard(getActivity());
-				            	   final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), "Cambiando nombre");
-				            	   progress.show();
-				            	   EditText newNameList = (EditText) ((AlertDialog) dialog).findViewById(R.id.NameListNew);
-				                   nameListtxt = newNameList.getText().toString();
-				                   
-				                   ParseQuery<Lista> query=ParseQuery.getQuery(Lista.class);
-				        		   query.whereEqualTo("objectId",objectIdLista);
-				        		   query.findInBackground(new FindCallback<Lista>() {
-				        		   @Override
-				        		   public void done(List<Lista> parseObjects, ParseException e) {
-				        			   
-				        			   if(e!= null){
-				        				   progress.dismiss();
-				        				   Toast.makeText(getActivity(), "Produciuse un erro: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-				        				   return;
-				        			   }
-				        			   
-				        		       if(parseObjects.size()==1)	{
-				        		            		parseObjects.get(0).setName(nameListtxt);
-				        		            		parseObjects.get(0).saveInBackground(new SaveCallback() {
-														
-														@Override
-														public void done(ParseException e) {
-															progress.dismiss();
-															if(e!= null){
-																Toast.makeText(getActivity(), "Produciuse un erro: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-															}else{
-																reloadUserShoppingLists();
-															}
+		            	   Utils.hideSoftKeyboard(getActivity());
+		            	   
+		            	   EditText newNameList = (EditText) ((AlertDialog) dialog).findViewById(R.id.NameListNew);
+		                   final String nameListtxt = newNameList.getText().toString();
+		                   
+		                   if((nameListtxt != null) && (nameListtxt.length() > 0)){
+		                	   
+		                	   final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), "Cambiando nombre");
+			            	   progress.show();
+			                   ParseQuery<Lista> query=ParseQuery.getQuery(Lista.class);
+			        		   query.whereEqualTo("objectId",objectIdLista);
+			        		   query.findInBackground(new FindCallback<Lista>() {
+			        		   @Override
+			        		   public void done(List<Lista> parseObjects, ParseException e) {
+			        			   
+			        			   if(e!= null){
+			        				   progress.dismiss();
+			        				   Toast.makeText(getActivity(), "Produciuse un erro: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+			        				   return;
+			        			   }
+			        			   
+			        		       if(parseObjects.size()==1)	{
+			        		            		parseObjects.get(0).setName(nameListtxt);
+			        		            		parseObjects.get(0).saveInBackground(new SaveCallback() {
+													
+													@Override
+													public void done(ParseException e) {
+														progress.dismiss();
+														if(e!= null){
+															Toast.makeText(getActivity(), "Produciuse un erro: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+														}else{
+															reloadUserShoppingLists();
 														}
-														
-													});
-				        		            }    				        		           
-				        		        }
-				        		    });
-				               }
-				           })
-				           .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-				               public void onClick(DialogInterface dialog, int id) {
-				                   dialog.cancel();
-				               }
-				           });      
+													}
+													
+												});
+			        		            }    				        		           
+			        		        }
+			        		    });
+			        		   
+		                   }else{
+		                	   
+		                	   Toast.makeText(getActivity(), "Introduzca un nombre válido", Toast.LENGTH_SHORT).show();
+		                   }
+				                   
+				                   
+				        }
+				   })
+				  .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+				       public void onClick(DialogInterface dialog, int id) {
+				              dialog.cancel();
+				       }
+				  });      
 				
 				 popDialog.create();
 				 popDialog.show(); 
 				            	
-				            }	
-				        });
+			}	
+		});
 				   
 		builder.setNegativeButton("Pechar", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
