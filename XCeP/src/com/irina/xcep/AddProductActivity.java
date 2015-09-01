@@ -339,11 +339,11 @@ public class AddProductActivity extends Activity{
 							.getBitmap();
 					txtengadirImaxe.setVisibility(View.GONE);
 				} else {
-					Toast.makeText(getApplicationContext(), "Cancelled",
+					Toast.makeText(getApplicationContext(), "Cancelouse",
 							Toast.LENGTH_SHORT).show();
 				}
 			} else if (resultCode == RESULT_CANCELED) {
-				Toast.makeText(getApplicationContext(), "Cancelled",
+				Toast.makeText(getApplicationContext(), "Cancelouse",
 						Toast.LENGTH_SHORT).show();
 			}
 		} else if (requestCode == CAMERA_REQUEST) {
