@@ -9,11 +9,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0.09"
         android:gravity="center" >
 
         <TextView
             android:id="@+id/detail_product_name"
-            android:layout_width="match_parent"
+            android:layout_width="202dp"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:padding="10dp"
@@ -21,6 +22,13 @@
             android:textColor="@color/verde_oscuro"
             android:textSize="20sp"
             android:textStyle="bold|italic" />
+
+        <ImageButton
+            android:id="@+id/imageView1"
+            android:layout_width="64dp"
+            android:layout_height="51dp"
+            android:src="@drawable/abc_ic_menu_share_holo_light" />
+
     </LinearLayout>
 
     <LinearLayout

@@ -36,12 +36,14 @@
          <activity 
             android:name=".LoginActivity"
             android:theme="@style/CustomTheme"
+            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
         
           <activity 
             android:name=".SignupActivity"
             android:theme="@style/CustomTheme"
+            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
         <activity 
@@ -53,26 +55,31 @@
         <activity 
             android:name=".AddShoppingListActivity" 
             android:theme="@style/CustomTheme"
+            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
          <activity 
             android:name=".ScanActivity" 
             android:theme="@style/CustomTheme"
+            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
         <activity 
             android:name=".AddProductActivity" 
             android:theme="@style/CustomTheme"
+            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
         <activity 
             android:name=".DetailProduct" 
             android:theme="@style/CustomTheme"
+            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
         <activity 
             android:name=".AddMarketActivity" 
             android:theme="@style/CustomTheme"
+            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
          
