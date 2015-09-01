@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:padding="10dp"
-            android:text="Nome Producto"
+            android:text="Nome Produto"
             android:textColor="@color/verde_oscuro"
             android:textSize="20dp"
             android:textStyle="bold|italic" />

@@ -56,13 +56,13 @@ public class AdapterListas extends ArrayAdapter<Lista> {
 		   int nUnidades = unidadesProducto.size();
 		   
 		   if(nUnidades == 1){
-			   numeroProductos = nUnidades + " producto";
+			   numeroProductos = nUnidades + " produto";
 		   }else{
-			   numeroProductos = nUnidades + " productos";
+			   numeroProductos = nUnidades + " produtos";
 		   }
 		   
 	   }else{
-		   numeroProductos = "0 productos";
+		   numeroProductos = "0 produtos";
 	   }
        
 	   textViewProductos.setText(numeroProductos);

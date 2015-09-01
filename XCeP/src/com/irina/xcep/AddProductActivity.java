@@ -151,10 +151,10 @@ public class AddProductActivity extends Activity{
 	
 	// Métodos empregados nesta clase
 	/**
-	 * Engade un producto a BD
+	 * Engade un produto a BD
 	 * 
-	 * @param producto
-	 *            : Producto que se engade a BD
+	 * @param produto
+	 *            : Produto que se engade a BD
 	 */
 	public void engadirProducto() {
 
@@ -192,7 +192,7 @@ public class AddProductActivity extends Activity{
 		// FIXME Error en imagenes al rotar
 		// http://www.chinabtp.com/how-to-save-rotated-photos-in-parse-android/
 		
-		final ProgressDialog progressDialog = Utils.crearDialogoEspera(this, "Agregando producto en el sistema");
+		final ProgressDialog progressDialog = Utils.crearDialogoEspera(this, "Agregando produto ao sistema");
 		progressDialog.show();
 
 		ParseFile imagenProduct = new ParseFile("imagen" + nameProductTxt
@@ -245,14 +245,13 @@ public class AddProductActivity extends Activity{
 			addProduct.addATags(listaTagsProduct.get(indiceTag).getObjectId());
 		}
 
-		// Guardar Producto
+		// Guardar Produto
 		addProduct.saveInBackground(new SaveCallback() {
 			@Override
 			public void done(ParseException arg0) {
 				if (arg0 == null) {
 
-					// Buscar el supermercado, y Agregar el producto al
-					// supermercado
+					// Buscar o supermercado,e engadir o produto ao supermercado
 					ParseQuery<Supermercado> query = ParseQuery
 							.getQuery(Supermercado.class);
 					query.include("AProduct");
@@ -268,7 +267,7 @@ public class AddProductActivity extends Activity{
 							if (e != null || objects.size() == 0) {
 								Toast.makeText(
 										AddProductActivity.this,
-										"Error ao engadir o producto ao supermercado",
+										"Error ao engadir o produto ao supermercado",
 										Toast.LENGTH_SHORT).show();
 							}
 
@@ -280,9 +279,9 @@ public class AddProductActivity extends Activity{
 
 					progressDialog.dismiss();
 					Toast.makeText(AddProductActivity.this,
-							"Producto engadido", Toast.LENGTH_SHORT)
+							"Produto engadido", Toast.LENGTH_SHORT)
 							.show();
-					Log.i("Producto", "Engadimos O producto a BD ");
+					Log.i("Produto", "Engadimos O produto a BD ");
 					finish();
 
 				} else {
@@ -290,7 +289,7 @@ public class AddProductActivity extends Activity{
 					Toast.makeText(AddProductActivity.this,
 							R.string.error_add_list + " " + arg0.getMessage(),
 							Toast.LENGTH_SHORT).show();
-					Log.e("Producto", "ERROR O ENGADIR NA BD ");
+					Log.e("Produto", "ERROR O ENGADIR NA BD ");
 				}
 			}
 		});

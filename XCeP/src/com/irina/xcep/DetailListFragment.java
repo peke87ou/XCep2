@@ -380,7 +380,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	}
 	
 	/**
-	 * Se agrega un producto a la lista. Si ya está en la lista, agrega una unidad.
+	 * Engadese un produto a lista. Se xa está na lista, engadese unha unidade.
 	 * @param producto
 	 */
 	public void addProductToList(Produto producto){
@@ -410,7 +410,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			
 		}else{ //Nuevo producto a la lista
 			final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(),
-					"Agregando producto nuevo a la lista");
+					"Agregando produto novo a lista");
 			progress.show();
 			
 			final Units unidadProducto = new Units();
@@ -448,21 +448,21 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	
 	public void removeProductToList(final Units unidadesProducto){
 		final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(),
-				"Eliminando producto de la lista");
+				"Eliminando produto da lista");
 		progress.show();
 		
-		unidadesProducto.deleteInBackground(new DeleteCallback() { //Eliminamos unidades del producto de la tabla unidades
+		unidadesProducto.deleteInBackground(new DeleteCallback() { //Eliminamos unidades do produto da tabla unidades
 			
 			@Override
 			public void done(ParseException e) {
 				
 				mListaSelected.deleteAidUnits(unidadesProducto); 
-				mListaSelected.saveInBackground(new SaveCallback() { //Eliminamos el puntero de la lista de punteros de unidades
+				mListaSelected.saveInBackground(new SaveCallback() { //Eliminamos o punteiro da lista de punteiros de unidades
 					
 					@Override
 					public void done(ParseException e) {
 						
-						reloadUserShoppingList(progress, false); //Recargamos la lista seleccionada por el usuario
+						reloadUserShoppingList(progress, false); //Recargamos a lista seleccionada polo usuario
 					}
 				});
 			}
@@ -784,15 +784,15 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 						barcode = resultadoBarCode;
 						resultadoBarCode = null;
 
-						if (isProductoEnParse && isProductoEnSupermercado) { // Producto en el sistema, y en el supermercado de la lista
+						if (isProductoEnParse && isProductoEnSupermercado) { // Produto no sistema, e no supermercado da lista
 
 							lanzarDetalleProducto(productBarcode, mMarketSelected);
 
-						} else if (isProductoEnParse) { // Producto en el sistema, pero no en el supermercado
+						} else if (isProductoEnParse) { // Produto no sistema, pero non no supermercado
 
 							showDialogoAgregarPrecio();
 
-						} else { // Producto que non se encontra no sistema
+						} else { // Produto que non se encontra no sistema
 
 							Intent intent = new Intent(getActivity(), AddProductActivity.class);
 							Log.i("AddProduct QUE ENVIA", barcode);
@@ -818,7 +818,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		// Mirar se existe na BD
 		ParseQuery<Produto> queryProductos = ParseQuery.getQuery(Produto.class);
-		final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(), "Buscando producto en el sistema");
+		final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(), "Buscando produto no sistema");
 		progressDialog.show();
 		//FIXME ver si estamos incluyendo todo
 		queryProductos.include("APrice");
@@ -830,7 +830,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			public void done(List<Produto> objects, ParseException e) {
 				progressDialog.dismiss();
 				if(e!=null){
-					Toast.makeText(getActivity(), "Erro ao consultar o producto", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "Erro ao consultar o produto", Toast.LENGTH_SHORT).show();
 				}else{
 					Log.i(TAG,objects.size()+"resultado"+resultadoBarCode);
 					if (objects.size() > 0){
@@ -923,7 +923,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	}
 	
 	/**
-	 * Móstrase un diálogo para agregar un precio a un producto que non se encontra no supermercado da lista actual, pero si se encontra en parse
+	 * Móstrase un diálogo para agregar un precio a un produto que non se encontra no supermercado da lista actual, pero si se encontra en parse
 	 */
 	public void showDialogoAgregarPrecio(){
 		
@@ -1019,8 +1019,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	/**
 	 * Surfaceholder callback de la cámara
 	 */
-	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int height) {
+	public void surfaceChanged(SurfaceHolder holder, int format, int width,int height) {
 		try {
 			cam.setPreviewDisplay(surfaceholder);
 		} catch (IOException e) {

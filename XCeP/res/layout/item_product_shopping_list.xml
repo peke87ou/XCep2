@@ -32,7 +32,7 @@
                 android:id="@+id/name_product"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Producto"
+                android:text="Produto"
                 android:textColor="@color/actionbar_text_color" />
 
             <TextView

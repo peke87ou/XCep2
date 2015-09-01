@@ -2,6 +2,7 @@ package com.irina.xcep;
 
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.gc.materialdesign.views.ButtonRectangle;
 import com.irina.xcep.adapters.AdapterMarketPrice;
 import com.squareup.picasso.Picasso;
 
+@SuppressLint("DefaultLocale")
 public class DetailProduct extends Activity{
 	
 	public static final int requestCode = 1;

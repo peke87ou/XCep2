@@ -15,21 +15,6 @@
         android:layout_marginTop="15dp"
         android:text="Supermercado " />
 
-    <EditText
-        android:id="@+id/priceProductNew"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/txtMarket"
-        android:layout_alignRight="@+id/txtMarket"
-        android:layout_below="@+id/txtMarket"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:gravity="center"
-        android:numeric="decimal" >
-
-        <requestFocus />
-    </EditText>
-
     <TextView
         android:id="@+id/txtNewPrice"
         android:layout_width="wrap_content"
@@ -38,6 +23,17 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="19dp"
         android:text="Novo Prezo  para o supermercado:  " />
+
+    <EditText
+        android:id="@+id/priceProductNew"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txtNewPrice"
+        android:layout_below="@+id/txtMarket"
+        android:layout_marginTop="18dp"
+        android:ems="10"
+        android:gravity="center"
+        android:numeric="decimal" />
    
 </RelativeLayout>
 
