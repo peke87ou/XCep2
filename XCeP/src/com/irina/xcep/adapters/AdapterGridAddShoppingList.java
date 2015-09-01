@@ -3,6 +3,7 @@ package com.irina.xcep.adapters;
 import java.util.Collection;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.irina.xcep.model.Supermercado;
 import com.parse.ParseFile;
 import com.squareup.picasso.Picasso;
 
+@SuppressLint("InflateParams")
 public class AdapterGridAddShoppingList extends ArrayAdapter<Supermercado>{
 	 Context mContext;
 	 List<Supermercado> listaSuper;
