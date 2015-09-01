@@ -23,11 +23,12 @@
             android:textSize="20sp"
             android:textStyle="bold|italic" />
 
-        <ImageButton
-            android:id="@+id/imageView1"
+        <ImageView
+            android:id="@+id/imageButtonShare1"
             android:layout_width="64dp"
             android:layout_height="51dp"
-            android:src="@drawable/abc_ic_menu_share_holo_light" />
+            android:src="@drawable/abc_ic_menu_share_holo_light" 
+            android:contentDescription="Compartir"/>
 
     </LinearLayout>
 
