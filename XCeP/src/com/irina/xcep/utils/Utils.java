@@ -9,6 +9,8 @@ import android.widget.EditText;
 
 public class Utils {
 
+	public static final String urlGooglePlay = "https://play.google.com";
+
 	public static boolean isNotEmpty(EditText view, String text) {
 		
 		EditText et = (EditText) view;

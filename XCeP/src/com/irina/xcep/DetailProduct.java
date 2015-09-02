@@ -34,6 +34,7 @@ public class DetailProduct extends ShareSocialMediaActivity{
 	ListView listViewMarketPrice;
 	AdapterMarketPrice adapter;
 	ImageView imageProduct;
+	String mNombreProducto, mDescripcionProducto, mMarcaProducto, mUrlImageProducto;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,8 +42,8 @@ public class DetailProduct extends ShareSocialMediaActivity{
 		
 		setContentView(R.layout.activity_detail_product);
 		
-		dato=getIntent().getExtras().getString("NOMEPRODUCTO");
-		((TextView) findViewById(R.id.detail_product_name)).setText( dato.toUpperCase(Locale.getDefault()));
+		mNombreProducto=getIntent().getExtras().getString("NOMEPRODUCTO");
+		((TextView) findViewById(R.id.detail_product_name)).setText( mNombreProducto.toUpperCase(Locale.getDefault()));
 		
 		//Categoria
 		ArrayList<String> arrayTag;
@@ -55,15 +56,15 @@ public class DetailProduct extends ShareSocialMediaActivity{
 		
 		//IMAGEN PRODUCTO
 		imageProduct =  (ImageView) findViewById(R.id.image_view_product);
-		dato=getIntent().getExtras().getString("IMAGEPRODUCTO");
-		Picasso.with(this).load(dato).into(imageProduct);
+		mUrlImageProducto=getIntent().getExtras().getString("IMAGEPRODUCTO");
+		Picasso.with(this).load(mUrlImageProducto).into(imageProduct);
 		
 		//DESCRICION
-		dato=getIntent().getExtras().getString("DESCRIPCIONPRODUCTO");
-		((TextView) findViewById(R.id.detail_product_description)).setText( dato);
+		mDescripcionProducto=getIntent().getExtras().getString("DESCRIPCIONPRODUCTO");
+		((TextView) findViewById(R.id.detail_product_description)).setText( mDescripcionProducto);
 		
-		dato=getIntent().getExtras().getString("MARCAPRODUCTO");
-		((TextView) findViewById(R.id.detail_product_mark)).setText( dato);
+		mMarcaProducto=getIntent().getExtras().getString("MARCAPRODUCTO");
+		((TextView) findViewById(R.id.detail_product_mark)).setText( mMarcaProducto);
 		
 		//PRECIO
 		ArrayList<String> arrayPrice;
@@ -120,11 +121,11 @@ public class DetailProduct extends ShareSocialMediaActivity{
 		                    Log.i("Dialogos", "Opción elegida: " + items[item]);
 		                    if (items[item].equalsIgnoreCase("Twitter")){
 		                    	
-		                    	shareTwitter();
+		                    	shareTwitter(mDescripcionProducto, mNombreProducto + "-"+mMarcaProducto,mUrlImageProducto);
 		                    
 		                    }else if(items[item].equalsIgnoreCase("Facebook")){
 		                    	
-		                    	shareFacebookPost();
+		                    	shareFacebookPost(mDescripcionProducto, mNombreProducto + "-"+mMarcaProducto,mUrlImageProducto);
 		                    }
 		                }
 		            });
