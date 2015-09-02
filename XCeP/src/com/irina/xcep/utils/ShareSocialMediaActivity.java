@@ -56,7 +56,7 @@ public class ShareSocialMediaActivity extends Activity {
 
 		Intent intent = new Intent(Intent.ACTION_SEND);
 		intent.setType("text/plain");
-		intent.putExtra(Intent.EXTRA_TEXT, Utils.urlGooglePlay);
+		intent.putExtra(Intent.EXTRA_TEXT, title+"  "+ message+" "+Utils.urlGooglePlay);
 
 		boolean twitterAppFound = false;
 		List<ResolveInfo> matches = getPackageManager().queryIntentActivities(intent, 0);
