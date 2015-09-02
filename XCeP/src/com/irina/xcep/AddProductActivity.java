@@ -273,16 +273,35 @@ public class AddProductActivity extends Activity{
 
 							Supermercado supermercado = objects.get(0);
 							supermercado.addAproduct(addProduct.getObjectId());
-							supermercado.saveInBackground();
+							supermercado.saveInBackground(new SaveCallback() {
+								
+								@Override
+								public void done(ParseException e) {
+									//FIXME probar este código
+									if(e != null){
+										
+										progressDialog.dismiss();
+										Toast.makeText(AddProductActivity.this,
+												R.string.error_add_list + " " + e.getMessage(),
+												Toast.LENGTH_SHORT).show();
+										Log.e("Produto", "ERROR O ENGADIR NA BD ");
+										
+									}else{
+										
+										progressDialog.dismiss();
+										Toast.makeText(AddProductActivity.this,
+												"Produto engadido", Toast.LENGTH_SHORT)
+												.show();
+										Log.i("Produto", "Engadimos O produto a BD ");
+										finish();
+									}
+									
+								}
+							});
 						}
 					});
 
-					progressDialog.dismiss();
-					Toast.makeText(AddProductActivity.this,
-							"Produto engadido", Toast.LENGTH_SHORT)
-							.show();
-					Log.i("Produto", "Engadimos O produto a BD ");
-					finish();
+					
 
 				} else {
 					progressDialog.dismiss();

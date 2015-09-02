@@ -522,7 +522,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 
 		// Filtramos as lista para cada usuario logueado na app
 		// query.include("User");
-		query.whereEqualTo("objectId", mListaSelected.getObjectId());
+		//query.whereEqualTo("objectId", mListaSelected.getObjectId());
+		query.whereEqualTo("idUser", currentUser);
 		query.findInBackground(new FindCallback<Lista>() {
 			
 			@Override
@@ -534,7 +535,15 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				}
 
 				if(objects.size() > 0){
-					mListaSelected = objects.get(0);
+					
+					for(Lista lista:objects){
+						if(lista.getObjectId().equals(mListaSelected.getObjectId())){
+							mListaSelected = lista;
+							break;
+						}
+					}
+					
+				}else{
 					Log.d(TAG, "Error en la query, no se pudo recargar la lista!!!");
 				}
 				
@@ -581,8 +590,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
         
 		productCatalogList.clear();
 		mMarketSelected = mListaSelected.getSupermercado();
-		Supermercado supermercado = mMarketSelected;
-		List<Produto> productosSupermercado = supermercado.getAProduct();
+		List<Produto> productosSupermercado = mMarketSelected.getAProduct();
 		
 		productosSupermercado = filtrarProductos(productosSupermercado);
 		if(productosSupermercado != null){
