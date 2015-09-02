@@ -234,7 +234,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		         				showDialogoModificarCantidadProducto(mListaSelected.getAIdUnits().get(pos)); 
 		                    
 		                    }else if(items[item].equalsIgnoreCase("Ver o detalle do Produto")){
-		                    		
+		                    	
+		                    	DetailListFragment.this.productBarcode = mListaSelected.getAIdUnits().get(pos).getProduct();
 		                    	lanzarDetalleProducto(mListaSelected.getAIdUnits().get(pos).getProduct(), mMarketSelected);
 				                   
 		                    }else{
@@ -274,7 +275,11 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 
-				addProductToList((Produto)view.getTag());
+				//addProductToList((Produto)view.getTag());
+				mSearchView.clearFocus();
+				Utils.hideSoftKeyboard(getActivity());
+				DetailListFragment.this.productBarcode = (Produto)view.getTag();
+				lanzarDetalleProducto((Produto)view.getTag(), mMarketSelected);
 			}
 		});
         
@@ -430,7 +435,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			unidadSeleccionada.addNumberUnits(1);
 			unidadSeleccionada.saveInBackground();
 			Toast.makeText(getActivity(), "Agregada una unidad de "+unidadSeleccionada.getProduct().getTitle() + ". Total "+unidadSeleccionada.getNumberUnits(), Toast.LENGTH_SHORT).show();
-			
+			adapterUnidadesCarrito.notifyDataSetChanged();
 		}else{ //Nuevo producto a la lista
 			final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(),
 					"Agregando produto novo a lista");
@@ -584,7 +589,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			productCatalogList.addAll(productosSupermercado);
 		}
 		
-		adapterProductoCatalog = new AdapterProductsCatalog(getActivity(), productCatalogList, mMarketSelected);
+		adapterProductoCatalog = new AdapterProductsCatalog(getActivity(), productCatalogList, mMarketSelected, this);
     	adapterProductoCatalog.getFilter().filter(mSearchView.getQuery());
 		catalogoListView.setAdapter(adapterProductoCatalog);
 	}
@@ -782,6 +787,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		
 		
 		if((requestCode == DetailProductActivity.requestCode) && (resultCode == DetailProductActivity.resultCodeAdd)){
 			

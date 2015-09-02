@@ -10,13 +10,16 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.irina.xcep.DetailListFragment;
 import com.irina.xcep.R;
 import com.irina.xcep.model.Prezo;
 import com.irina.xcep.model.Produto;
@@ -30,13 +33,15 @@ public class AdapterProductsCatalog extends BaseAdapter implements Filterable{
 	private Supermercado supermercado;
 	private  List<Produto> mProductos, mProductosFiltrados;
 	private Context mContext;
+	private DetailListFragment mDetailListFragment;
 	
-	public AdapterProductsCatalog(Context context, ArrayList<Produto> productos, Supermercado supermercado) {
+	public AdapterProductsCatalog(Context context, ArrayList<Produto> productos, Supermercado supermercado, DetailListFragment detailListFragment) {
 		super();
 		this.supermercado = supermercado;
 		mProductos = productos;
 		mProductosFiltrados = productos;
 		mContext = context;
+		mDetailListFragment = detailListFragment;
 	}
 	
 	
@@ -71,7 +76,7 @@ public class AdapterProductsCatalog extends BaseAdapter implements Filterable{
 		
 		
 		// Recuperar o elemento de datos para esta posición
-		Produto producto = (Produto)getItem(position);
+		final Produto producto = (Produto)getItem(position);
 		
 		nombreProductoTextView.setText(producto.getTitle());
 
@@ -101,6 +106,16 @@ public class AdapterProductsCatalog extends BaseAdapter implements Filterable{
 		}
 
 		celdaView.setTag(producto);
+		
+		ImageView addproductoImageView = (ImageView) celdaView.findViewById(R.id.image_add_product);
+		addproductoImageView.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mDetailListFragment.addProductToList(producto);
+			}
+		});
+		
 		return celdaView;
 	}
 
