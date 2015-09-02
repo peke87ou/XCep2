@@ -783,7 +783,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
-		if((requestCode == DetailProduct.requestCode) && (resultCode == DetailProduct.resultCodeAdd)){
+		if((requestCode == DetailProductActivity.requestCode) && (resultCode == DetailProductActivity.resultCodeAdd)){
 			
 			addProductToList(productBarcode);
 			
@@ -911,7 +911,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	
 	public void lanzarDetalleProducto(Produto producto, Supermercado supermercado){
 		
-		Intent intent = new Intent(getActivity(), DetailProduct.class);
+		Intent intent = new Intent(getActivity(), DetailProductActivity.class);
 		 intent.putExtra("NOMEPRODUCTO",producto.getTitle());  
 		 //CATEGORIA
 		 Bundle b=new Bundle();
@@ -948,7 +948,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		 intent.putExtra("SUPERID",supermercado.getObjectId()); 
 		 intent.putExtras(b);
 						        		
-		 startActivityForResult(intent, DetailProduct.requestCode);
+		 startActivityForResult(intent, DetailProductActivity.requestCode);
 	}
 	
 	/**

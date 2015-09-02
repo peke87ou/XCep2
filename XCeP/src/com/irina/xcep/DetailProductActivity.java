@@ -20,7 +20,7 @@ import com.irina.xcep.utils.ShareSocialMediaActivity;
 import com.squareup.picasso.Picasso;
 
 @SuppressLint("DefaultLocale")
-public class DetailProduct extends ShareSocialMediaActivity{
+public class DetailProductActivity extends ShareSocialMediaActivity{
  
     
 	public static final int requestCode = 1;
@@ -114,7 +114,7 @@ public class DetailProduct extends ShareSocialMediaActivity{
 				
 				final String[] items = {"Twitter", "Facebook"};
 				
-				AlertDialog.Builder builder = new AlertDialog.Builder(DetailProduct.this);
+				AlertDialog.Builder builder = new AlertDialog.Builder(DetailProductActivity.this);
 		        builder.setTitle("Compartir "+getIntent().getExtras().getString("NOMEPRODUCTO"))
 		           .setItems(items, new DialogInterface.OnClickListener() {
 		                public void onClick(DialogInterface dialog, int item) {
