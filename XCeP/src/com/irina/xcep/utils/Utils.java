@@ -32,4 +32,12 @@ public class Utils {
 	    InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
 	    inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
 	}
+	
+	
+	public static void shareFacebook(String subject){
+		
+		
+		
+		
+	}
 }

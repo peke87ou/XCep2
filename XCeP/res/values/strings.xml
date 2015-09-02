@@ -3,6 +3,7 @@
 
     
     <string name="app_name">XCeP</string>
+    <string name="facebook_app_id">1698851823679580</string>
     <string name="Username">Nome</string>
     <string name="Password">Contrasinal </string>
     <string name="RePassword">Volva introducir o contrasinal</string>
