@@ -110,7 +110,7 @@ public class HomeFragment extends Fragment {
 
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int pos, long id) {
             	objectIdLista = misListas.get(pos).getObjectId();
-            	showDialogoModificarProducto();
+            	showDialogoModificarLista();
             	return true;
             }
         }); 
@@ -192,7 +192,7 @@ public class HomeFragment extends Fragment {
 	}
 
 
-	public void showDialogoModificarProducto(){
+	public void showDialogoModificarLista(){
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle("Modificacións da lista" );
