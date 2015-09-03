@@ -278,15 +278,7 @@ public class AddProductActivity extends Activity{
 								@Override
 								public void done(ParseException e) {
 									//FIXME probar este código
-									if(e != null){
-										
-										progressDialog.dismiss();
-										Toast.makeText(AddProductActivity.this,
-												R.string.error_add_list + " " + e.getMessage(),
-												Toast.LENGTH_SHORT).show();
-										Log.e("Produto", "ERROR O ENGADIR NA BD ");
-										
-									}else{
+									if(e == null){
 										
 										progressDialog.dismiss();
 										Toast.makeText(AddProductActivity.this,
@@ -294,6 +286,13 @@ public class AddProductActivity extends Activity{
 												.show();
 										Log.i("Produto", "Engadimos O produto a BD ");
 										finish();
+										
+									}else{
+										progressDialog.dismiss();
+										Toast.makeText(AddProductActivity.this,
+												R.string.error_add_list + " " + e.getMessage(),
+												Toast.LENGTH_SHORT).show();
+										Log.e("Produto", "ERROR O ENGADIR NA BD ");
 									}
 									
 								}
@@ -301,9 +300,8 @@ public class AddProductActivity extends Activity{
 						}
 					});
 
-					
-
 				} else {
+					
 					progressDialog.dismiss();
 					Toast.makeText(AddProductActivity.this,
 							R.string.error_add_list + " " + arg0.getMessage(),
