@@ -80,7 +80,7 @@ public class AddProductActivity extends Activity{
 		nameProduto = (EditText) findViewById(R.id.text_name_product);
 		markProduto = (EditText) findViewById(R.id.text_mark_product);
 		descriptionProduto = (EditText) findViewById(R.id.text_description_product);
-		
+		priceProduto = (EditText) findViewById(R.id.text_price_product);
 		
 		clickfotoProducto = (LinearLayout) findViewById(R.id.button_camera_product);
 		clickfotoProducto.setOnClickListener(new OnClickListener() {
@@ -133,8 +133,7 @@ public class AddProductActivity extends Activity{
 					allfilled =  Utils.isNotEmpty(nameProduto, nameProduto.getText().toString());
 					allfilled =  Utils.isNotEmpty(markProduto, markProduto.getText().toString());
 					allfilled =  Utils.isNotEmpty(descriptionProduto, descriptionProduto.getText().toString());
-					//FIXME PREZO
-					//allfilled =  Utils.isNotEmpty(priceProduto, priceProduto.getText().toString());
+					allfilled =  Utils.isNotEmpty(priceProduto, priceProduto.getText().toString());
 					if(!allfilled){
 						return;
 					}
@@ -195,18 +194,16 @@ public class AddProductActivity extends Activity{
 		final ProgressDialog progressDialog = Utils.crearDialogoEspera(this, "Agregando produto ao sistema");
 		progressDialog.show();
 
-		ParseFile imagenProduct = new ParseFile("imagen" + nameProductTxt
-				+ Math.random() + ".png", byteArray);
+		ParseFile imagenProduct = new ParseFile("imagen" + nameProductTxt+ Math.random() + ".png", byteArray);
 		imagenProduct.saveInBackground();
 
 		addProduct.setIcon(imagenProduct);
 
 		// Prezo
-		priceProduto = (EditText) findViewById(R.id.text_price_product);
+		
 
 		final Prezo precioProducto = new Prezo();
-		precioProducto.setPrice(Double.parseDouble(priceProduto.getText()
-				.toString()));
+		precioProducto.setPrice(Double.parseDouble(priceProduto.getText().toString()));
 		String idMarket = getIntent().getExtras().getString("SUPERID");
 		precioProducto.setPidMarket(ParseObject.createWithoutData("Market",
 				idMarket));

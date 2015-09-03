@@ -126,9 +126,8 @@
 
              <ImageView
                  android:id="@+id/image_view_product"
-                 android:layout_width="97dp"
-                 android:layout_height="97dp"
-                 android:layout_weight="0.28"
+                 android:layout_width="143dp"
+                 android:layout_height="73dp"
                  android:src="@drawable/ic_add_photo" />
 
              <TextView
