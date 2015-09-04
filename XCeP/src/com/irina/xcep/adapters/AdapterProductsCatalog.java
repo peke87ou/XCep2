@@ -17,7 +17,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.irina.xcep.DetailListFragment;
 import com.irina.xcep.R;
