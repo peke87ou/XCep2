@@ -26,7 +26,6 @@ import android.widget.Toast;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.irina.xcep.adapters.AdapterListas;
 import com.irina.xcep.model.Lista;
-import com.irina.xcep.utils.FragmentIndexes;
 import com.irina.xcep.utils.Utils;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -118,7 +117,7 @@ public class HomeFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				((MenuActivity) getActivity()).mNameList = misListas.get(position).getName();
 				((MenuActivity) getActivity()).mListSelected = misListas.get(position);
-				((MenuActivity) getActivity()).loadFragment(FragmentIndexes.FRAGMENT_LIST);
+				((MenuActivity) getActivity()).loadFragment(MenuActivity.FRAGMENT_LIST);
 			}
 		});
 

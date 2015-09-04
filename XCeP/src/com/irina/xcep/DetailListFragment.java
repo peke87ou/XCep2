@@ -374,6 +374,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		popDialog.create();
 		NumberPicker unitsProductPicker = (NumberPicker) (vistaDialogo)
 				.findViewById(R.id.numberPickerUnits);
+		unitsProductPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 		unitsProductPicker.setMinValue(1);
 		unitsProductPicker.setMaxValue(100+unidadProducto.getNumberUnits().intValue());
 		unitsProductPicker.setWrapSelectorWheel(false);

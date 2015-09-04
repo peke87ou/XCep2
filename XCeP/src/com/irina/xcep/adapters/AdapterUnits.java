@@ -47,21 +47,22 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 		final Units productoUnidad = listaPadre.getAIdUnits().get(position);//getItem(position);
 		Produto producto=null;
 		
-		try {
+		/*try {
 			productoUnidad.fetchIfNeeded();
 			producto = (Produto)productoUnidad.getProduct();
 			producto.fetchIfNeeded();
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
-		
+		producto = (Produto)productoUnidad.getProduct();
 		TextView nombreProductoTextView = ((TextView) celdaView.findViewById(R.id.name_product));
 		ImageView productoImageView = (ImageView) celdaView.findViewById(R.id.image_product);
 		TextView unidadesTextView = ((TextView) celdaView.findViewById(R.id.products_list));
 		TextView precioTextView = ((TextView) celdaView.findViewById(R.id.price_product));
 		CheckBox productoCheckBox = (CheckBox) celdaView.findViewById(R.id.checkBoxProdutoCarrito);
+		productoCheckBox.setOnCheckedChangeListener(null);
 		productoCheckBox.setChecked(productoUnidad.isChecked());
 		productoCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			

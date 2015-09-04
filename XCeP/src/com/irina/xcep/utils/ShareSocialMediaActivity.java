@@ -45,14 +45,14 @@ public class ShareSocialMediaActivity extends Activity {
 	public boolean canPresentShareDialog;
 	public boolean canPresentShareDialogWithPhotos;
 	public PendingAction pendingAction = PendingAction.NONE;
-	private String mMessage, mTitle, mUrl;
+	private String mMessage, mTitle, mUrl, mUrlApp;
 
 	
 	/**
 	 * Twitter
 	 */
 	
-	public void shareTwitter(String message, String title, String url) {
+	public void shareTwitterPost(String message, String title, String url) {
 
 		Intent intent = new Intent(Intent.ACTION_SEND);
 		intent.setType("text/plain");
@@ -89,7 +89,51 @@ public class ShareSocialMediaActivity extends Activity {
 		mMessage = message;
 		mTitle = title;
 		mUrl = url;
+		mUrlApp = null;
+		
+		FacebookSdk.sdkInitialize(this.getApplicationContext());
+		CallbackManager callbackManager = CallbackManager.Factory.create();
 
+		LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+			@Override
+			public void onSuccess(LoginResult loginResult) {
+				performPublish(PendingAction.POST_STATUS_UPDATE, canPresentShareDialog);
+			}
+
+			@Override
+			public void onCancel() {
+				showAlert();
+			}
+
+			@Override
+			public void onError(FacebookException exception) {
+				showAlert();
+			}
+		});
+
+		shareDialog = new ShareDialog(this);
+		shareDialog.registerCallback(callbackManager, shareCallback);
+
+		canPresentShareDialog = ShareDialog.canShow(ShareLinkContent.class);
+		canPresentShareDialogWithPhotos = ShareDialog.canShow(SharePhotoContent.class);
+
+		performPublish(PendingAction.POST_STATUS_UPDATE, canPresentShareDialog);
+	}
+	
+	
+	/**
+	 * Se comparte un mensaje en Facebook
+	 * @param message mensaje del post
+	 * @param title título del post
+	 * @param url de una imagen para el post
+	 */
+	public void shareFacebookApp(String message, String title, String url) {
+
+		mMessage = message;
+		mTitle = title;
+		mUrl = null;
+		mUrlApp= url;
+		
 		FacebookSdk.sdkInitialize(this.getApplicationContext());
 		CallbackManager callbackManager = CallbackManager.Factory.create();
 
@@ -121,8 +165,16 @@ public class ShareSocialMediaActivity extends Activity {
 
 	private void postStatusUpdate() {
 		Profile profile = Profile.getCurrentProfile();
-		ShareLinkContent linkContent = new ShareLinkContent.Builder().setContentUrl(Uri.parse(Utils.urlGooglePlay))
+		
+		ShareLinkContent linkContent;
+		
+		if(mUrl !=null){
+			linkContent = new ShareLinkContent.Builder().setContentUrl(Uri.parse(Utils.urlGooglePlay))
 				.setContentTitle(mTitle).setContentDescription(mMessage).setImageUrl(Uri.parse(mUrl)).build();
+		}else{
+			linkContent = new ShareLinkContent.Builder().setContentUrl(Uri.parse(mUrlApp))
+					.setContentTitle(mTitle).setContentDescription(mMessage).build();
+		}
 
 		if (canPresentShareDialog) {
 			shareDialog.show(linkContent);

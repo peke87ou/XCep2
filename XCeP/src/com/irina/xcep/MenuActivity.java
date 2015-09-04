@@ -1,19 +1,16 @@
 package com.irina.xcep;
 
-import java.util.List;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Intent;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,13 +24,22 @@ import com.irina.xcep.menu.navitems.NavDrawerItem;
 import com.irina.xcep.menu.navitems.NavMenuItem;
 import com.irina.xcep.menu.navitems.NavTitleItem;
 import com.irina.xcep.model.Lista;
-import com.irina.xcep.utils.FragmentIndexes;
+import com.irina.xcep.utils.ShareSocialMediaActivity;
+import com.irina.xcep.utils.Utils;
 
 
 @SuppressLint("DefaultLocale")
-public class MenuActivity extends Activity implements MenuAdapter.SelectedListButton, AdapterView.OnItemClickListener{
+public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapter.SelectedListButton, AdapterView.OnItemClickListener{
 
 
+	public static final int FRAGMENT_HOME = 101;
+	public static final int FRAGMENT_CATALOG = 102;
+	public static final int FRAGMENT_SCAN = 103;
+	public static final int FRAGMENT_LIST = 104;
+	public static final int FACEBOOK = 201;
+	public static final int TWITTER = 202;
+	public static final int HELP = 205;
+	
     public int mCurrentFragmentIndex;
     private static final String CURRENT_FRAGMENT_INDEX = "current_fragment";
 
@@ -61,8 +67,8 @@ public class MenuActivity extends Activity implements MenuAdapter.SelectedListBu
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
         if (savedInstanceState == null) {
-            loadFragment(FragmentIndexes.FRAGMENT_HOME);
-            mCurrentFragmentIndex = FragmentIndexes.FRAGMENT_HOME;
+            loadFragment(FRAGMENT_HOME);
+            mCurrentFragmentIndex = FRAGMENT_HOME;
             mDrawerLayout.setSelected(true);
 
         } else {
@@ -146,17 +152,14 @@ public class MenuActivity extends Activity implements MenuAdapter.SelectedListBu
     /*Static Navigation Drawer items*/
     private NavDrawerItem[] menu = new NavDrawerItem[]{
             NavTitleItem.create(100, R.string.app_name),
-            NavMenuItem.create(101, R.string.my_list, R.drawable.list, true, this),
-            NavMenuItem.create(102, R.string.catalog, R.drawable.ic_maps_store_mall_directory, true, this),
-            NavMenuItem.create(103, R.string.scan, R.drawable.ic_navigation_fullscreen, true, this),
+            NavMenuItem.create(FRAGMENT_HOME, R.string.my_list, R.drawable.list, true, this),
+            NavMenuItem.create(FRAGMENT_CATALOG, R.string.catalog, R.drawable.ic_maps_store_mall_directory, true, this),
+            NavMenuItem.create(FRAGMENT_SCAN, R.string.scan, R.drawable.ic_navigation_fullscreen, true, this),
             NavTitleItem.create(200, R.string.setting),
-            NavMenuItem.create(201, R.string.facebook, R.drawable.facebook, true, this),
-		    NavMenuItem.create(202, R.string.twitter, R.drawable.twitter, true, this),
+            NavMenuItem.create(FACEBOOK, R.string.facebook, R.drawable.facebook, true, this),
+		    NavMenuItem.create(TWITTER, R.string.twitter, R.drawable.twitter, true, this),
 		    NavMenuItem.create(203, R.string.language, R.drawable.comments, true, this),
-//		    NavMenuItem.create(204, R.string.reset_bd, R.drawable.recycle, true, this),
-		    NavMenuItem.create(205, R.string.help, R.drawable.help, true, this)};
-//http://code.tutsplus.com/tutorials/android-essentials-creating-simple-user-forms--mobile-1758
-    //Formulario  peticiones
+		    NavMenuItem.create(HELP, R.string.help, R.drawable.help, true, this)};
 
 
     public void loadFragment(int index) {
@@ -165,25 +168,27 @@ public class MenuActivity extends Activity implements MenuAdapter.SelectedListBu
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
         switch (index) {
-            case FragmentIndexes.FRAGMENT_HOME:
-
-            	fragment = HomeFragment.newInstance(FragmentIndexes.FRAGMENT_HOME);
+        
+            case FRAGMENT_HOME:
+            	fragment = HomeFragment.newInstance(FRAGMENT_HOME);
                 break;
-            case FragmentIndexes.FRAGMENT_LIST:
-            	fragment = DetailListFragment.newInstance(FragmentIndexes.FRAGMENT_LIST);
+            
+            case FRAGMENT_LIST:
+            	fragment = DetailListFragment.newInstance(FRAGMENT_LIST);
             	break;
-            case FragmentIndexes.FACEBOOK:
-            	shareFacebook();
+            
+            case FACEBOOK:
+            	shareFacebookApp("Aplicación de gestión de compra", "Xecp", Utils.urlAppXecp);
             	return;
-            case FragmentIndexes.TWITTER:
-            	shareTwitter();
+            
+            case TWITTER:
+            	shareTwitterPost("Aplicación de gestión de compra", "Xecp", Utils.urlAppXecp);
             	return;
-//            case FragmentIndexes.FRAGMENT_CATALOG:
-//                //fragment = QuotesFragment.newInstance(FragmentIndexes.MY_QUOTES_INDEX);
-//                break;
-//            case FragmentIndexes.FRAGMENT_SCAN:
-//                //fragment = QuotesFragment.newInstance(FragmentIndexes.FAVORITES_QUOTES_INDEX);
-//                break;
+            
+            case HELP:
+            	showHelp();
+            	return;
+
          default:
         	 Toast.makeText(this, "Funcionalidade en cosntrucción", Toast.LENGTH_LONG).show();
         	 return;
@@ -196,7 +201,7 @@ public class MenuActivity extends Activity implements MenuAdapter.SelectedListBu
         mCurrentFragmentIndex = index;
         //Add fragment to layout
         transaction.replace(R.id.container, fragment);
-        if(index !=FragmentIndexes.FRAGMENT_HOME){
+        if(index !=FRAGMENT_HOME){
         	 transaction.addToBackStack(null);
         }       
         transaction.commit();
@@ -236,62 +241,38 @@ public class MenuActivity extends Activity implements MenuAdapter.SelectedListBu
 
     }
     
-    /**
-     * Redes sociales
-     * */
     
-    public void shareFacebook(){
+    /**
+     * About and help
+     */
+    
+    @SuppressLint("InflateParams")
+	public void showHelp(){
     	
-    	//FIXME actualizar enlace hacia el oficial de Xecp
-    	String urlToShare = "https://play.google.com/store/apps/details?id=com.bandainamcogames.dbzdokkanww";
-    	Intent intent = new Intent(Intent.ACTION_SEND);
-    	intent.setType("text/plain");
-    	intent.putExtra(Intent.EXTRA_TEXT, urlToShare);
+    	AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
-    	boolean facebookAppFound = false;
-    	List<ResolveInfo> matches = getPackageManager().queryIntentActivities(intent, 0);
-    	for (ResolveInfo info : matches) {
-    	    if (info.activityInfo.packageName.toLowerCase().startsWith("com.facebook.katana")) {
-    	        intent.setPackage(info.activityInfo.packageName);
-    	        facebookAppFound = true;
-    	        break;
-    	    }
-    	}
+    	// get prompts.xml view
+		LayoutInflater li = LayoutInflater.from(this);
+		View promptsView = li.inflate(R.layout.dialog, null);
+		alertDialogBuilder.setView(promptsView);
+		
+			alertDialogBuilder.setTitle("Información");
 
-    	if (!facebookAppFound) {
-    	    String sharerUrl = "https://www.facebook.com/sharer/sharer.php?u=" + urlToShare;
-    	    intent = new Intent(Intent.ACTION_VIEW, Uri.parse(sharerUrl));
-    	}
+			// set dialog message
+			alertDialogBuilder
+				.setMessage("Información sobre a aplicación")
+				.setCancelable(false)
+				.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog,int id) {
+						
+					}
+				  });
 
-    	startActivity(intent);
+				// create alert dialog
+				AlertDialog alertDialog = alertDialogBuilder.create();
 
-    }
-     
-    public void shareTwitter(){
-    	
-    	
-    	//FIXME actualizar enlace hacia el oficial de Xecp
-    	String urlToShare = "https://play.google.com/store/apps/details?id=com.bandainamcogames.dbzdokkanww";
-    	Intent intent = new Intent(Intent.ACTION_SEND);
-    	intent.setType("text/plain");
-    	intent.putExtra(Intent.EXTRA_TEXT, urlToShare);
-
-    	boolean twitterAppFound = false;
-    	List<ResolveInfo> matches = getPackageManager().queryIntentActivities(intent, 0);
-    	for (ResolveInfo info : matches) {
-    	    if (info.activityInfo.packageName.toLowerCase().startsWith("com.twitter")) {
-    	        intent.setPackage(info.activityInfo.packageName);
-    	        twitterAppFound = true;
-    	        break;
-    	    }
-    	}
-
-    	if (!twitterAppFound) {
-    	    urlToShare = "http://twitter.com/share?text="+urlToShare;
-    	    intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlToShare));
-    	}
-    	
-    	startActivity(intent);
+				// show it
+				alertDialog.show();
     }
     
 }

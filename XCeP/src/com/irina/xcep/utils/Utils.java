@@ -10,6 +10,7 @@ import android.widget.EditText;
 public class Utils {
 
 	public static final String urlGooglePlay = "https://play.google.com";
+	public static final String urlAppXecp = "https://play.google.com/store/apps/details?id=com.bandainamcogames.dbzdokkanww";
 
 	public static boolean isNotEmpty(EditText view, String text) {
 		

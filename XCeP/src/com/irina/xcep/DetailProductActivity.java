@@ -121,7 +121,7 @@ public class DetailProductActivity extends ShareSocialMediaActivity{
 		                    Log.i("Dialogos", "Opción elegida: " + items[item]);
 		                    if (items[item].equalsIgnoreCase("Twitter")){
 		                    	
-		                    	shareTwitter(mDescripcionProducto, mNombreProducto + "-"+mMarcaProducto,mUrlImageProducto);
+		                    	shareTwitterPost(mDescripcionProducto, mNombreProducto + "-"+mMarcaProducto,mUrlImageProducto);
 		                    
 		                    }else if(items[item].equalsIgnoreCase("Facebook")){
 		                    	
