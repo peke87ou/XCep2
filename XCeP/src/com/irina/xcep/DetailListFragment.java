@@ -221,7 +221,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int pos, long id) {
 
-            	final String[] items = {"Cambiar unidades", "Ver o detalle do Produto", "Eliminar o Produto"};
+            	final String[] items = {"Cambiar unidades", "Ver detalle do Produto", "Eliminar o Produto"};
        		 
 		        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		 
@@ -233,7 +233,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		                    	
 		         				showDialogoModificarCantidadProducto(mListaSelected.getAIdUnits().get(pos)); 
 		                    
-		                    }else if(items[item].equalsIgnoreCase("Ver o detalle do Produto")){
+		                    }else if(items[item].equalsIgnoreCase("Ver detalle do Produto")){
 		                    	
 		                    	DetailListFragment.this.productBarcode = mListaSelected.getAIdUnits().get(pos).getProduct();
 		                    	lanzarDetalleProducto(mListaSelected.getAIdUnits().get(pos).getProduct(), mMarketSelected);
@@ -902,7 +902,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 						dialogoAgregarProducto.setTitle("Produto atopado");
 						dialogoAgregarProducto.setMessage("Atopouse o produto "+productBarcode.getTitle()+"("+resultadoBarCode +")\n para o supermercado "+mMarketSelected.getName());
 						dialogoAgregarProducto.show();
-						dialogoAgregarProducto.getButton(AlertDialog.BUTTON_POSITIVE).setText("Ver detalle");
+						dialogoAgregarProducto.getButton(AlertDialog.BUTTON_POSITIVE).setText("Ver detalle do produto");
 						
 					}else if(isProductoEnParse){ //Producto en el sistema, pero no en el supermercado
 						
