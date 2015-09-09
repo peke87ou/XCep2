@@ -120,8 +120,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		return fragment;
 	}
 	
-	
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
@@ -382,7 +380,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		popDialog.show();
 	}
 	
-	
 	public void actualizarPrecios(){
 		
 		double precioTotalCarrito = 0;
@@ -474,7 +471,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		}	
 	}
 	
-	
 	public void removeProductToList(final Units unidadesProducto){
 		final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(),
 				"Eliminando produto da lista");
@@ -502,7 +498,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	/**
 	 * Se actualizan los datos de la lista actual
 	 */
-	
 	public void reloadUserShoppingList(final ProgressDialog progressDialog,final boolean reloadCatalogo) {
 		//Recreamos o conxunto de listas de compra do usuario
 		Log.d(TAG, "reloadUserShoppingList"); 
@@ -586,7 +581,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		}
 	}
 	
-
 	public void actualizarCatalogo(){
         
 		productCatalogList.clear();
@@ -669,7 +663,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 
 		return tempListaProdutos;
 	}
-
 	
 	@Override
 	public void onStop() {
@@ -699,8 +692,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			prepararCamara();
 		}
 	}
-
-	
 
 	public void prepararCamara(){
 		
@@ -791,8 +782,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		}
 	}
 	
-	
-	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -812,8 +801,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		}
 		
 	}
-
-
 
 	public void showDialogoBarcodeEncontrado(){
 		
