@@ -153,7 +153,7 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
     private NavDrawerItem[] menu = new NavDrawerItem[]{
             NavTitleItem.create(100, R.string.app_name),
             NavMenuItem.create(FRAGMENT_HOME, R.string.my_list, R.drawable.list, true, this),
-            NavMenuItem.create(FRAGMENT_CATALOG, R.string.catalog, R.drawable.ic_maps_store_mall_directory, true, this),
+            NavMenuItem.create(FRAGMENT_CATALOG, R.string.catalog, R.drawable.ic_action_description, true, this),
             NavMenuItem.create(FRAGMENT_SCAN, R.string.scan, R.drawable.ic_navigation_fullscreen, true, this),
             NavTitleItem.create(200, R.string.setting),
             NavMenuItem.create(FACEBOOK, R.string.facebook, R.drawable.facebook, true, this),
