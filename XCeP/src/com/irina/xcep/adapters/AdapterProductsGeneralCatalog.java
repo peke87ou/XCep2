@@ -10,6 +10,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
@@ -17,6 +18,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.irina.xcep.GeneralCatalogFragment;
 import com.irina.xcep.R;
 import com.irina.xcep.model.Produto;
 import com.squareup.picasso.Picasso;
@@ -27,12 +29,14 @@ public class AdapterProductsGeneralCatalog extends BaseAdapter implements Filter
 	private static Map<String, Bitmap> mImagenes = new HashMap<String, Bitmap>();
 	private  List<Produto> mProductos, mProductosFiltrados;
 	private Context mContext;
+	private GeneralCatalogFragment mFragmentCatalogoGeneral;
 	
-	public AdapterProductsGeneralCatalog(Context context, ArrayList<Produto> productos) {
+	public AdapterProductsGeneralCatalog(Context context, ArrayList<Produto> productos, GeneralCatalogFragment fragmetCatalogoGeneral) {
 		super();
 		mProductos = productos;
 		mProductosFiltrados = productos;
 		mContext = context;
+		this.mFragmentCatalogoGeneral = fragmetCatalogoGeneral;
 	}
 	
 	
@@ -62,12 +66,14 @@ public class AdapterProductsGeneralCatalog extends BaseAdapter implements Filter
 		}
 		
 		ImageView productoImageView = (ImageView) celdaView.findViewById(R.id.image_product);
+		ImageView addImageView = (ImageView) celdaView.findViewById(R.id.image_add_product);
 		TextView nombreProductoTextView = ((TextView) celdaView.findViewById(R.id.name_product));
 		TextView precioProductoTextView = ((TextView) celdaView.findViewById(R.id.price_product));
 		precioProductoTextView.setVisibility(View.INVISIBLE);
 		
+		
 		// Recuperar o elemento de datos para esta posición
-		Produto producto = (Produto)getItem(position);
+		final Produto producto = (Produto)getItem(position);
 		
 		nombreProductoTextView.setText(producto.getTitle());
 		
@@ -79,6 +85,15 @@ public class AdapterProductsGeneralCatalog extends BaseAdapter implements Filter
 
 			Picasso.with(mContext).load(producto.getIcon().getUrl()).into(productoImageView);
 		}
+		
+		addImageView.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				mFragmentCatalogoGeneral.checkProductToList(producto);
+			}
+		});
 
 		celdaView.setTag(producto);
 		return celdaView;

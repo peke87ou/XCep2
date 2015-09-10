@@ -5,18 +5,25 @@ import java.util.List;
 
 import com.irina.xcep.adapters.AdapterProductsGeneralCatalog;
 import com.irina.xcep.adapters.AdapterTags;
+import com.irina.xcep.model.Lista;
 import com.irina.xcep.model.Prezo;
 import com.irina.xcep.model.Produto;
 import com.irina.xcep.model.Tag;
+import com.irina.xcep.model.Units;
 import com.irina.xcep.utils.Utils;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,6 +56,11 @@ public class GeneralCatalogFragment extends Fragment {
 	//Catalogo
 	ListView catalogoListView;
 	ArrayList<Produto> productCatalogList = new ArrayList<Produto>();
+	
+	//Agregar producto
+	public static ArrayList<Lista> misListas = new ArrayList<Lista>();
+	ParseUser currentUser = ParseUser.getCurrentUser();
+	private Produto productoSeleccionado;
 
 	public static GeneralCatalogFragment newInstance(int Index) {
 		GeneralCatalogFragment fragment = new GeneralCatalogFragment();
@@ -88,7 +100,8 @@ public class GeneralCatalogFragment extends Fragment {
 
 				mSearchView.clearFocus();
 				Utils.hideSoftKeyboard(getActivity());
-				lanzarDetalleProducto((Produto) view.getTag());
+				productoSeleccionado = (Produto) view.getTag();
+				lanzarDetalleProducto(productoSeleccionado);
 			}
 		});
 
@@ -132,7 +145,7 @@ public class GeneralCatalogFragment extends Fragment {
 		
 		if((requestCode == DetailProductActivity.requestCode) && (resultCode == DetailProductActivity.resultCodeAdd)){
 			
-			//addProductToList(productBarcode);
+			checkProductToList(productoSeleccionado);
 			
 		}else if (requestCode == AddProductActivity.requestCode){
 		
@@ -166,6 +179,67 @@ public class GeneralCatalogFragment extends Fragment {
 	public void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
+	}
+	
+	/**
+	 * Comprueba las listas compatibles con el producto seleccionado por el usuario
+	 * @param producto
+	 */
+	
+	public void checkProductToList(final Produto producto){
+		
+		if(HomeFragment.misListas == null || HomeFragment.misListas.size() == 0){
+			
+			Toast.makeText(getActivity(), "Non posee ningunha lista"+HomeFragment.misListas.size(), Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
+		final ArrayList<Lista> listaSupermercadosCompatibles = new ArrayList<Lista>();
+		for(Lista lista:HomeFragment.misListas){
+			if(lista.getSupermercado().containsProduct(producto)){
+				listaSupermercadosCompatibles.add(lista);
+			}
+		}
+		
+		if(listaSupermercadosCompatibles.size() == 0){
+			String nombresSupermercadosCompatibles = "";
+			
+			for(Prezo precioSupermercado:producto.getAPrice()){
+				nombresSupermercadosCompatibles += precioSupermercado.getPidMarket().getName() + ", ";
+			}
+			
+			Toast.makeText(getActivity(), "Ningunha lista compatible. Cree unha lista primeiro dos seguintes supermercados: \n"+nombresSupermercadosCompatibles, Toast.LENGTH_LONG).show();
+
+		}else{
+
+
+			final List<String> listaNombres = new ArrayList<String>();
+			
+			for(int nLista=0; nLista < listaSupermercadosCompatibles.size(); nLista++){
+				listaNombres.add(listaSupermercadosCompatibles.get(nLista).getName() + " ("+ listaSupermercadosCompatibles.get(nLista).getSupermercado().getName()+")");
+			}
+			
+			
+	        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	 
+	        builder.setTitle("Agregar "+producto.getTitle() +" a lista")
+	           .setItems((String[])listaNombres.toArray(new String[listaNombres.size()]), new DialogInterface.OnClickListener() {
+	                public void onClick(DialogInterface dialog, int nLista) {
+	                    try{
+	                    	addProductToList(listaSupermercadosCompatibles.get(nLista), producto);
+	                    	
+	                    }catch(IllegalStateException e){
+	                    	Toast.makeText(getActivity(), "Erro ao agregar o produto"+HomeFragment.misListas.get(nLista).getName(), Toast.LENGTH_SHORT).show();
+
+	                    }
+	                }
+
+	            });
+	 
+	        builder.create();
+	        builder.show();
+			
+		}
 	}
 
 	public void lanzarDetalleProducto(Produto producto) {
@@ -219,7 +293,7 @@ public class GeneralCatalogFragment extends Fragment {
 			ArrayList<Produto> productosSistema= new ArrayList<Produto>();
 			productosSistema = (ArrayList<Produto>)filtrarProductos(productCatalogList);
 			
-			AdapterProductsGeneralCatalog adapterProductoCatalog = new AdapterProductsGeneralCatalog(getActivity(), productosSistema);
+			AdapterProductsGeneralCatalog adapterProductoCatalog = new AdapterProductsGeneralCatalog(getActivity(), productosSistema, this);
 	    	adapterProductoCatalog.getFilter().filter(mSearchView.getQuery());
 			catalogoListView.setAdapter(adapterProductoCatalog);
 		
@@ -324,4 +398,91 @@ public class GeneralCatalogFragment extends Fragment {
 			}
 		});
 	}
+	
+	
+	/**
+	 * Engadese un produto a lista. Se xa está na lista, engadese unha unidade.
+	 * @param producto
+	 */
+	public void addProductToList(final Lista listaSelected,Produto producto) throws IllegalStateException{
+		
+		if(producto == null){
+			
+			Toast.makeText(getActivity(), "Produto non válido", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
+		//Comprobar si existe en la lista, si existe sumar una unidad más.
+		
+		boolean isProductoAlreadyAdd=false;
+		Units unidadSeleccionada=null;
+		if(listaSelected.getAIdUnits() != null){
+			for(Units unitProducto:listaSelected.getAIdUnits()){
+				
+				if(unitProducto.getProduct().getObjectId().equals(producto.getObjectId())){
+					isProductoAlreadyAdd = true;
+					unidadSeleccionada = unitProducto; 
+					break;
+				}
+			}
+		}
+		
+		if(isProductoAlreadyAdd){ //Aumentar una unidad al producto de la lista
+			
+			unidadSeleccionada.addNumberUnits(1);
+			unidadSeleccionada.saveInBackground();
+			Toast.makeText(getActivity(), "Agregada una unidad de "+unidadSeleccionada.getProduct().getTitle() + ". Total "+unidadSeleccionada.getNumberUnits(), Toast.LENGTH_SHORT).show();
+		
+		}else{ //Nuevo producto a la lista
+			
+			final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(),
+					"Agregando produto novo a lista");
+			progress.show();
+			
+			final Units unidadProducto = new Units();
+			unidadProducto.put("numberUnits", 1);
+			unidadProducto.put("PidProduct", ParseObject.createWithoutData("Products", producto.getObjectId()));
+			unidadProducto.saveInBackground(new SaveCallback() {
+				
+				@Override
+				public void done(ParseException e) {
+					if(e == null){
+						listaSelected.addAidUnits(unidadProducto.getObjectId());
+						listaSelected.saveInBackground(new SaveCallback() {
+							
+							@Override
+							public void done(ParseException e) {
+								
+								if(e!= null){
+									e.printStackTrace();
+									Toast.makeText(getActivity(), "Erro ao gardar a lista", Toast.LENGTH_SHORT).show();
+									
+								}else{
+
+									Toast.makeText(getActivity(), "Agregouse o novo produto", Toast.LENGTH_SHORT).show();
+								}
+								
+								progress.dismiss();
+							}
+						});
+					}else{
+						e.printStackTrace();
+						progress.dismiss();
+					}
+				}
+			});
+		}	
+	}
+
+	//Getters & Setters
+	
+	public Produto getProductoSeleccionado() {
+		return productoSeleccionado;
+	}
+
+	public void setProductoSeleccionado(Produto productoSeleccionado) {
+		this.productoSeleccionado = productoSeleccionado;
+	}
+	
+	
 }

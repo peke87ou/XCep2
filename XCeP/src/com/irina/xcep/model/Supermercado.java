@@ -45,4 +45,18 @@ public class Supermercado extends ParseObject{
 		ParseObject punteroUnidad = ParseObject.createWithoutData("Products", objectId);
 		add("AProduct", punteroUnidad);
 	}
+	
+	public boolean containsProduct(Produto productoInput){
+		if(productoInput == null){
+			return false;
+		}
+		
+		for (Produto producto:getAProduct()){
+			if (producto.getObjectId().equals(productoInput.getObjectId())){
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }
