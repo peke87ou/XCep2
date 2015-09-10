@@ -132,12 +132,12 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		TabHost.TabSpec spec=tabHost.newTabSpec("Lista da compra");
 		spec.setContent(R.id.tab_list_buy);
-		spec.setIndicator("",res.getDrawable(R.drawable.notebook));
+		spec.setIndicator("",res.getDrawable(R.drawable.ic_action_shopping_basket));
 		tabHost.addTab(spec);
 		 
 		spec=tabHost.newTabSpec("Catálogo");
 		spec.setContent(R.id.tab_catalog);
-		spec.setIndicator("",res.getDrawable(R.drawable.ic_maps_store_mall_directory));
+		spec.setIndicator("",res.getDrawable(R.drawable.ic_action_description));
 		tabHost.addTab(spec);
 
 		spec=tabHost.newTabSpec("Escaner");
