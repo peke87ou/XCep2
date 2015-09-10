@@ -605,7 +605,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	
 	private void getTags(){
 		
-		adapterTag = new AdapterTags(getActivity(), tagList, this);
+		adapterTag = new AdapterTags(getActivity(), tagList, this, false);
         
         ParseQuery<Tag> query = ParseQuery.getQuery(Tag.class);
 		query.findInBackground(new FindCallback<Tag>() {

@@ -42,7 +42,7 @@ public class AdapterMarketPrice extends ArrayAdapter<String> {
           celdaView = LayoutInflater.from(getContext()).inflate(R.layout.item_list_price_market, parent, false);
        }
        
-       if(idMarketList.equals(idSupermercado)){
+       if(idSupermercado.equals(idMarketList)){
     		   celdaView.setBackgroundColor(mContext.getResources().getColor(R.color.verde_oscuro));
     		   ((TextView) celdaView.findViewById(R.id.TextViewPrezo)).setTextColor(mContext.getResources().getColor(android.R.color.black));
        }

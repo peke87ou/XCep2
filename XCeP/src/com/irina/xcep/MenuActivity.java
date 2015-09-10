@@ -176,6 +176,10 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
             case FRAGMENT_LIST:
             	fragment = DetailListFragment.newInstance(FRAGMENT_LIST);
             	break;
+            	
+            case FRAGMENT_CATALOG:
+            	fragment = GeneralCatalogFragment.newInstance(FRAGMENT_CATALOG);
+            	break;
             
             case FACEBOOK:
             	shareFacebookApp("Aplicación de gestión de compra", "Xecp", Utils.urlAppXecp);
