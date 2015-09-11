@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="7dp"
-        android:text="Novo nome da lista : " />
+        android:text="@string/novo_nome_da_lista" />
 
     <EditText
         android:id="@+id/NameListNew"
@@ -23,7 +23,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="7dp"
         android:ems="10" >
-
      
    </EditText>
    

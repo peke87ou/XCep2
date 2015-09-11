@@ -5,9 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-
-
-
     <TabHost
         android:id="@android:id/tabhost"
         android:layout_width="match_parent"
@@ -23,8 +20,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-               >
+                android:gravity="center" >
 
                 <TextView
                     android:id="@+id/idNameMarket"
@@ -57,8 +53,7 @@
                 android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-               	android:layout_weight="3"
-                >
+               	android:layout_weight="3">
 
               <LinearLayout
                     android:id="@+id/tab_list_buy"
@@ -70,10 +65,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical" >
-
-                        
-                         
-                       
 
                         <ListView
                             android:id="@+id/list_products"
@@ -102,17 +93,16 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.50"
-                                    android:text="Prezo Carriño "
+                                    android:text="@string/prezo_carrinho"
                                     android:textStyle="bold"
                                     android:typeface="serif" />
-
                                 <TextView
                                     android:id="@+id/prezoCarritoTextView"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.50"
                                     android:gravity="right"
-                                    android:text="0,0 €" 
+                                    android:text="@string/cero_euros" 
                                     android:textStyle="bold"
                                     android:typeface="serif" />
                             </LinearLayout>
@@ -127,7 +117,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.50"
-                                    android:text="Prezo Lista" 
+                                    android:text="@string/prezo_lista" 
                                     android:textStyle="bold"
                                     android:typeface="serif"/>
 
@@ -137,7 +127,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.50"
                                     android:gravity="right"
-                                    android:text="0,0 €"
+                                    android:text="@string/cero_euros"
                                     android:textStyle="bold"
                                     android:typeface="serif" />
                             </LinearLayout>
@@ -150,8 +140,7 @@
                     android:id="@+id/tab_catalog"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="vertical" >
 
                     <SearchView
                         android:id="@+id/searchView1"
@@ -178,7 +167,7 @@
                     <ListView
                         android:id="@+id/listProductCatalog"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:layout_weight="1" >
                     </ListView>
                     
@@ -196,21 +185,16 @@
                          android:textColor="@color/verde_oscuro"
                          android:layout_gravity="center"
                          android:typeface="serif"
-                         android:textSize="15dp"
+                         android:textSize="15sp"
                          android:padding="5dp"
-                         android:text="Enfoque o código de barras do produto"
+                         android:text="@string/enfoque_o_codigo_de_barras_do_produto"
                          android:textAppearance="?android:attr/textAppearanceLarge" />
                      <SurfaceView
                          android:id="@+id/surfaceView1"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"/>
-                     
                 </LinearLayout>
-
             </FrameLayout>
-
         </LinearLayout>
-
     </TabHost>
-
 </RelativeLayout>

@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.09"
+    	android:orientation="horizontal"
         android:gravity="center" >
 
         <TextView
@@ -18,7 +18,6 @@
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:padding="10dp"
-            android:text="Nome Produto"
             android:textColor="@color/verde_oscuro"
             android:textSize="20sp"
             android:textStyle="bold|italic" />
@@ -28,7 +27,7 @@
             android:layout_width="64dp"
             android:layout_height="51dp"
             android:src="@drawable/abc_ic_menu_share_holo_light" 
-            android:contentDescription="Compartir"/>
+            android:contentDescription="@string/compartir"/>
 
     </LinearLayout>
 
@@ -42,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="Categoría: "
+            android:text="@string/categoria"
             android:textColor="@color/verde_oscuro"
             android:textStyle="bold" />
 
@@ -60,6 +59,7 @@
 
         <ImageView
             android:id="@+id/image_view_product"
+            android:contentDescription="@string/imagen_produto"
             android:layout_width="match_parent"
             android:layout_height="104dp"
             android:src="@drawable/abc_ic_clear" />
@@ -75,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="Descrición: "
+            android:text="@string/descricion"
             android:textColor="@color/verde_oscuro"
             android:textStyle="bold" />
 
@@ -96,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="Marca: "
+            android:text="@string/marca"
             android:textColor="@color/verde_oscuro"
             android:textStyle="bold" />
 

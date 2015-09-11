@@ -4,8 +4,6 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal" 
     android:padding="1dp" >
-
-
         <CheckBox
             android:id="@+id/checkBoxTag"
             android:layout_width="33dp"

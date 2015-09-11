@@ -13,7 +13,7 @@
         android:layout_below="@+id/txtNewPrice"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:text="Supermercado " />
+         />
 
     <TextView
         android:id="@+id/txtNewPrice"
@@ -22,7 +22,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="19dp"
-        android:text="Novo Prezo  para o supermercado:  " />
+        android:text="@string/novo_prezo_para_o_supermercado" />
 
     <EditText
         android:id="@+id/priceProductNew"

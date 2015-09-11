@@ -11,14 +11,13 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="10dp" >
-
                 <TextView
                     android:id="@+id/idNameMarket"
-                    android:layout_width="180dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.36"
                     android:gravity="center_vertical|center_horizontal"
-                    android:text="Supermercado a engadir"
+                    android:text="@string/supermercado_a_engadir"
                     android:textSize="25sp" />
 	</LinearLayout>
 
@@ -29,11 +28,11 @@
         android:padding="10dp" >
 
         <TextView
-            android:layout_width="84dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="41.29"
             android:gravity="center_vertical"
-            android:text="Nome do Supermercado" />
+            android:text="@string/nome_do_supermercado" />
 
         <EditText
             android:id="@+id/text_name_market"
@@ -63,7 +62,7 @@
              <ImageView
                  android:id="@+id/image_view_market"
                  android:layout_width="50dp"
-                 android:layout_height="104dp"
+                 android:layout_height="0dp"
                  android:layout_weight="0.06"
                  android:src="@drawable/ic_add_photo" />
 			
@@ -72,8 +71,7 @@
 		        android:layout_height="wrap_content"
 		        android:layout_gravity="center_vertical"
 		        android:layout_margin="5dp"
-		        android:text="Engadir Imaxe" />
-
+		        android:text="@string/engadir_imaxe" />
 		</LinearLayout>
 
      </LinearLayout>
@@ -107,7 +105,6 @@
             android:background="@color/verde_oscuro"
             android:text="@string/engadir"
             materialdesign:animate="true" >
-
         </com.gc.materialdesign.views.ButtonRectangle>
     </LinearLayout>
 

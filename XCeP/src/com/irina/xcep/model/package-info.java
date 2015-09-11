@@ -8,6 +8,8 @@
  */
 package com.irina.xcep.model;
 
+import com.irina.xcep.R;
+
 
 
 

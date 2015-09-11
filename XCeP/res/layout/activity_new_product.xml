@@ -136,7 +136,7 @@
                  android:layout_gravity="center_vertical"
                  android:layout_margin="5dp"
                  android:layout_weight="0.10"
-                 android:text="Engadir Imaxe" />
+                 android:text="@string/engadir_imaxe" />
 
          </LinearLayout>
 
