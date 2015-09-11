@@ -130,7 +130,7 @@ public class HomeFragment extends Fragment {
 		listasListView.setAdapter(adapter);
 		Log.d(TAG, "reloadUserShoppingLists");
 
-		final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), "Actualizando listas");
+		final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), getActivity().getString(R.string.actualizando_listas));
 		progress.show();
 		ParseQuery<Lista> query = ParseQuery.getQuery(Lista.class);
 
@@ -153,7 +153,7 @@ public class HomeFragment extends Fragment {
 			@Override
 			public void done(List<Lista> objects, ParseException e) {
 				if (e != null) {
-					Toast.makeText(getActivity(), "Error na actualización de listas", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), R.string.erro_na_actualizacion_de_listas, Toast.LENGTH_SHORT).show();
 				}
 
 				misListas = (ArrayList<Lista>) objects;
@@ -185,12 +185,12 @@ public class HomeFragment extends Fragment {
 	public void showDialogoModificarLista() {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle("Modificacións da lista");
-		builder.setMessage("¿Que desexa facer? ");
-		builder.setPositiveButton("Eliminar a lista", new DialogInterface.OnClickListener() {
+		builder.setTitle(R.string.modificacions_da_lista);
+		builder.setMessage(R.string.que_desexa_facer);
+		builder.setPositiveButton(R.string.eliminar_a_lista, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				Utils.hideSoftKeyboard(getActivity());
-				final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), "Eliminando lista");
+				final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), getActivity().getString(R.string.eliminando_lista));
 				progress.show();
 
 				ParseQuery<Lista> query = ParseQuery.getQuery(Lista.class);
@@ -208,20 +208,20 @@ public class HomeFragment extends Fragment {
 							reloadUserShoppingLists();
 						} else {
 							progress.dismiss();
-							Toast.makeText(getActivity(), "Error no borrado", Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), R.string.erro_no_borrado, Toast.LENGTH_SHORT).show();
 						}
 					}
 				});
 			}
 		});
-		builder.setNeutralButton("Cambiar Nome", new DialogInterface.OnClickListener() {
+		builder.setNeutralButton(R.string.cambiar_nome, new DialogInterface.OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				AlertDialog.Builder popDialog = new AlertDialog.Builder(getActivity());
 				final LayoutInflater inflater = getActivity().getLayoutInflater();
 
-				popDialog.setTitle("Cambiar o nome da lista ");
+				popDialog.setTitle(R.string.cambiar_o_nome_da_lista);
 				popDialog.setView(inflater.inflate(R.layout.activity_dialog_change_name_list, null))
 						.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 							@Override
@@ -234,7 +234,7 @@ public class HomeFragment extends Fragment {
 
 								if ((nameListtxt != null) && (nameListtxt.length() > 0)) {
 
-									final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), "Cambiando nome");
+									final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), getActivity().getString(R.string.cambiando_nome));
 									progress.show();
 									ParseQuery<Lista> query = ParseQuery.getQuery(Lista.class);
 									query.whereEqualTo("objectId", objectIdLista);
@@ -244,7 +244,7 @@ public class HomeFragment extends Fragment {
 
 											if (e != null) {
 												progress.dismiss();
-												Toast.makeText(getActivity(), "Produciuse un erro: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+												Toast.makeText(getActivity(), R.string.produciuse_un_erro + e.getMessage(), Toast.LENGTH_SHORT).show();
 												return;
 											}
 
@@ -256,7 +256,7 @@ public class HomeFragment extends Fragment {
 													public void done(ParseException e) {
 														progress.dismiss();
 														if (e != null) {
-															Toast.makeText(getActivity(), "Produciuse un erro: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+															Toast.makeText(getActivity(), R.string.produciuse_un_erro + e.getMessage(), Toast.LENGTH_SHORT).show();
 														} else {
 															reloadUserShoppingLists();
 														}
@@ -269,7 +269,7 @@ public class HomeFragment extends Fragment {
 
 								} else {
 
-									Toast.makeText(getActivity(), "É necesario encher o campo nome", Toast.LENGTH_SHORT).show();
+									Toast.makeText(getActivity(), R.string.necesario_encher_o_campo_nome, Toast.LENGTH_SHORT).show();
 								}
 
 							}
@@ -285,7 +285,7 @@ public class HomeFragment extends Fragment {
 			}
 		});
 
-		builder.setNegativeButton("Pechar", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton(R.string.pechar, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				dialog.dismiss();
 			}

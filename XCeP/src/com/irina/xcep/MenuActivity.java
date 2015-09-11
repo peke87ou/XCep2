@@ -182,11 +182,11 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
             	break;
             
             case FACEBOOK:
-            	shareFacebookApp("Aplicación de gestión de compra", "Xecp", Utils.urlAppXecp);
+            	shareFacebookApp(getString(R.string.aplicacion_de_xestion_de_compra), getResources().getString(R.string.app_name), Utils.urlAppXecp);
             	return;
             
             case TWITTER:
-            	shareTwitterPost("Aplicación de gestión de compra", "Xecp", Utils.urlAppXecp);
+            	shareTwitterPost(getString(R.string.aplicacion_de_xestion_de_compra),getResources().getString(R.string.app_name), Utils.urlAppXecp);
             	return;
             
             case HELP:
@@ -194,7 +194,7 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
             	return;
 
          default:
-        	 Toast.makeText(this, "Funcionalidade en cosntrucción", Toast.LENGTH_LONG).show();
+        	 Toast.makeText(this, R.string.funcionalidade_en_cosntruccion, Toast.LENGTH_LONG).show();
         	 return;
            
         }
@@ -260,13 +260,13 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 		View promptsView = li.inflate(R.layout.dialog, null);
 		alertDialogBuilder.setView(promptsView);
 		
-			alertDialogBuilder.setTitle("Información");
+			alertDialogBuilder.setTitle(R.string.informacion);
 
 			// set dialog message
 			alertDialogBuilder
-				.setMessage("Información sobre a aplicación")
+				.setMessage(R.string.informacion_sobre_a_aplicacion)
 				.setCancelable(false)
-				.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+				.setPositiveButton(R.string.si,new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog,int id) {
 						
 					}

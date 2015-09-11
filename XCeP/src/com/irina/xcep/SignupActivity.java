@@ -77,16 +77,16 @@ public class SignupActivity extends Activity {
 								String mensaje = "";
 								switch (e.getCode()){
 								case 125:
-									mensaje = "O seu enderezo electrónico é inválido";
+									mensaje = getString(R.string.o_seu_enderezo_electronico_invalido);
 									break;
 								case 202:
-									mensaje = "O usuario que intenta rexistrar xa existe, Loguese!";
+									mensaje = getString(R.string.o_usuario_que_intenta_rexistrar_xa_existe_loguese);
 									break;
 								case 203:
-									mensaje = "O email que intenta rexistrar xa existe";
+									mensaje = getString(R.string.o_email_que_intenta_rexistrar_xa_existe);
 									break;
 								default:
-									mensaje = "Erro no rexistro";
+									mensaje = getString(R.string.erro_no_rexistro);
 									break;
 								}
 								Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();

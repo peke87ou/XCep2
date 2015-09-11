@@ -113,14 +113,14 @@ public class DetailProductActivity extends ShareSocialMediaActivity{
 			@Override
 			public void onClick(View v) {
 				
-				final String[] items = {"Twitter", getResources().getString(R.string.facebook)};
+				final String[] items = {getResources().getString(R.string.twitter), getResources().getString(R.string.facebook)};
 				
 				AlertDialog.Builder builder = new AlertDialog.Builder(DetailProductActivity.this);
-		        builder.setTitle("Compartir "+getIntent().getExtras().getString("NOMEPRODUCTO"))
+		        builder.setTitle(getResources().getString(R.string.compartir) + getIntent().getExtras().getString("NOMEPRODUCTO"))
 		           .setItems(items, new DialogInterface.OnClickListener() {
 		                public void onClick(DialogInterface dialog, int item) {
-		                    Log.i("Dialogos", "Opción elegida: " + items[item]);
-		                    if (items[item].equalsIgnoreCase("Twitter")){
+		                    Log.i("Dialogos", "Opción elexida: " + items[item]);
+		                    if (items[item].equalsIgnoreCase(getResources().getString(R.string.twitter))){
 		                    	
 		                    	shareTwitterPost(mDescripcionProducto, mNombreProducto + "-"+mMarcaProducto,mUrlImageProducto);
 		                    

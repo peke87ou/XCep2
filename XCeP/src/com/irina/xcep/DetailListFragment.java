@@ -130,18 +130,18 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		tabHost.setup();
 				
 		
-		TabHost.TabSpec spec=tabHost.newTabSpec("Lista da compra");
+		TabHost.TabSpec spec=tabHost.newTabSpec(res.getString(R.string.lista_da_compra));
 		spec.setContent(R.id.tab_list_buy);
 		spec.setIndicator("",res.getDrawable(R.drawable.ic_action_shopping_basket));
 		tabHost.addTab(spec);
 		
 		 
-		spec=tabHost.newTabSpec("Catálogo");
+		spec=tabHost.newTabSpec(res.getString(R.string.catalog));
 		spec.setContent(R.id.tab_catalog);
 		spec.setIndicator("",res.getDrawable(R.drawable.ic_action_description));
 		tabHost.addTab(spec);
 
-		spec=tabHost.newTabSpec("Escaner");
+		spec=tabHost.newTabSpec(res.getString(R.string.scan));
 		spec.setContent(R.id.tab_scan);
 		spec.setIndicator("",res.getDrawable(R.drawable.ic_navigation_fullscreen));
 		tabHost.addTab(spec);
@@ -225,26 +225,26 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int pos, long id) {
 
-            	final String[] items = {"Cambiar unidades", "Ver detalle do Produto", "Eliminar o Produto"};
+            	final String[] items = {getResources().getString(R.string.cambiar_unidades) ,getResources().getString(R.string.ver_detalle_do_produto) , getResources().getString(R.string.eliminar_o_produto)};
        		 
 		        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		 
-		        builder.setTitle("¿Que desexa facer?")
+		        builder.setTitle(R.string.que_desexa_facer)
 		           .setItems(items, new DialogInterface.OnClickListener() {
 		                public void onClick(DialogInterface dialog, int item) {
-		                    Log.i("Dialogos", "Opción elegida: " + items[item]);
-		                    if (items[item].equalsIgnoreCase("Cambiar unidades")){
+		                    Log.i("Dialogos", "Opción elexida: " + items[item]);
+		                    if (items[item].equalsIgnoreCase(getActivity().getString(R.string.cambiar_unidades))){
 		                    	
 		         				showDialogoModificarCantidadProducto(mListaSelected.getAIdUnits().get(pos)); 
 		                    
-		                    }else if(items[item].equalsIgnoreCase("Ver detalle do Produto")){
+		                    }else if(items[item].equalsIgnoreCase(getActivity().getString(R.string.ver_detalle_do_produto))){
 		                    	
 		                    	DetailListFragment.this.productBarcode = mListaSelected.getAIdUnits().get(pos).getProduct();
 		                    	lanzarDetalleProducto(mListaSelected.getAIdUnits().get(pos).getProduct(), mMarketSelected);
 				                   
 		                    }else{
 		                    	
-		                    	 Log.i("Dialogos", "Opción elegida: " + items[item]);
+		                    	 Log.i("Dialogos", "Opción elexida: " + items[item]);
 		                    	 removeProductToList(mListaSelected.getAIdUnits().get(pos));
 		                    }
 		                }
@@ -292,7 +292,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
         mSearchView.setIconifiedByDefault(false);
         mSearchView.setSubmitButtonEnabled(false); 
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-        mSearchView.setQueryHint("Búsqueda por palabras clave");
+        mSearchView.setQueryHint(getActivity().getString(R.string.busqueda_por_palabras_clave));
         mSearchView.setOnQueryTextListener(new OnQueryTextListener() {
 			
 			@Override
@@ -336,7 +336,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		AlertDialog.Builder popDialog = new AlertDialog.Builder(getActivity());
 		final LayoutInflater inflater = getActivity().getLayoutInflater();
-		popDialog.setTitle("Cambiar unidades ");
+		popDialog.setTitle(R.string.cambiar_unidades);
 		View vistaDialogo = inflater.inflate(
 				R.layout.activity_dialog_change_units_products, null);
 		popDialog.setView(vistaDialogo);
@@ -346,7 +346,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					public void onClick(DialogInterface dialog, int id) {
 						
 						dialog.dismiss();
-						final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(),"Cambiando unidades");
+						final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(),getActivity().getString(R.string.cambiando_unidades));
 						
 						Utils.hideSoftKeyboard(getActivity());
 						
@@ -354,9 +354,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 						int newUnitProduct = unitsProductPicker.getValue();
 						
 						if(newUnitProduct == unidadProducto.getNumberUnits().intValue()){
-							Toast.makeText(getActivity(), "Se ha seleccionado la misma cantidad", Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), R.string.seleccionouse_mesma_cantidade, Toast.LENGTH_SHORT).show();
 						}else{
-							Toast.makeText(getActivity(), "Se ha seleccionado "+newUnitProduct, Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), R.string.seleccionouse+newUnitProduct, Toast.LENGTH_SHORT).show();
 							unidadProducto.setNumberUnits(newUnitProduct);
 							unidadProducto.saveInBackground( new SaveCallback() {
 								
@@ -438,11 +438,11 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			
 			unidadSeleccionada.addNumberUnits(1);
 			unidadSeleccionada.saveInBackground();
-			Toast.makeText(getActivity(), "Agregada una unidad de "+unidadSeleccionada.getProduct().getTitle() + ". Total "+unidadSeleccionada.getNumberUnits(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), R.string.engadida_unha_unidade_de+unidadSeleccionada.getProduct().getTitle() + R.string.total+unidadSeleccionada.getNumberUnits(), Toast.LENGTH_SHORT).show();
 			adapterUnidadesCarrito.notifyDataSetChanged();
 		}else{ //Nuevo producto a la lista
 			final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(),
-					"Agregando produto novo a lista");
+					getActivity().getString(R.string.engadindo_produto_novo_a_lista));
 			progress.show();
 			
 			final Units unidadProducto = new Units();
@@ -464,7 +464,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 									progress.dismiss();
 								}else{
 									reloadUserShoppingList(progress, false);
-									Log.d(TAG, "Se agrega la unidad a la lista");
+									Log.d(TAG, getActivity().getString(R.string.engasese_a_unidade_a_lista));
 								}
 							}
 						});
@@ -478,8 +478,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	}
 	
 	public void removeProductToList(final Units unidadesProducto){
-		final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(),
-				"Eliminando produto da lista");
+		final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(),	getActivity().getString(R.string.eliminando_produto_da_lista));
 		progress.show();
 		
 		unidadesProducto.deleteInBackground(new DeleteCallback() { //Eliminamos unidades do produto da tabla unidades
@@ -531,7 +530,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			@Override
 			public void done(List<Lista> objects, ParseException e) {
 				if (e != null) {
-					Toast.makeText(getActivity(), "Error ao engadir produto",
+					Toast.makeText(getActivity(), R.string.erro_ao_engadir_produto,
 							Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
 				}
@@ -546,13 +545,13 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					}
 					
 				}else{
-					Log.d(TAG, "Error en la query, no se pudo recargar la lista!!!");
+					Log.d(TAG, getActivity().getString(R.string.erro_na_query_non_se_pode_recargar_a_lista));
 				}
 				
 				if(progressDialog.isShowing()){
 					progressDialog.dismiss();
 				}
-				if(tabHost.getCurrentTabTag().equals("Lista da compra")){
+				if(tabHost.getCurrentTabTag().equals(R.string.lista_da_compra)){
 						adapterUnidadesCarrito = new AdapterUnits(getActivity(), mListaSelected, DetailListFragment.this); //FIXME sobran parámetros de entrada
 						productosListaListView.setAdapter(adapterUnidadesCarrito);
 						adapterUnidadesCarrito.notifyDataSetChanged();
@@ -570,7 +569,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	}
 	
 	private void iniciarPararScan(String tabId){
-		if (tabId == "Escaner") {
+		if (tabId == getResources().getString(R.string.scan)) {
 			if(cam==null){
 				prepararCamara();
 			}else{
@@ -639,7 +638,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				if(viewTag instanceof CheckBox){
 					if(((CheckBox)viewTag).isChecked()){
 						tagsSeleccionados.add((String)viewTag.getTag());
-						Log.d(TAG, "Tag en filtro: "+(String)viewTag.getTag());
+						Log.d(TAG, getActivity().getString(R.string.tag_en_filtro)+(String)viewTag.getTag());
 					}
 				}
 			}
@@ -663,7 +662,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		}else{ //ningún tag seleccionado, entonces no se filtra
 			
-			Log.d(TAG, "Ningún tag seleccionado");
+			Log.d(TAG, getActivity().getString(R.string.ningunha_etiqueta_seleccionado));
 			tempListaProdutos = listaProdutos;
 		}
 
@@ -686,7 +685,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	public void onResume() {
 		super.onResume();
 
-		if (tabHost.getCurrentTabTag().equals("Escaner")){
+		if (tabHost.getCurrentTabTag().equals(getResources().getString(R.string.scan))){
 			prepararCamara();
 		}
 	}
@@ -694,7 +693,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	@Override
 	public void onStart() {
 		super.onStart();
-		if (tabHost.getCurrentTabTag().equals("Escaner")){
+		if (tabHost.getCurrentTabTag().equals(getResources().getString(R.string.scan))){
 			prepararCamara();
 		}
 	}
@@ -760,7 +759,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			cam.reconnect();
 		} catch (IOException e) {
 			e.printStackTrace();
-			Toast.makeText(getActivity(), "No se pudo acceder a la camara", Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), R.string.non_se_pudo_acceder_camara, Toast.LENGTH_LONG).show();
 		}
         
         SurfaceView cameraPreview=(SurfaceView)getActivity().findViewById(R.id.surfaceView1);
@@ -800,7 +799,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		}else if (requestCode == AddProductActivity.requestCode){
 		
 			final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(),
-					"Recargando catálogo del supermercado "+mMarketSelected.getName());
+					getActivity().getString(R.string.recargando_catalogo_do_supermercado)+mMarketSelected.getName());
 			progressDialog.show();	
 			reloadUserShoppingList(progressDialog, true);
 			//actualizarCatalogo();
@@ -814,7 +813,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		AlertDialog.Builder builderDialogoAgregarProducto = new AlertDialog.Builder(
 				getActivity());
 		builderDialogoAgregarProducto.setCancelable(false);
-		builderDialogoAgregarProducto.setPositiveButton("Engadir produto",
+		builderDialogoAgregarProducto.setPositiveButton(R.string.engadir_produto,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 
@@ -843,7 +842,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					}
 				});
 
-		builderDialogoAgregarProducto.setNegativeButton("Pechar",
+		builderDialogoAgregarProducto.setNegativeButton(R.string.pechar,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						resultadoBarCode = null;
@@ -855,7 +854,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		// Mirar se existe na BD
 		ParseQuery<Produto> queryProductos = ParseQuery.getQuery(Produto.class);
-		final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(), "Buscando produto no sistema");
+		final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(), getActivity().getString(R.string.buscando_produto_no_sistema));
 		progressDialog.show();
 		//FIXME ver si estamos incluyendo todo
 		queryProductos.include("APrice");
@@ -867,7 +866,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			public void done(List<Produto> objects, ParseException e) {
 				progressDialog.dismiss();
 				if(e!=null){
-					Toast.makeText(getActivity(), "Erro ao consultar o produto", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), R.string.erro_ao_consultar_o_produto, Toast.LENGTH_SHORT).show();
 				}else{
 					Log.i(TAG,objects.size()+"resultado"+resultadoBarCode);
 					if (objects.size() > 0){
@@ -892,22 +891,25 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					Log.i("Esta en parse", isProductoEnParse+"");
 					if(isProductoEnParse && isProductoEnSupermercado){ //Producto en el sistema, y en el supermercado de la lista
 						
-						dialogoAgregarProducto.setTitle("Produto atopado");
-						dialogoAgregarProducto.setMessage("Atopouse o produto "+productBarcode.getTitle()+"("+resultadoBarCode +")\n para o supermercado "+mMarketSelected.getName());
+						dialogoAgregarProducto.setTitle(getActivity().getString(R.string.produto_atopado));
+						dialogoAgregarProducto.setMessage(getActivity().getString(R.string.atopouse_o_produto)+productBarcode.
+								getTitle()+"("+resultadoBarCode +")\n "+getActivity().getString(R.string.para_o_supermercado)+mMarketSelected.getName());
 						dialogoAgregarProducto.show();
-						dialogoAgregarProducto.getButton(AlertDialog.BUTTON_POSITIVE).setText("Ver detalle do produto");
+						dialogoAgregarProducto.getButton(AlertDialog.BUTTON_POSITIVE).setText(getResources().getString(R.string.ver_detalle_do_produto));
 						
 					}else if(isProductoEnParse){ //Producto en el sistema, pero no en el supermercado
 						
-						dialogoAgregarProducto.setTitle("Producto atopado");
-						dialogoAgregarProducto.setMessage("Atopuse o producto "+productBarcode.getTitle()+"("+resultadoBarCode + ", pero non consta no supermercado "+mMarketSelected.getName()
+						dialogoAgregarProducto.setTitle(getActivity().getString(R.string.produto_atopado));
+						dialogoAgregarProducto.setMessage(getActivity().getString(R.string.atopouse_o_produto)+productBarcode.
+								getTitle()+"("+resultadoBarCode + ", "+getActivity().getString(R.string.pero_non_consta_no_supermercado)+mMarketSelected.getName()
 								+". \n"+"\n¿Desexa engadilo ao supermercado "+mMarketSelected.getName()+"?");
 						dialogoAgregarProducto.show();
 						
 					}else{ //Producto que non se encontra no sistema
 						
-						dialogoAgregarProducto.setTitle("Produto novo");
-						dialogoAgregarProducto.setMessage("Atopouse o produto  con identificador: "+resultadoBarCode+"\n¿Desexa engadilo o sistema para o supermercado? ");
+						dialogoAgregarProducto.setTitle(getActivity().getString(R.string.produto_novo));
+						dialogoAgregarProducto.setMessage(getActivity().
+								getString(R.string.atopouse_o_produto_con_identificador)+resultadoBarCode+"\n"+getActivity().getString(R.string.desexa_engadilo_o_sistema_para_o_supermercado));
 						dialogoAgregarProducto.show();
 					}
 
@@ -970,7 +972,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		builder.setCancelable(false);
 		final View viewDialog = inflater.inflate(R.layout.activity_dialog_add_price_product_market, null);
 		builder.setView(viewDialog);
-		builder.setPositiveButton("Engadir prezo", new DialogInterface.OnClickListener() {
+		builder.setPositiveButton(R.string.engadir_prezo, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 
 					}
@@ -986,7 +988,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		if(productBarcode.getAPrice().size() > 0){
 			newPriceEditText.setHint(productBarcode.getAPrice().get(0).getPrice().toString());
 		}else{
-			newPriceEditText.setHint("prezo");
+			newPriceEditText.setHint(R.string.prezo);
 		}
 		dialogoAgregarPrecio = builder.create();
 		dialogoAgregarPrecio.setTitle(productBarcode.getTitle() + "  "+ productBarcode.getMarca());
@@ -1003,7 +1005,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					if ((newPriceString != null) && (newPriceString.length() > 0)) {
 						
 						final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(),
-								"Agregando "+productBarcode.getTitle()+" a "+mMarketSelected.getName());
+								getActivity().getString(R.string.engadindo)+productBarcode.getTitle()+getActivity().getString(R.string.a)+mMarketSelected.getName());
 						progressDialog.show();
 						// 1º Engadir un precio-supermercado en la tabla de precios para este producto
 						final Prezo prezoProductoBarcode = new Prezo();
@@ -1042,7 +1044,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 						dialogoAgregarPrecio.dismiss();
 					} else {
 						
-						Toast.makeText(getActivity(), "Necesario introducir un precio válido", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), R.string.necesario_introducir_un_prezo_valido, Toast.LENGTH_SHORT).show();
 					}
 
 					

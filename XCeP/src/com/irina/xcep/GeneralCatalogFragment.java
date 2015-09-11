@@ -111,7 +111,7 @@ public class GeneralCatalogFragment extends Fragment {
 		mSearchView.setIconifiedByDefault(false);
 		mSearchView.setSubmitButtonEnabled(false);
 		mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-		mSearchView.setQueryHint("Búsqueda por palabras clave");
+		mSearchView.setQueryHint(getActivity().getString(R.string.busqueda_por_palabras_clave));
 		mSearchView.setOnQueryTextListener(new OnQueryTextListener() {
 
 			@Override
@@ -142,7 +142,7 @@ public class GeneralCatalogFragment extends Fragment {
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
+		
 		super.onActivityResult(requestCode, resultCode, data);
 		
 		
@@ -162,25 +162,21 @@ public class GeneralCatalogFragment extends Fragment {
 
 	@Override
 	public void onPause() {
-		// TODO Auto-generated method stub
 		super.onPause();
 	}
 
 	@Override
 	public void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 	}
 
 	@Override
 	public void onStart() {
-		// TODO Auto-generated method stub
 		super.onStart();
 	}
 
 	@Override
 	public void onStop() {
-		// TODO Auto-generated method stub
 		super.onStop();
 	}
 	
@@ -193,7 +189,7 @@ public class GeneralCatalogFragment extends Fragment {
 		
 		if(HomeFragment.misListas == null || HomeFragment.misListas.size() == 0){
 			
-			Toast.makeText(getActivity(), "Non posee ningunha lista"+HomeFragment.misListas.size(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), R.string.non_posee_ningunha_lista+HomeFragment.misListas.size(), Toast.LENGTH_SHORT).show();
 			return;
 		}
 		
@@ -211,7 +207,7 @@ public class GeneralCatalogFragment extends Fragment {
 				nombresSupermercadosCompatibles += precioSupermercado.getPidMarket().getName() + ", ";
 			}
 			
-			Toast.makeText(getActivity(), "Ningunha lista compatible. Cree unha lista primeiro dos seguintes supermercados: \n"+nombresSupermercadosCompatibles, Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), R.string.ningunha_lista_compatible+ "\n"+nombresSupermercadosCompatibles, Toast.LENGTH_LONG).show();
 
 		}else{
 
@@ -225,14 +221,14 @@ public class GeneralCatalogFragment extends Fragment {
 			
 	        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 	 
-	        builder.setTitle("Agregar "+producto.getTitle() +" a lista")
+	        builder.setTitle(getResources().getString(R.string.engadir)+producto.getTitle() +R.string.a_lista)
 	           .setItems((String[])listaNombres.toArray(new String[listaNombres.size()]), new DialogInterface.OnClickListener() {
 	                public void onClick(DialogInterface dialog, int nLista) {
 	                    try{
 	                    	addProductToList(listaSupermercadosCompatibles.get(nLista), producto);
 	                    	
 	                    }catch(IllegalStateException e){
-	                    	Toast.makeText(getActivity(), "Erro ao agregar o produto"+HomeFragment.misListas.get(nLista).getName(), Toast.LENGTH_SHORT).show();
+	                    	Toast.makeText(getActivity(), R.string.erro_ao_engadir_o_produto+HomeFragment.misListas.get(nLista).getName(), Toast.LENGTH_SHORT).show();
 
 	                    }
 	                }
@@ -304,7 +300,7 @@ public class GeneralCatalogFragment extends Fragment {
 		}else{
 		
 			
-			final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), "Actualizando produtos");
+			final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), getActivity().getString(R.string.actualizando_produtos));
 			progress.show();
 			ParseQuery<Produto> query = ParseQuery.getQuery(Produto.class);
 
@@ -316,7 +312,7 @@ public class GeneralCatalogFragment extends Fragment {
 				@Override
 				public void done(List<Produto> objects, ParseException e) {
 					if (e != null) {
-						Toast.makeText(getActivity(), "Error na actualización dos produtos", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), R.string.erro_na_actualizacion_dos_produtos, Toast.LENGTH_SHORT).show();
 					}
 
 					productCatalogList = (ArrayList<Produto>) objects;
@@ -354,7 +350,7 @@ public class GeneralCatalogFragment extends Fragment {
 				if(viewTag instanceof CheckBox){
 					if(((CheckBox)viewTag).isChecked()){
 						tagsSeleccionados.add((String)viewTag.getTag());
-						Log.d(TAG, "Tag en filtro: "+(String)viewTag.getTag());
+						Log.d(TAG, getActivity().getString(R.string.tag_en_filtro)+(String)viewTag.getTag());
 					}
 				}
 			}
@@ -378,7 +374,7 @@ public class GeneralCatalogFragment extends Fragment {
 		
 		}else{ //ningún tag seleccionado, entonces no se filtra
 			
-			Log.d(TAG, "Ningún tag seleccionado");
+			Log.d(TAG, getResources().getString(R.string.ningunha_etiqueta_seleccionado));
 			tempListaProdutos = listaProdutos;
 		}
 
@@ -412,7 +408,7 @@ public class GeneralCatalogFragment extends Fragment {
 		
 		if(producto == null){
 			
-			Toast.makeText(getActivity(), "Produto non válido", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), R.string.produto_non_valido, Toast.LENGTH_SHORT).show();
 			return;
 		}
 		
@@ -435,12 +431,12 @@ public class GeneralCatalogFragment extends Fragment {
 			
 			unidadSeleccionada.addNumberUnits(1);
 			unidadSeleccionada.saveInBackground();
-			Toast.makeText(getActivity(), "Agregada una unidad de "+unidadSeleccionada.getProduct().getTitle() + ". Total "+unidadSeleccionada.getNumberUnits(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), R.string.engadida_unha_unidade_de +unidadSeleccionada.getProduct().getTitle() + R.string.total+unidadSeleccionada.getNumberUnits(), Toast.LENGTH_SHORT).show();
 		
 		}else{ //Nuevo producto a la lista
 			
 			final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(),
-					"Agregando produto novo a lista");
+					getResources().getString(R.string.engadindo_produto_novo_a_lista));
 			progress.show();
 			
 			final Units unidadProducto = new Units();
@@ -459,11 +455,11 @@ public class GeneralCatalogFragment extends Fragment {
 								
 								if(e!= null){
 									e.printStackTrace();
-									Toast.makeText(getActivity(), "Erro ao gardar a lista", Toast.LENGTH_SHORT).show();
+									Toast.makeText(getActivity(), R.string.erro_ao_gardar_a_lista, Toast.LENGTH_SHORT).show();
 									
 								}else{
 
-									Toast.makeText(getActivity(), "Agregouse o novo produto", Toast.LENGTH_SHORT).show();
+									Toast.makeText(getActivity(), R.string.engadiuse_o_novo_produto, Toast.LENGTH_SHORT).show();
 								}
 								
 								progress.dismiss();
