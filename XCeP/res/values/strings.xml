@@ -36,13 +36,19 @@
     <string name="drawer_open">Abrir</string>
     <string name="drawer_close">Cerrar</string>
     <string name="catalog">Catálogo</string>
+    <string name="catalog_total">Catálogo Xeral</string>
     <string name="scan">Escaner</string>
+    <string name="scan_total">Escaner Xeral</string>
  	<string name="setting">Axustes</string>
  	<string name="facebook">Facebook</string>
  	<string name="twitter">Twitter</string>
  	<string name="language">Idioma</string>
  	<string name="reset_bd">Reiniciar Datos</string>
  	<string name="help">Acerca de ...</string>
+ 	<string name="title_action_bar_add_market">Novo Supermercado</string>
+ 	<string name="title_action_bar_Shopping_car">Carriño da Compra</string>
+ 	<string name="title_action_bar_detail_product">Detalle do Produto</string>
+ 	<string name="title_action_bar_add_product">Novo Produto</string>
      
     <!--  <style name="DefaultButtonText">
 	   <item name="android:layout_width">fill_parent</item>

@@ -65,6 +65,7 @@ public class AddProductActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_new_product);
+		getActionBar().setTitle(R.string.title_action_bar_add_product);
 		
 		nameLista = (TextView) findViewById(R.id.idNameMarket);
 		String snameLista= getIntent().getExtras().getString("SUPERNAME");

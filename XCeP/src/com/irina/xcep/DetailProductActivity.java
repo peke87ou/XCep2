@@ -41,6 +41,7 @@ public class DetailProductActivity extends ShareSocialMediaActivity{
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_detail_product);
+		getActionBar().setTitle(R.string.title_action_bar_detail_product);
 		
 		mNombreProducto=getIntent().getExtras().getString("NOMEPRODUCTO");
 		((TextView) findViewById(R.id.detail_product_name)).setText( mNombreProducto.toUpperCase(Locale.getDefault()));

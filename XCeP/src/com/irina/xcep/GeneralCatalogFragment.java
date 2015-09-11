@@ -76,6 +76,7 @@ public class GeneralCatalogFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.fragment_general_catalog, container, false);
+		
 
 		mGridTags = (GridView) layout.findViewById(R.id.grid_tags);
 		mGridTags.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
@@ -130,9 +131,11 @@ public class GeneralCatalogFragment extends Fragment {
 			}
 		});
 
+		
 		actualizarCatalogoGeneral();
 
 		getTags();
+		
 
 		return layout;
 	}
@@ -287,7 +290,8 @@ public class GeneralCatalogFragment extends Fragment {
 	
 	public void actualizarCatalogoGeneral() {
 		
-
+		getActivity().getActionBar().setTitle(R.string.catalog_total);
+		
 		if(productCatalogList.size() > 0){
 			
 			ArrayList<Produto> productosSistema= new ArrayList<Produto>();

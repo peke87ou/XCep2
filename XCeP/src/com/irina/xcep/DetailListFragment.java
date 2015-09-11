@@ -134,6 +134,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		spec.setContent(R.id.tab_list_buy);
 		spec.setIndicator("",res.getDrawable(R.drawable.ic_action_shopping_basket));
 		tabHost.addTab(spec);
+		
 		 
 		spec=tabHost.newTabSpec("Catálogo");
 		spec.setContent(R.id.tab_catalog);
@@ -146,6 +147,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		tabHost.addTab(spec);
 		
 		tabHost.setCurrentTab(0);
+		getActivity().getActionBar().setTitle(R.string.title_action_bar_Shopping_car);
 
 		TextView txtNameList = (TextView) home.findViewById(R.id.idNameMarket);
 		nameList = ((MenuActivity)getActivity()).mNameList;
@@ -153,6 +155,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		txtPrezoTotal = (TextView) home.findViewById(R.id.prezoTotalTextView);
 		txtPrezoCarrito = (TextView) home.findViewById(R.id.prezoCarritoTextView);
+		
 		
 		if(mListaSelected ==null){
 			mListaSelected = ((MenuActivity)getActivity()).mListSelected;
@@ -176,10 +179,12 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				switch (tabId) {
 				
 				case "Lista da compra":
+					getActivity().getActionBar().setTitle(R.string.title_action_bar_Shopping_car);
 					cargarProdutosLista();
 					break;
 
 				case "Catálogo":
+					getActivity().getActionBar().setTitle(R.string.catalog);
 					actualizarCatalogo();
 					if(tagList.size() == 0){
 						getTags();
@@ -187,6 +192,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					break;
 					
 				default:
+					getActivity().getActionBar().setTitle(R.string.scan);
 					break;
 				}
 				

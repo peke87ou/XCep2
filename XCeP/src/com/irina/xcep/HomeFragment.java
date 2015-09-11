@@ -69,6 +69,7 @@ public class HomeFragment extends Fragment {
 
 		Log.d(TAG, "OncreateView");
 		RelativeLayout home = (RelativeLayout) inflater.inflate(R.layout.fragment_home, container, false);
+		getActivity().getActionBar().setTitle(R.string.app_name);
 
 		// Convertir currentUser en String
 		String struser = currentUser.getUsername().toString();
