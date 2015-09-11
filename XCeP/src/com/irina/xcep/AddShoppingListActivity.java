@@ -130,7 +130,7 @@ public class AddShoppingListActivity extends Activity{
 		//Id supermercado seleccionado
 		if (supermercadoNuevaLista == null ){
 			
-			Toast.makeText(AddShoppingListActivity.this, "Non seleccionou ningún supermercado", Toast.LENGTH_SHORT).show();
+			Toast.makeText(AddShoppingListActivity.this, R.string.non_seleccionou_super, Toast.LENGTH_SHORT).show();
 		}else{
 			novaLista.setSupermercado(supermercadoNuevaLista);
 			novaLista.setIdUser(ParseUser.getCurrentUser());
@@ -140,7 +140,7 @@ public class AddShoppingListActivity extends Activity{
 				@Override
 				public void done(ParseException arg0) {
 					if (arg0 == null){
-						Toast.makeText(AddShoppingListActivity.this, "Engadimos a nova lista " + nameListtxt, Toast.LENGTH_SHORT).show();
+						Toast.makeText(AddShoppingListActivity.this, R.string.engadimos_a_nova_lista + nameListtxt, Toast.LENGTH_SHORT).show();
 						finish();
 					}else{
 						Toast.makeText(AddShoppingListActivity.this, R.string.error_add_list+" " + nameListtxt, Toast.LENGTH_SHORT).show();

@@ -90,9 +90,9 @@ public class AdapterProductsCatalog extends BaseAdapter implements Filterable{
 		}
 		
 		if(precioProducto != null){
-			precioTextView.setText(precioProducto.getPrice().toString()+ " €");
+			precioTextView.setText(precioProducto.getPrice().toString()+ R.string.simbol_euro);
 		}else{
-			precioTextView.setText("N.D.");
+			precioTextView.setText(R.string.no_d_isponible);
 		}
 		
 		Bitmap bmp = mImagenes.get(producto.getIcon());

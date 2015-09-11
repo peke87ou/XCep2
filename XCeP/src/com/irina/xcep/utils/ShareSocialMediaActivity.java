@@ -207,29 +207,29 @@ public class ShareSocialMediaActivity extends Activity {
 	private FacebookCallback<Sharer.Result> shareCallback = new FacebookCallback<Sharer.Result>() {
 		@Override
 		public void onCancel() {
-			Log.d(TAG, "Canceled");
+			Log.d(TAG, getString(R.string.cancelouse));
 		}
 
 		@Override
 		public void onError(FacebookException error) {
-			Log.d(TAG, String.format("Error: %s", error.toString()));
-			String title = "Error";
+			Log.d(TAG, String.format("Erro: %s", error.toString()));
+			String title = getString(R.string.erro);
 			String alertMessage = error.getMessage();
 			showResult(title, alertMessage);
 		}
 
 		@Override
 		public void onSuccess(Sharer.Result result) {
-			Log.d(TAG, "Success!");
+			Log.d(TAG, "Éxito!");
 			if (result.getPostId() != null) {
-				String title = "Facebook";
-				String alertMessage = "Publicouse a tua mensaxe";
+				String title = getString(R.string.facebook);
+				String alertMessage = getString(R.string.publicouse_a_tua_mensaxe);
 				showResult(title, alertMessage);
 			}
 		}
 
 		private void showResult(String title, String alertMessage) {
-			new AlertDialog.Builder(ShareSocialMediaActivity.this).setTitle(title).setMessage(alertMessage).setPositiveButton("Aceptar", null).show();
+			new AlertDialog.Builder(ShareSocialMediaActivity.this).setTitle(title).setMessage(alertMessage).setPositiveButton(R.string.aceptar, null).show();
 		}
 	};
 
@@ -266,8 +266,8 @@ public class ShareSocialMediaActivity extends Activity {
 	}
 
 	private void showAlert() {
-		Log.d(TAG, "Error. ShowAlert go");
-		new AlertDialog.Builder(ShareSocialMediaActivity.this).setTitle("Erro").setMessage("Erro en permisos").setPositiveButton("Aceptar", null).show();
+		Log.d(TAG, "Erro. Ir a ShowAlert");
+		new AlertDialog.Builder(ShareSocialMediaActivity.this).setTitle(R.string.erro).setMessage(R.string.erro_en_permisos).setPositiveButton(R.string.aceptar, null).show();
 	}
 
 }

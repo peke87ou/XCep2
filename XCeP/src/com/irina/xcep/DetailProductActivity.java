@@ -113,7 +113,7 @@ public class DetailProductActivity extends ShareSocialMediaActivity{
 			@Override
 			public void onClick(View v) {
 				
-				final String[] items = {"Twitter", "Facebook"};
+				final String[] items = {"Twitter", getResources().getString(R.string.facebook)};
 				
 				AlertDialog.Builder builder = new AlertDialog.Builder(DetailProductActivity.this);
 		        builder.setTitle("Compartir "+getIntent().getExtras().getString("NOMEPRODUCTO"))
@@ -124,7 +124,7 @@ public class DetailProductActivity extends ShareSocialMediaActivity{
 		                    	
 		                    	shareTwitterPost(mDescripcionProducto, mNombreProducto + "-"+mMarcaProducto,mUrlImageProducto);
 		                    
-		                    }else if(items[item].equalsIgnoreCase("Facebook")){
+		                    }else if(items[item].equalsIgnoreCase(getString(R.string.facebook))){
 		                    	
 		                    	shareFacebookPost(mDescripcionProducto, mNombreProducto + "-"+mMarcaProducto,mUrlImageProducto);
 		                    }

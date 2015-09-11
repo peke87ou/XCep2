@@ -64,7 +64,7 @@ public class AddMarketActivity extends Activity{
 				
 				if(bitmap == null){ //Se comprueba imagen del supermercado
 					
-					Toast.makeText(getApplicationContext(), "Non se obtuvo a fotografía", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), R.string.non_se_obtuvo_foto, Toast.LENGTH_SHORT).show();
 					return;
 				}else{ //Compruebase o nome do supermercado
 					
@@ -90,10 +90,10 @@ public class AddMarketActivity extends Activity{
 	
 	private void startDialog() {
 	    AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
-	    myAlertDialog.setTitle("Adxuntar fotografía");
-	    myAlertDialog.setMessage("Seleccione donde buscar a fotografía");
+	    myAlertDialog.setTitle(R.string.adxuntar_foto);
+	    myAlertDialog.setMessage(R.string.seleccione_onde_buscar_foto);
 
-	    myAlertDialog.setPositiveButton("Galería",
+	    myAlertDialog.setPositiveButton(R.string.galery,
 	            new DialogInterface.OnClickListener() {
 	                public void onClick(DialogInterface arg0, int arg1) {
 	                    pictureActionIntent = new Intent(
@@ -105,7 +105,7 @@ public class AddMarketActivity extends Activity{
 	                }
 	            });
 
-	    myAlertDialog.setNegativeButton("Camara",
+	    myAlertDialog.setNegativeButton(R.string.camara,
 	            new DialogInterface.OnClickListener() {
 	                public void onClick(DialogInterface arg0, int arg1) {
 	                    pictureActionIntent = new Intent(
@@ -128,11 +128,11 @@ public class AddMarketActivity extends Activity{
                     fotomarket.setImageURI(data.getData());
                     bitmap =  ((BitmapDrawable)fotomarket.getDrawable()).getBitmap();
 	            } else {
-	                Toast.makeText(getApplicationContext(), "Cancelouse",
+	                Toast.makeText(getApplicationContext(), R.string.cancelouse,
 	                        Toast.LENGTH_SHORT).show();
 	            }
 	        } else if (resultCode == RESULT_CANCELED) {
-	            Toast.makeText(getApplicationContext(), "Cancelouse",
+	            Toast.makeText(getApplicationContext(), R.string.cancelouse,
 	                    Toast.LENGTH_SHORT).show();
 	        }
 	    } else if (requestCode == CAMERA_REQUEST) {
@@ -147,13 +147,13 @@ public class AddMarketActivity extends Activity{
 	            } else if (data.getExtras() == null) {
 
 	                Toast.makeText(getApplicationContext(),
-	                        "Non se obtuvo a fotografía", Toast.LENGTH_SHORT)
+	                        R.string.non_se_obtuvo_foto, Toast.LENGTH_SHORT)
 	                        .show();
 
 	            }
 
 	        } else if (resultCode == RESULT_CANCELED) {
-	            Toast.makeText(getApplicationContext(), "Cancelouse a fotografía",
+	            Toast.makeText(getApplicationContext(), R.string.cancelouse_foto,
 	                    Toast.LENGTH_SHORT).show();
 	        }
 	    }
@@ -177,7 +177,7 @@ public class AddMarketActivity extends Activity{
 		 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
 		 byte[] byteArray = stream.toByteArray();
 		 if(byteArray == null){
-			 Toast.makeText(this, "Error al adjuntar imagen", Toast.LENGTH_SHORT).show();
+			 Toast.makeText(this, R.string.erro_o_adxuntar_imaxen, Toast.LENGTH_SHORT).show();
 			 return;
 		 }
 		 //FIXME Error en imagenes al rotar
@@ -193,16 +193,16 @@ public class AddMarketActivity extends Activity{
 			public void done(ParseException arg0) {
 				if (arg0 == null) {
 					Toast.makeText(AddMarketActivity.this,
-							"Engadimos O supermercado a BD ",
+							R.string.engadimos_o_supermercado_a_bd_,
 							Toast.LENGTH_SHORT).show();
-					Log.i("market", "Engadimos O supermercado a BD ");
+					Log.i("market", getString(R.string.engadimos_o_supermercado_a_bd_));
 					finish();
 
 				} else {
 					Toast.makeText(AddMarketActivity.this,
 							R.string.error_add_list + " " + arg0.getMessage(),
 							Toast.LENGTH_SHORT).show();
-					Log.e("market", "ERROR O ENGADIR NA BD ");
+					Log.e("market", getString(R.string.erro_o_engadir_na_bd));
 				}
 			}
 		});

@@ -48,7 +48,7 @@ public class AdapterMarketPrice extends ArrayAdapter<String> {
        }
        
        //Buscar Vista para recheo de datos
-       ((TextView) celdaView.findViewById(R.id.priceProduct)).setText( precioSupermercado + " €");
+       ((TextView) celdaView.findViewById(R.id.priceProduct)).setText( precioSupermercado + R.string.simbol_euro);
        final ImageView imageView = (ImageView)celdaView.findViewById(R.id.ImageMarket);
        Picasso.with(mContext ).load(urlSupermercado).into(imageView);
 	   

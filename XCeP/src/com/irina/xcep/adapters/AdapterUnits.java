@@ -97,15 +97,15 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 		}
 		
 		if(precioProducto != null){
-			precioTextView.setText(precioProducto.getPrice().toString() + " €");
+			precioTextView.setText(precioProducto.getPrice().toString() +R.string.simbol_euro);
 		}else{
-			precioTextView.setText("N.D.");
+			precioTextView.setText(R.string.no_d_isponible);
 		}
 		
  		if (productoUnidad.getNumberUnits().intValue() == 1){
-			unidadesTextView.setText(productoUnidad.getNumberUnits()+" Unidade");
+			unidadesTextView.setText(productoUnidad.getNumberUnits() + mFragmentLista.getResources().getString(R.string.unidade));
 		}else{
-			unidadesTextView.setText(productoUnidad.getNumberUnits()+" Unidades");
+			unidadesTextView.setText(productoUnidad.getNumberUnits()+  mFragmentLista.getResources().getString(R.string.unidades));
 		}
  		
  		

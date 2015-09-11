@@ -126,7 +126,7 @@ public class AddProductActivity extends Activity{
 			public void onClick(View v) {
 				
 				if(bitmap == null){ //Se comprueba imagen del supermercado
-					Toast.makeText(getApplicationContext(), "Non se obtuvo a fotografía", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), R.string.non_se_obtuvo_foto, Toast.LENGTH_SHORT).show();
 					return;
 				}else{ //Compruebase o nome do supermercado
 					
@@ -185,14 +185,14 @@ public class AddProductActivity extends Activity{
 		bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
 		byte[] byteArray = stream.toByteArray();
 		if (byteArray == null) {
-			Toast.makeText(this, "Error al adjuntar imagen", Toast.LENGTH_SHORT)
+			Toast.makeText(this, R.string.erro_o_adxuntar_imaxen, Toast.LENGTH_SHORT)
 					.show();
 			return;
 		}
 		// FIXME Error en imagenes al rotar
 		// http://www.chinabtp.com/how-to-save-rotated-photos-in-parse-android/
 		
-		final ProgressDialog progressDialog = Utils.crearDialogoEspera(this, "Agregando produto ao sistema");
+		final ProgressDialog progressDialog = Utils.crearDialogoEspera(this, getString(R.string.engadindo_produto_ao_sistema));
 		progressDialog.show();
 
 		ParseFile imagenProduct = new ParseFile("imagen" + nameProductTxt+ Math.random() + ".png", byteArray);
@@ -206,8 +206,7 @@ public class AddProductActivity extends Activity{
 		final Prezo precioProducto = new Prezo();
 		precioProducto.setPrice(Double.parseDouble(priceProduto.getText().toString()));
 		String idMarket = getIntent().getExtras().getString("SUPERID");
-		precioProducto.setPidMarket(ParseObject.createWithoutData("Market",
-				idMarket));
+		precioProducto.setPidMarket(ParseObject.createWithoutData("Market",	idMarket));
 		// precioProducto.saveInBackground();
 
 		precioProducto.saveInBackground(new SaveCallback() {
@@ -224,15 +223,15 @@ public class AddProductActivity extends Activity{
 							if (e != null) {
 								e.printStackTrace();
 								progressDialog.dismiss();
-								Toast.makeText(AddProductActivity.this, "Error al guardar precio", Toast.LENGTH_SHORT).show();
+								Toast.makeText(AddProductActivity.this, R.string.erro_ao_gardar_prezo, Toast.LENGTH_SHORT).show();
 							} else {
-								Log.d(TAG, "Se agrega o produto o supermercado");
+								Log.d(TAG, getString(R.string.engadese_o_produto_o_supermercado));
 							}
 						}
 					});
 				} else {
 					progressDialog.dismiss();
-					Toast.makeText(AddProductActivity.this, "Error al guardar precio", Toast.LENGTH_SHORT).show();
+					Toast.makeText(AddProductActivity.this, R.string.erro_ao_gardar_prezo, Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
 				}
 			}
@@ -265,7 +264,7 @@ public class AddProductActivity extends Activity{
 							if (e != null || objects.size() == 0) {
 								Toast.makeText(
 										AddProductActivity.this,
-										"Error ao engadir o produto ao supermercado",
+										R.string.erro_ao_engadir_o_produto_ao_supermercado,
 										Toast.LENGTH_SHORT).show();
 							}
 
@@ -280,9 +279,9 @@ public class AddProductActivity extends Activity{
 										
 										progressDialog.dismiss();
 										Toast.makeText(AddProductActivity.this,
-												"Produto engadido", Toast.LENGTH_SHORT)
+												R.string.produto_engadido, Toast.LENGTH_SHORT)
 												.show();
-										Log.i("Produto", "Engadimos O produto a BD ");
+										Log.i("Produto", getString(R.string.engadimos_o_produto_a_bd));
 										finish();
 										
 									}else{
@@ -290,7 +289,7 @@ public class AddProductActivity extends Activity{
 										Toast.makeText(AddProductActivity.this,
 												R.string.error_add_list + " " + e.getMessage(),
 												Toast.LENGTH_SHORT).show();
-										Log.e("Produto", "ERROR O ENGADIR NA BD ");
+										Log.e("Produto", getResources().getString(R.string.erro_o_engadir_na_bd));
 									}
 									
 								}
@@ -304,7 +303,7 @@ public class AddProductActivity extends Activity{
 					Toast.makeText(AddProductActivity.this,
 							R.string.error_add_list + " " + arg0.getMessage(),
 							Toast.LENGTH_SHORT).show();
-					Log.e("Produto", "ERROR O ENGADIR NA BD ");
+					Log.e("Produto", getResources().getString(R.string.erro_o_engadir_na_bd));
 				}
 			}
 		});
@@ -313,10 +312,10 @@ public class AddProductActivity extends Activity{
 
 	private void startDialog() {
 		AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
-		myAlertDialog.setTitle("Adxuntar fotografía");
-		myAlertDialog.setMessage("Seleccione donde buscar a fotografía");
+		myAlertDialog.setTitle(R.string.adxuntar_foto);
+		myAlertDialog.setMessage(R.string.seleccione_onde_buscar_foto);
 
-		myAlertDialog.setPositiveButton("Galería",
+		myAlertDialog.setPositiveButton(R.string.galery,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface arg0, int arg1) {
 						pictureActionIntent = new Intent(
@@ -328,7 +327,7 @@ public class AddProductActivity extends Activity{
 					}
 				});
 
-		myAlertDialog.setNegativeButton("Camara",
+		myAlertDialog.setNegativeButton(R.string.camara,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface arg0, int arg1) {
 						pictureActionIntent = new Intent(
@@ -354,11 +353,11 @@ public class AddProductActivity extends Activity{
 							.getBitmap();
 					txtengadirImaxe.setVisibility(View.GONE);
 				} else {
-					Toast.makeText(getApplicationContext(), "Cancelouse",
+					Toast.makeText(getApplicationContext(), R.string.cancelouse,
 							Toast.LENGTH_SHORT).show();
 				}
 			} else if (resultCode == RESULT_CANCELED) {
-				Toast.makeText(getApplicationContext(), "Cancelouse",
+				Toast.makeText(getApplicationContext(), R.string.cancelouse,
 						Toast.LENGTH_SHORT).show();
 			}
 		} else if (requestCode == CAMERA_REQUEST) {
@@ -373,14 +372,14 @@ public class AddProductActivity extends Activity{
 				} else if (data.getExtras() == null) {
 
 					Toast.makeText(getApplicationContext(),
-							"Non se obtuvo a fotografía", Toast.LENGTH_SHORT)
+							R.string.non_se_obtuvo_foto, Toast.LENGTH_SHORT)
 							.show();
 
 				}
 
 			} else if (resultCode == RESULT_CANCELED) {
 				Toast.makeText(getApplicationContext(),
-						"Cancelouse a fotografía", Toast.LENGTH_SHORT).show();
+						R.string.cancelouse_foto, Toast.LENGTH_SHORT).show();
 			}
 		}
 

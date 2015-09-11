@@ -368,7 +368,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 						}
 						
 					}
-				}).setNegativeButton("Cancelar",
+				}).setNegativeButton(R.string.cancelar,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
@@ -407,8 +407,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			}
 		}
 		
-		txtPrezoCarrito.setText(precioTotalCarrito+ " €");
-		txtPrezoTotal.setText(precioTotalLista+" €");
+		txtPrezoCarrito.setText(precioTotalCarrito + getResources().getString(R.string.simbol_euro));
+		txtPrezoTotal.setText(precioTotalLista+getResources().getString(R.string.simbol_euro));
 	}
 	
 	/**
@@ -974,7 +974,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					public void onClick(DialogInterface dialog, int id) {
 
 					}
-		}).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+		}).setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
 					}

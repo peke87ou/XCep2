@@ -273,7 +273,7 @@ public class HomeFragment extends Fragment {
 								}
 
 							}
-						}).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+						}).setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dialog.cancel();
 							}

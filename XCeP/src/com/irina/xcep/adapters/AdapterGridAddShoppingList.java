@@ -46,7 +46,7 @@ public class AdapterGridAddShoppingList extends ArrayAdapter<Supermercado>{
           ImageView imageView = (ImageView)grid.findViewById(R.id.image_market_add_list);
           
           if (listaSuper.size() == position){ //ultima
-              textView.setText("Novo");
+              textView.setText(R.string.novo);
               imageView.setBackgroundResource(R.drawable.ic_content_add_circle);
           }else{
         	  final Supermercado market = getItem(position);

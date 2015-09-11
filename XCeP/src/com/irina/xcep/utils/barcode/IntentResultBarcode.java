@@ -1,5 +1,8 @@
 package com.irina.xcep.utils.barcode;
 
+import com.irina.xcep.R;
+
+
 
 /*
  * Copyright 2009 ZXing authors

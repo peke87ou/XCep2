@@ -2,6 +2,7 @@ package com.irina.xcep.parse;
 
 import android.app.Application;
 
+import com.irina.xcep.R;
 import com.irina.xcep.model.Lista;
 import com.irina.xcep.model.Prezo;
 import com.irina.xcep.model.Produto;

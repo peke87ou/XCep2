@@ -34,6 +34,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import com.irina.xcep.R;
 
 /**
  * <p>A utility class which helps ease integration with Barcode Scanner via {@link Intent}s. This is a simple
@@ -119,11 +120,11 @@ public class IntentIntegratorBarCode {
   public static final int REQUEST_CODE = 0x0000c0de; // Only use bottom 16 bits
   private static final String TAG = IntentIntegratorBarCode.class.getSimpleName();
 
-  public static final String DEFAULT_TITLE = "Install Barcode Scanner?";
+  public static final String DEFAULT_TITLE = "Instala Barcode Scanner ?";
   public static final String DEFAULT_MESSAGE =
-      "This application requires Barcode Scanner. Would you like to install it?";
-  public static final String DEFAULT_YES = "Yes";
-  public static final String DEFAULT_NO = "No";
+      "Esta aplicación require Barcode Scanner . Desexa instala-lo ?";
+  public static final String DEFAULT_YES = "Si";
+  public static final String DEFAULT_NO = "Non";
 
   private static final String BS_PACKAGE = "com.google.zxing.client.android";
   private static final String BSPLUS_PACKAGE = "com.srowen.bs.android";

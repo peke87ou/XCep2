@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:background="@color/verde_oscuro"
-            android:text="Cancelar"
+            android:text="@string/cancelar"
             materialdesign:animate="true" />
 
         <com.gc.materialdesign.views.ButtonRectangle
@@ -105,7 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:background="@color/verde_oscuro"
-            android:text="Engadir"
+            android:text="@string/engadir"
             materialdesign:animate="true" >
 
         </com.gc.materialdesign.views.ButtonRectangle>

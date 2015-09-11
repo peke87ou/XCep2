@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 
+import com.irina.xcep.R;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;

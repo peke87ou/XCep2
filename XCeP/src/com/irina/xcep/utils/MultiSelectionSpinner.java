@@ -1,5 +1,9 @@
 package com.irina.xcep.utils;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -9,10 +13,7 @@ import android.util.AttributeSet;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import com.irina.xcep.R;
 
 @SuppressLint("ClickableViewAccessibility")
 public class MultiSelectionSpinner extends Spinner implements  OnMultiChoiceClickListener {
@@ -45,7 +46,7 @@ public class MultiSelectionSpinner extends Spinner implements  OnMultiChoiceClic
             simple_adapter.add(buildSelectedItemString());
         } else {
             throw new IllegalArgumentException(
-                    "Iste argumento está fóra dos límites.");
+                    getContext().getString(R.string.fora_limites));
         }
     }
 
@@ -54,13 +55,13 @@ public class MultiSelectionSpinner extends Spinner implements  OnMultiChoiceClic
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMultiChoiceItems(_items, mSelection, this);
         _itemsAtStart = getSelectedItemsAsString();
-        builder.setPositiveButton("Engadir", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.engadir, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 System.arraycopy(mSelection, 0, mSelectionAtStart, 0, mSelection.length);
             }
         });
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 simple_adapter.clear();
@@ -75,7 +76,7 @@ public class MultiSelectionSpinner extends Spinner implements  OnMultiChoiceClic
     @Override
     public void setAdapter(SpinnerAdapter adapter) {
         throw new RuntimeException(
-                "setAdapter non está soportado polo MultiSelectSpinner .");
+                getContext().getString(R.string.setadapter_non_soportado_polo_multiselectspinner));
     }
 
     public void setItems(String[] items) {
@@ -136,8 +137,8 @@ public class MultiSelectionSpinner extends Spinner implements  OnMultiChoiceClic
             mSelection[index] = true;
             mSelectionAtStart[index] = true;
         } else {
-            throw new IllegalArgumentException("Index " + index
-                    + " está fóra de campo.");
+            throw new IllegalArgumentException(getContext().getString(R.string.index) + index
+                    + getContext().getString(R.string.fora_campo));
         }
         simple_adapter.clear();
         simple_adapter.add(buildSelectedItemString());
@@ -153,8 +154,8 @@ public class MultiSelectionSpinner extends Spinner implements  OnMultiChoiceClic
                 mSelection[index] = true;
                 mSelectionAtStart[index] = true;
             } else {
-                throw new IllegalArgumentException("Index " + index
-                        + " está fóra de campo.");
+                throw new IllegalArgumentException(getContext().getString(R.string.index) + index
+                        + getContext().getString(R.string.fora_campo));
             }
         }
         simple_adapter.clear();
