@@ -79,7 +79,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+		
 		crearDialogos();
 		iniciarPararScan();
 		
@@ -91,6 +91,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 		surfaceholder.addCallback(this);
 		surfaceChanged(surfaceholder, 0, 0, 0);
 		
+		getActivity().getActionBar().setTitle(R.string.scan_total); //FIXME se está cambiando el texto
 		return layout;
 	}
 
@@ -98,7 +99,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		prepararCamara();
+		prepararCamara(); //FIXME no se está activando la cámara por segunda vez
 		
 		if((requestCode == DetailProductActivity.requestCode) && (resultCode == DetailProductActivity.resultCodeAdd)){
 			
@@ -133,8 +134,6 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 		super.onStop();
 		desconectarCamara();
 	}
-
-	// getActivity().getActionBar().setTitle(R.string.scan_total);
 
 	private void iniciarPararScan() {
 		if (cam == null) {
@@ -265,8 +264,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 		builderDialogoAgregarProductoSistema.setPositiveButton("Agregar produto ao sistema", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 
-				//TODO
-				//Calcular lista de supermercados
+				//TODO Calcular lista de supermercados
 				//En el click, lanzar intent para agregar producto al sistema
 				/**
 				Intent intent = new Intent(getActivity(), AddProductActivity.class);
@@ -297,7 +295,6 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 		ParseQuery<Produto> queryProductos = ParseQuery.getQuery(Produto.class);
 		final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(), getActivity().getString(R.string.buscando_produto_no_sistema));
 		progressDialog.show();
-		// FIXME ver si estamos incluyendo todo
 		queryProductos.include("APrice");
 		queryProductos.include("Atags");
 		queryProductos.include("APrice.PidMarket");
