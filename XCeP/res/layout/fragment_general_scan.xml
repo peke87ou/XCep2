@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="5dp"
+        android:text="@string/enfoque_o_codigo_de_barras_do_produto"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/verde_oscuro"
+        android:textSize="15sp"
+        android:typeface="serif" />
+
+    <SurfaceView
+        android:id="@+id/surfaceView1GeneralScan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

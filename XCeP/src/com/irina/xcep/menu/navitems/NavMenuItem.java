@@ -1,7 +1,6 @@
 package com.irina.xcep.menu.navitems;
 
 import android.content.Context;
-import com.irina.xcep.R;
 
 /**
  * 

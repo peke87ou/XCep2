@@ -2,7 +2,6 @@ package com.irina.xcep.model;
 
 import java.util.ArrayList;
 
-import com.irina.xcep.R;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
