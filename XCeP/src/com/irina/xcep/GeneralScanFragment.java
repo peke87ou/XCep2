@@ -415,9 +415,15 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 					Toast.makeText(getActivity(), getString(R.string.erro_ao_consultar_o_produto), Toast.LENGTH_SHORT).show();
 				} else {
 					Log.i(TAG, objects.size() + "resultado" + resultadoBarCode);
-					if (objects.size() > 0) {
+					
+					if (objects.size() == 1) {
 						isProductoEnParse = true;
 						productBarcode = objects.get(0);
+
+					}else if (objects.size() > 1) {
+						
+						Toast.makeText(getActivity(), getString(R.string.erro_ao_consultar_o_produto)+". Encontráronse produtos duplicados.", Toast.LENGTH_SHORT).show();
+						return;
 
 					} else {
 						isProductoEnParse = false;
