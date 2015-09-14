@@ -249,25 +249,15 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
-		// get prompts.xml view
 		LayoutInflater li = LayoutInflater.from(this);
-		View promptsView = li.inflate(R.layout.dialog, null);
+		View promptsView = li.inflate(R.layout.dialog_about, null);
 		alertDialogBuilder.setView(promptsView);
-
-		alertDialogBuilder.setTitle(getString(R.string.informacion));
-
-		// set dialog message
-		alertDialogBuilder.setMessage(getString(R.string.informacion_sobre_a_aplicacion)).setCancelable(false)
-				.setPositiveButton(getString(R.string.si), new DialogInterface.OnClickListener() {
+		alertDialogBuilder.setCancelable(true).setPositiveButton(getString(R.string.pechar), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-
 					}
-				});
+		});
 
-		// create alert dialog
 		AlertDialog alertDialog = alertDialogBuilder.create();
-
-		// show it
 		alertDialog.show();
 	}
 
