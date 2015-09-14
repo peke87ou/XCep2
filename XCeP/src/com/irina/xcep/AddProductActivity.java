@@ -38,9 +38,12 @@ import com.squareup.picasso.Picasso;
 
 public class AddProductActivity extends Activity{
 	
-	public static final int requestCode = 2;
-	
 	public static final String TAG = AddProductActivity.class.getName();
+	
+	public static final int requestCode = 2;
+	public static final int resultCodeAdd = 1;
+	public static final int resultCodeNoAdd = 0;
+	
 	ButtonRectangle btncancel, btnacept;
 	private String barcode;
 	EditText nameProduto ;
@@ -50,6 +53,7 @@ public class AddProductActivity extends Activity{
 	
 	protected static final int CAMERA_REQUEST = 0;
 	protected static final int GALLERY_PICTURE = 1;
+	
 	Bitmap bitmap;
 	private Intent pictureActionIntent = null;
 	LinearLayout clickfotoProducto;
@@ -114,8 +118,8 @@ public class AddProductActivity extends Activity{
 			
 			@Override
 			public void onClick(View v) {
+				setResult(resultCodeNoAdd);
 				finish();
-				
 			}
 		});
 		
@@ -274,14 +278,12 @@ public class AddProductActivity extends Activity{
 								
 								@Override
 								public void done(ParseException e) {
-									//FIXME probar este código
+
 									if(e == null){
 										
 										progressDialog.dismiss();
-										Toast.makeText(AddProductActivity.this,
-												getString(R.string.produto_engadido), Toast.LENGTH_SHORT)
-												.show();
 										Log.i("Produto", getString(R.string.engadimos_o_produto_a_bd));
+										setResult(resultCodeAdd);
 										finish();
 										
 									}else{

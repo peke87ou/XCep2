@@ -107,7 +107,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 			
 			checkProductToList(productBarcode);
 			
-		}else if (requestCode == AddProductActivity.requestCode){
+		}else if ((requestCode == AddProductActivity.requestCode) && (resultCode == AddProductActivity.resultCodeAdd)){
 		
 			Toast.makeText(getActivity(), "Produto agregado ao supermercado", Toast.LENGTH_SHORT).show();
 		}
