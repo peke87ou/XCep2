@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -38,6 +40,8 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 	public static final int FRAGMENT_LIST = 104;
 	public static final int FACEBOOK = 201;
 	public static final int TWITTER = 202;
+	public static final int LANGUAGE = 203;
+	public static final int EMAIL = 206;
 	public static final int HELP = 205;
 	
     public int mCurrentFragmentIndex;
@@ -91,18 +95,13 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 
         this.mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         this.mListView = (ListView) findViewById(R.id.list_drawer);
+        this.mListView.setOnItemClickListener(this);
 
-        this.mListView.setOnItemClickListener(/*OnItemClickListener*/this);
-
-
-        MenuAdapter menuAdapter = new MenuAdapter(this, R.layout.item_list_menu, menu,/*SelectedListButton*/this);
-
+        MenuAdapter menuAdapter = new MenuAdapter(this, R.layout.item_list_menu, menu,this);
         MergeAdapter mergeAdapter = new MergeAdapter();
         mergeAdapter.addAdapter(menuAdapter);
 
-
         this.mListView.setAdapter(mergeAdapter);
-
         
         this.mDrawerToggle = new ActionBarDrawerToggle(MenuActivity.this,
                 this.mDrawerLayout, R.drawable.ic_menu_drawer,
@@ -158,7 +157,8 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
             NavTitleItem.create(200, R.string.setting),
             NavMenuItem.create(FACEBOOK, R.string.facebook, R.drawable.facebook, true, this),
 		    NavMenuItem.create(TWITTER, R.string.twitter, R.drawable.twitter, true, this),
-		    NavMenuItem.create(203, R.string.language, R.drawable.comments, true, this),
+		    NavMenuItem.create(EMAIL, R.string.sugerencias, R.drawable.ic_email, true, this),
+		    NavMenuItem.create(LANGUAGE, R.string.language, R.drawable.comments, true, this),
 		    NavMenuItem.create(HELP, R.string.help, R.drawable.help, true, this)};
 
 
@@ -192,6 +192,10 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
             case TWITTER:
             	shareTwitterPost(getString(R.string.aplicacion_de_xestion_de_compra),getResources().getString(R.string.app_name), Utils.urlAppXecp);
             	return;
+            	
+            case EMAIL:
+            	sendEmail();
+            	return;	
             
             case HELP:
             	showHelp();
@@ -281,6 +285,12 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 
 				// show it
 				alertDialog.show();
+    }
+    
+    public void sendEmail(){
+    	Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","irinaourense@gmail.com", null));
+    	intent.putExtra(Intent.EXTRA_TEXT, "\n\n\n\nEnviado desde XceP.");
+    	startActivity(Intent.createChooser(intent, "Enviar suxerencia"));
     }
     
 }

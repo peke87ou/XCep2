@@ -40,6 +40,7 @@
  	<string name="setting">Axustes</string>
  	<string name="facebook">Facebook</string>
  	<string name="twitter">Twitter</string>
+ 	<string name="sugerencias">Suxerencias</string>
  	<string name="language">Idioma</string>
  	<string name="reset_bd">Reiniciar Datos</string>
  	<string name="help">Acerca de XCeP</string>
