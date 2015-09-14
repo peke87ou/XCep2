@@ -29,10 +29,8 @@ import com.irina.xcep.model.Lista;
 import com.irina.xcep.utils.ShareSocialMediaActivity;
 import com.irina.xcep.utils.Utils;
 
-
 @SuppressLint("DefaultLocale")
-public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapter.SelectedListButton, AdapterView.OnItemClickListener{
-
+public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapter.SelectedListButton, AdapterView.OnItemClickListener {
 
 	public static final int FRAGMENT_HOME = 101;
 	public static final int FRAGMENT_CATALOG = 102;
@@ -43,254 +41,240 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 	public static final int LANGUAGE = 203;
 	public static final int EMAIL = 206;
 	public static final int HELP = 205;
-	
-    public int mCurrentFragmentIndex;
-    private static final String CURRENT_FRAGMENT_INDEX = "current_fragment";
 
+	public int mCurrentFragmentIndex;
+	private static final String CURRENT_FRAGMENT_INDEX = "current_fragment";
 
-    private DrawerLayout mDrawerLayout;
-    private ListView mListView;
-    private ActionBarDrawerToggle mDrawerToggle;
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
-    public String mNameList= "";
-    public Lista mListSelected=null;
+	private DrawerLayout mDrawerLayout;
+	private ListView mListView;
+	private ActionBarDrawerToggle mDrawerToggle;
+	private CharSequence mDrawerTitle;
+	private CharSequence mTitle;
+	public String mNameList = "";
+	public Lista mListSelected = null;
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_menu);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
+		mTitle = this.mDrawerTitle = getTitle();
 
-        mTitle = this.mDrawerTitle = getTitle();
+		/* Setting up all views */
+		initViews();
 
-        /*Setting up all views*/
-        initViews();
+		mDrawerLayout.setDrawerListener(this.mDrawerToggle);
+		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
-        mDrawerLayout.setDrawerListener(this.mDrawerToggle);
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+		if (savedInstanceState == null) {
+			loadFragment(FRAGMENT_HOME);
+			mCurrentFragmentIndex = FRAGMENT_HOME;
+			mDrawerLayout.setSelected(true);
 
-        if (savedInstanceState == null) {
-            loadFragment(FRAGMENT_HOME);
-            mCurrentFragmentIndex = FRAGMENT_HOME;
-            mDrawerLayout.setSelected(true);
+		} else {
 
-        } else {
+			mCurrentFragmentIndex = savedInstanceState.getInt(CURRENT_FRAGMENT_INDEX);
+			loadFragment(mCurrentFragmentIndex);
+			mDrawerLayout.setSelected(true);
+		}
 
-            mCurrentFragmentIndex = savedInstanceState.getInt(CURRENT_FRAGMENT_INDEX);
-            loadFragment(mCurrentFragmentIndex);
-            mDrawerLayout.setSelected(true);
-        }
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
+		getActionBar().setDisplayShowHomeEnabled(true);
+	}
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setDisplayShowHomeEnabled(true);
-    }
+	/**
+	 * method use to initialize all views and listeners
+	 */
+	public void initViews() {
 
+		this.mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		this.mListView = (ListView) findViewById(R.id.list_drawer);
+		this.mListView.setOnItemClickListener(this);
 
-    /**
-     * method use to initialize all views and listeners
-     */
-    public void initViews() {
+		MenuAdapter menuAdapter = new MenuAdapter(this, R.layout.item_list_menu, menu, this);
+		MergeAdapter mergeAdapter = new MergeAdapter();
+		mergeAdapter.addAdapter(menuAdapter);
 
-        this.mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        this.mListView = (ListView) findViewById(R.id.list_drawer);
-        this.mListView.setOnItemClickListener(this);
+		this.mListView.setAdapter(mergeAdapter);
 
-        MenuAdapter menuAdapter = new MenuAdapter(this, R.layout.item_list_menu, menu,this);
-        MergeAdapter mergeAdapter = new MergeAdapter();
-        mergeAdapter.addAdapter(menuAdapter);
+		this.mDrawerToggle = new ActionBarDrawerToggle(MenuActivity.this, this.mDrawerLayout, R.drawable.ic_menu_drawer, R.string.drawer_open,
+				R.string.drawer_close) {
 
-        this.mListView.setAdapter(mergeAdapter);
-        
-        this.mDrawerToggle = new ActionBarDrawerToggle(MenuActivity.this,
-                this.mDrawerLayout, R.drawable.ic_menu_drawer,
-                R.string.drawer_open,
-                R.string.drawer_close) {
+			@Override
+			public void onDrawerClosed(View drawerView) {
+				getActionBar().setTitle(mTitle);
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+					invalidateOptionsMenu();
+				}
 
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                getActionBar().setTitle(mTitle);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    invalidateOptionsMenu();
-                }
+			}
 
-            }
+			@Override
+			public void onDrawerOpened(View drawerView) {
+				getActionBar().setTitle(mDrawerTitle);
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+					invalidateOptionsMenu();
+				}
+			}
 
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(mDrawerTitle);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    invalidateOptionsMenu();
-                }
-            }
+		};
+	}
 
-        };
-    }
+	/*
+	 * @param title: action's bar title depends on current fragment
+	 */
+	public void setTitle(CharSequence title) {
+		mTitle = title;
+		getActionBar().setTitle(title);
 
+	}
 
-    /*
-    * @param title: action's bar title depends on current fragment
-    * */
-    public void setTitle(CharSequence title) {
-        mTitle = title;
-        getActionBar().setTitle(title);
+	/* onItemClick del navigation drawer */
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		if (((NavDrawerItem) parent.getItemAtPosition(position)).isClickable()
+				&& NavDrawerItem.SECTION_MENU_ITEM == ((NavDrawerItem) parent.getItemAtPosition(position)).getType()) {
+			loadFragment(menu[position].getId());
+		}
+	}
 
-    }
+	/* Static Navigation Drawer items */
+	private NavDrawerItem[] menu = new NavDrawerItem[] { NavTitleItem.create(100, R.string.app_name),
+			NavMenuItem.create(FRAGMENT_HOME, R.string.my_list, R.drawable.list, true, this),
+			NavMenuItem.create(FRAGMENT_CATALOG, R.string.catalog, R.drawable.ic_action_description, true, this),
+			NavMenuItem.create(FRAGMENT_SCAN, R.string.scan, R.drawable.ic_navigation_fullscreen, true, this), NavTitleItem.create(200, R.string.setting),
+			NavMenuItem.create(FACEBOOK, R.string.facebook, R.drawable.facebook, true, this),
+			NavMenuItem.create(TWITTER, R.string.twitter, R.drawable.twitter, true, this),
+			NavMenuItem.create(EMAIL, R.string.sugerencias, R.drawable.ic_email, true, this),
+			NavMenuItem.create(LANGUAGE, R.string.language, R.drawable.comments, true, this),
+			NavMenuItem.create(HELP, R.string.help, R.drawable.help, true, this) };
 
-    /*onItemClick del navigation drawer*/
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (((NavDrawerItem) parent.getItemAtPosition(position)).isClickable() &&
-                NavDrawerItem.SECTION_MENU_ITEM == ((NavDrawerItem) parent.getItemAtPosition(position)).getType()) {
-            loadFragment(menu[position].getId());
-        }
-    }
+	public void loadFragment(int index) {
 
+		Fragment fragment = null;
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-    /*Static Navigation Drawer items*/
-    private NavDrawerItem[] menu = new NavDrawerItem[]{
-            NavTitleItem.create(100, R.string.app_name),
-            NavMenuItem.create(FRAGMENT_HOME, R.string.my_list, R.drawable.list, true, this),
-            NavMenuItem.create(FRAGMENT_CATALOG, R.string.catalog, R.drawable.ic_action_description, true, this),
-            NavMenuItem.create(FRAGMENT_SCAN, R.string.scan, R.drawable.ic_navigation_fullscreen, true, this),
-            NavTitleItem.create(200, R.string.setting),
-            NavMenuItem.create(FACEBOOK, R.string.facebook, R.drawable.facebook, true, this),
-		    NavMenuItem.create(TWITTER, R.string.twitter, R.drawable.twitter, true, this),
-		    NavMenuItem.create(EMAIL, R.string.sugerencias, R.drawable.ic_email, true, this),
-		    NavMenuItem.create(LANGUAGE, R.string.language, R.drawable.comments, true, this),
-		    NavMenuItem.create(HELP, R.string.help, R.drawable.help, true, this)};
+		switch (index) {
 
+		case FRAGMENT_HOME:
+			fragment = HomeFragment.newInstance(FRAGMENT_HOME);
+			break;
 
-    public void loadFragment(int index) {
+		case FRAGMENT_LIST:
+			fragment = DetailListFragment.newInstance(FRAGMENT_LIST);
+			break;
 
-        Fragment fragment = null;
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		case FRAGMENT_CATALOG:
+			fragment = GeneralCatalogFragment.newInstance(FRAGMENT_CATALOG);
+			break;
 
-        switch (index) {
-        
-            case FRAGMENT_HOME:
-            	fragment = HomeFragment.newInstance(FRAGMENT_HOME);
-                break;
-            
-            case FRAGMENT_LIST:
-            	fragment = DetailListFragment.newInstance(FRAGMENT_LIST);
-            	break;
-            	
-            case FRAGMENT_CATALOG:
-            	fragment = GeneralCatalogFragment.newInstance(FRAGMENT_CATALOG);
-            	break;
-            	
-            case FRAGMENT_SCAN:
-            	fragment = GeneralScanFragment.newInstance(FRAGMENT_SCAN);
-            	break;
-            
-            case FACEBOOK:
-            	shareFacebookApp(getString(R.string.aplicacion_de_xestion_de_compra), getResources().getString(R.string.app_name), Utils.urlAppXecp);
-            	return;
-            
-            case TWITTER:
-            	shareTwitterPost(getString(R.string.aplicacion_de_xestion_de_compra),getResources().getString(R.string.app_name), Utils.urlAppXecp);
-            	return;
-            	
-            case EMAIL:
-            	sendEmail();
-            	return;	
-            
-            case HELP:
-            	showHelp();
-            	return;
+		case FRAGMENT_SCAN:
+			fragment = GeneralScanFragment.newInstance(FRAGMENT_SCAN);
+			break;
 
-         default:
-        	 Toast.makeText(this, getString(R.string.funcionalidade_en_cosntruccion), Toast.LENGTH_LONG).show();
-        	 return;
-           
-        }
+		case FACEBOOK:
+			shareFacebookApp(getString(R.string.aplicacion_de_xestion_de_compra), getResources().getString(R.string.app_name), Utils.urlAppXecp);
+			return;
 
+		case TWITTER:
+			shareTwitterPost(getString(R.string.aplicacion_de_xestion_de_compra), getResources().getString(R.string.app_name), Utils.urlAppXecp);
+			return;
 
-        //Add fragment to layout
-        //Store current index
-        mCurrentFragmentIndex = index;
-        //Add fragment to layout
-        transaction.replace(R.id.container, fragment);
-        if(index !=FRAGMENT_HOME){
-        	 transaction.addToBackStack(null);
-        }       
-        transaction.commit();
-        mListView.setItemChecked(index, true);
-        mDrawerLayout.closeDrawer(mListView);
-    }
+		case EMAIL:
+			sendEmail();
+			return;
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return  super.onCreateOptionsMenu(menu);
-    }
+		case HELP:
+			showHelp();
+			return;
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
-    }
+		default:
+			Toast.makeText(this, getString(R.string.funcionalidade_en_cosntruccion), Toast.LENGTH_LONG).show();
+			return;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return mDrawerToggle.onOptionsItemSelected(item);
-    }
+		}
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(CURRENT_FRAGMENT_INDEX,mCurrentFragmentIndex);
-    }
+		// Add fragment to layout
+		// Store current index
+		mCurrentFragmentIndex = index;
+		// Add fragment to layout
+		transaction.replace(R.id.container, fragment);
+		if (index != FRAGMENT_HOME) {
+			transaction.addToBackStack(null);
+		}
+		transaction.commit();
+		mListView.setItemChecked(index, true);
+		mDrawerLayout.closeDrawer(mListView);
+	}
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-    
-    @Override
-    public void onSelectedButton(int type) {
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		return super.onCreateOptionsMenu(menu);
+	}
 
-    }
-    
-    
-    /**
-     * About and help
-     */
-    
-    @SuppressLint("InflateParams")
-	public void showHelp(){
-    	
-    	AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		mDrawerToggle.syncState();
+	}
 
-    	// get prompts.xml view
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		return mDrawerToggle.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt(CURRENT_FRAGMENT_INDEX, mCurrentFragmentIndex);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+	}
+
+	@Override
+	public void onSelectedButton(int type) {
+
+	}
+
+	/**
+	 * About and help
+	 */
+
+	@SuppressLint("InflateParams")
+	public void showHelp() {
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+		// get prompts.xml view
 		LayoutInflater li = LayoutInflater.from(this);
 		View promptsView = li.inflate(R.layout.dialog, null);
 		alertDialogBuilder.setView(promptsView);
-		
-			alertDialogBuilder.setTitle(getString(R.string.informacion));
 
-			// set dialog message
-			alertDialogBuilder
-				.setMessage(getString(R.string.informacion_sobre_a_aplicacion))
-				.setCancelable(false)
-				.setPositiveButton(getString(R.string.si),new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog,int id) {
-						
+		alertDialogBuilder.setTitle(getString(R.string.informacion));
+
+		// set dialog message
+		alertDialogBuilder.setMessage(getString(R.string.informacion_sobre_a_aplicacion)).setCancelable(false)
+				.setPositiveButton(getString(R.string.si), new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+
 					}
-				  });
+				});
 
-				// create alert dialog
-				AlertDialog alertDialog = alertDialogBuilder.create();
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
 
-				// show it
-				alertDialog.show();
-    }
-    
-    public void sendEmail(){
-    	Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","irinaourense@gmail.com", null));
-    	intent.putExtra(Intent.EXTRA_TEXT, "\n\n\n\nEnviado desde XceP.");
-    	startActivity(Intent.createChooser(intent, "Enviar suxerencia"));
-    }
-    
+		// show it
+		alertDialog.show();
+	}
+
+	public void sendEmail() {
+		Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "irinaourense@gmail.com", null));
+		intent.putExtra(Intent.EXTRA_TEXT, "\n\n\n\nEnviado desde XceP.");
+		startActivity(Intent.createChooser(intent, "Enviar suxerencia"));
+	}
+
 }
