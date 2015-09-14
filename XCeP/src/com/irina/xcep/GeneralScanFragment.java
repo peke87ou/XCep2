@@ -56,6 +56,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 	// Camara
 	Camera cam;
 	SurfaceHolder surfaceholder;
+	SurfaceView mCameraPreview;
 	String previewImagePath;
 	String resultadoBarCode;
 	String barcode;
@@ -83,15 +84,11 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
 		crearDialogosAgregarProducto();
-		iniciarScan();
+
 		
 		RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.fragment_general_scan, container, false);
-		
-		SurfaceView cameraPreview = (SurfaceView) layout.findViewById(R.id.surfaceView1GeneralScan);
-		surfaceholder = cameraPreview.getHolder();
-		surfaceholder.setSizeFromLayout();
-		surfaceholder.addCallback(this);
-		surfaceChanged(surfaceholder, 0, 0, 0);
+		mCameraPreview = (SurfaceView) layout.findViewById(R.id.surfaceView1GeneralScan);
+		iniciarScan();
 		
 		getActivity().getActionBar().setTitle(getString(R.string.scan_total)); //FIXME se está cambiando el texto
 		return layout;
@@ -101,7 +98,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		prepararCamara(); //FIXME no se está activando la cámara por segunda vez
+		iniciarScan();
 		
 		if((requestCode == DetailProductActivity.requestCode) && (resultCode == DetailProductActivity.resultCodeAdd)){
 			
@@ -116,46 +113,32 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 	@Override
 	public void onPause() {
 		super.onPause();
-		desconectarCamara();
+		paraScan();
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		prepararCamara();
+		iniciarScan();
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
-		prepararCamara();
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
-		desconectarCamara();
+		paraScan();
 	}
 
-	
-	/**
-	 * Inicia a cámara e o escaneo de barcodes
-	 * @category camara
-	 */
-	
-	private void iniciarScan() {
-		if (cam == null) {
-			prepararCamara();
-		} else {
-			cam.startPreview();
-		}
-	}
 
 	/**
-	 * Inicializa la configuración de la cámara
+	 * Inicializa a configuración da cámara ea detección de códigos 
 	 * @category camara
 	 */
-	public void prepararCamara() {
+	public void iniciarScan() {
 
 		if (cam == null) {
 			cam = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
@@ -213,7 +196,15 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 
 				}
 			});
+		}else{
+			cam.startPreview();
 		}
+		
+		
+		surfaceholder = mCameraPreview.getHolder();
+		surfaceholder.setSizeFromLayout();
+		surfaceholder.addCallback(this);
+		surfaceChanged(surfaceholder, 0, 0, 0);
 
 		try {
 			cam.reconnect();
@@ -228,7 +219,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 	 * Desconecta la cámara, y borra la cámara de la vista
 	 * @category camara
 	 */
-	public void desconectarCamara() {
+	public void paraScan() {
 
 		if (surfaceholder != null) {
 			surfaceholder.removeCallback(this);
