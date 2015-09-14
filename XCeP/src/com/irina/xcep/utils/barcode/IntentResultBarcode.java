@@ -1,6 +1,5 @@
 package com.irina.xcep.utils.barcode;
 
-import com.irina.xcep.R;
 
 
 

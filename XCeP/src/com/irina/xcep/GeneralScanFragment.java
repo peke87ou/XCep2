@@ -16,6 +16,7 @@ import com.google.zxing.common.HybridBinarizer;
 import com.irina.xcep.model.Lista;
 import com.irina.xcep.model.Prezo;
 import com.irina.xcep.model.Produto;
+import com.irina.xcep.model.Supermercado;
 import com.irina.xcep.model.Tag;
 import com.irina.xcep.model.Units;
 import com.irina.xcep.utils.Utils;
@@ -60,11 +61,12 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 	String barcode;
 	boolean isProductoEnParse;
 	Produto productBarcode;
+	ArrayList<Supermercado> mSupermercados;
 
 	// Agregar producto
 	public static ArrayList<Lista> misListas = new ArrayList<Lista>();
 	ParseUser currentUser = ParseUser.getCurrentUser();
-	AlertDialog dialogoAgregarProductoCarrito, dialogoAgregarProductoSistema;
+	AlertDialog dialogoAgregarProductoCarrito, dialogoAgregarProductoSistema, dialogoAgregarProductoSupermercado;
 
 	
 	public static GeneralScanFragment newInstance(int Index) {
@@ -80,7 +82,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
-		crearDialogos();
+		crearDialogosAgregarProducto();
 		iniciarPararScan();
 		
 		RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.fragment_general_scan, container, false);
@@ -178,7 +180,8 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 
 							Log.e("valor de resultado", resultado.getText());
 							
-							if(dialogoAgregarProductoCarrito.isShowing() || dialogoAgregarProductoSistema.isShowing()){
+							if(dialogoAgregarProductoCarrito.isShowing() || dialogoAgregarProductoSistema.isShowing()
+									|| dialogoAgregarProductoSupermercado.isShowing()){
 								return;
 							}
 							
@@ -222,7 +225,10 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 		}
 	}
 	
-	public void crearDialogos(){
+	/**
+	 * Crea os dialogos para agregar produto tanto ao sistema como ao carrito dunha lista
+	 */
+	public void crearDialogosAgregarProducto(){
 		
 		/**
 		 * Dialogo agregar producto al carrito
@@ -255,6 +261,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 		dialogoAgregarProductoCarrito = builderDialogoAgregarProducto.create();
 		dialogoAgregarProductoCarrito.setTitle(getActivity().getString(R.string.produto_atopado));	
 		
+		
 		/**
 		 * Dialogo agregar producto al sistema
 		 */
@@ -264,17 +271,36 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 		builderDialogoAgregarProductoSistema.setPositiveButton("Agregar produto ao sistema", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 
-				//TODO Calcular lista de supermercados
-				//En el click, lanzar intent para agregar producto al sistema
-				/**
-				Intent intent = new Intent(getActivity(), AddProductActivity.class);
-				Log.i("AddProduct QUE ENVIA", barcode);
-				intent.putExtra("SUPERNAME", mMarketSelected.getName());
-				intent.putExtra("SUPERIMAGE", mMarketSelected.getImage().getUrl());
-				intent.putExtra("SUPERID", mMarketSelected.getObjectId());
-				intent.putExtra("BARCODE", barcode);
-				startActivityForResult(intent, AddProductActivity.requestCode);*/
+				barcode = resultadoBarCode;
 				resultadoBarCode = null;
+				
+				if(mSupermercados != null && mSupermercados.size() > 0){
+					
+					showDialogoListaSupermercado(mSupermercados);
+				}else{
+					
+					final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(),
+							"Obtendo supermercados");
+					progressDialog.show();
+					
+					ParseQuery<Supermercado> query = ParseQuery.getQuery(Supermercado.class);
+					query.findInBackground(new FindCallback<Supermercado>() {
+						
+						@Override
+						public void done(List<Supermercado> objects, ParseException e) {
+							
+							progressDialog.dismiss();
+							
+							if(e==null && objects != null){
+								mSupermercados = (ArrayList<Supermercado>) objects;
+							}else{
+								Toast.makeText(getActivity(), "Non se puido calcular a lista de supermercados", Toast.LENGTH_SHORT).show();
+							}
+							
+						}
+					});
+				}
+				
 			}
 		});
 
@@ -287,6 +313,30 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 
 		dialogoAgregarProductoSistema = builderDialogoAgregarProductoSistema.create();
 		dialogoAgregarProductoSistema.setTitle(getActivity().getString(R.string.produto_novo));
+	}
+	
+	/**
+	 * Mostra unha lista de supermercados para agregar un produto novo a un supermercado
+	 */
+	public void showDialogoListaSupermercado(final ArrayList<Supermercado> supermercados){
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setTitle("Supermercados").setItems((String[]) supermercados.toArray(new String[supermercados.size()]), 
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int nSupermercado) {
+
+						Intent intent = new Intent(getActivity(), AddProductActivity.class);
+						Log.i("AddProduct QUE ENVIA", barcode);
+						intent.putExtra("SUPERNAME", supermercados.get(nSupermercado).getName());
+						intent.putExtra("SUPERIMAGE", supermercados.get(nSupermercado).getImage().getUrl());
+						intent.putExtra("SUPERID", supermercados.get(nSupermercado).getObjectId());
+						intent.putExtra("BARCODE", barcode);
+						startActivityForResult(intent, AddProductActivity.requestCode);
+					}
+				});
+
+		dialogoAgregarProductoSupermercado = builder.create();
+		dialogoAgregarProductoSupermercado.show();
 	}
 
 	public void showDialogoBarcodeEncontrado() {

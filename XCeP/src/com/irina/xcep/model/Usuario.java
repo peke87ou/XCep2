@@ -1,6 +1,6 @@
 package com.irina.xcep.model;
 
-import com.irina.xcep.R;
+
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
