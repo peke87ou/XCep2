@@ -83,7 +83,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
 		crearDialogosAgregarProducto();
-		iniciarPararScan();
+		iniciarScan();
 		
 		RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.fragment_general_scan, container, false);
 		
@@ -137,7 +137,13 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 		desconectarCamara();
 	}
 
-	private void iniciarPararScan() {
+	
+	/**
+	 * Inicia a cámara e o escaneo de barcodes
+	 * @category camara
+	 */
+	
+	private void iniciarScan() {
 		if (cam == null) {
 			prepararCamara();
 		} else {
@@ -145,6 +151,10 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 		}
 	}
 
+	/**
+	 * Inicializa la configuración de la cámara
+	 * @category camara
+	 */
 	public void prepararCamara() {
 
 		if (cam == null) {
@@ -209,6 +219,10 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 
 	}
 
+	/**
+	 * Desconecta la cámara, y borra la cámara de la vista
+	 * @category camara
+	 */
 	public void desconectarCamara() {
 
 		if (surfaceholder != null) {
@@ -226,7 +240,33 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 	}
 	
 	/**
-	 * Crea os dialogos para agregar produto tanto ao sistema como ao carrito dunha lista
+	 * Inicia el display de la cámara
+	 * @category camara
+	 */
+	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+		try {
+			cam.setPreviewDisplay(surfaceholder);
+		} catch (IOException e) {
+		}
+		cam.startPreview();
+	}
+
+	/**
+	 * @category camara
+	 */
+	public void surfaceCreated(SurfaceHolder holder) {
+	}
+
+	/**
+	 * @category camara
+	 */
+	public void surfaceDestroyed(SurfaceHolder holder) {
+	}
+	
+	
+	/**
+	 * Dialogos da actividade xunto coas funcións asociadas a cada diálogo
+	 * @category dialogos
 	 */
 	public void crearDialogosAgregarProducto(){
 		
@@ -317,6 +357,8 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 	
 	/**
 	 * Mostra unha lista de supermercados para agregar un produto novo a un supermercado
+	 * @param supermercados
+	 * @category dialogos
 	 */
 	public void showDialogoListaSupermercado(final ArrayList<Supermercado> supermercados){
 		
@@ -339,10 +381,14 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 		dialogoAgregarProductoSupermercado.show();
 	}
 
+	/**
+	 * Mostra un diálogo de progreso, mentres se busca en parse se existe dito producto
+	 * @category dialogos
+	 */
+	
 	public void showDialogoBarcodeEncontrado() {
-
-		// Mirar se existe na BD
-		ParseQuery<Produto> queryProductos = ParseQuery.getQuery(Produto.class);
+		
+		ParseQuery<Produto> queryProductos = ParseQuery.getQuery(Produto.class); // Mirar se existe na BD o producto
 		final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(), getActivity().getString(R.string.buscando_produto_no_sistema));
 		progressDialog.show();
 		queryProductos.include("APrice");
@@ -384,14 +430,14 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 
 	}
 
+	
 	/**
-	 * Comprueba las listas compatibles con el producto seleccionado por el
-	 * usuario
-	 * 
-	 * @param producto
+	 * Comprueba las listas compatibles con el producto seleccionado por el usuario
+	 * @param producto Producto seleccionado polo usuario
+	 * @category especifica
 	 */
-
 	public void checkProductToList(final Produto producto) {
+
 
 		if (HomeFragment.misListas == null || HomeFragment.misListas.size() == 0) {
 
@@ -447,6 +493,11 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 		}
 	}
 
+	/**
+	 * Lanza unha actividade para mostrar o detalle dun producto
+	 * @param producto móstrase o detalle deste producto
+	 * @category especifica
+	 */
 	public void lanzarDetalleProducto(Produto producto) {
 
 		Intent intent = new Intent(getActivity(), DetailProductActivity.class);
@@ -493,6 +544,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 	/**
 	 * Engadese un produto a lista. Se xa está na lista, engadese unha unidade.
 	 * @param producto
+	 * @category especifica
 	 */
 	public void addProductToList(final Lista listaSelected,Produto producto) throws IllegalStateException{
 		
@@ -564,21 +616,5 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 		}	
 	}
 
-	/**
-	 * Surfaceholder callback de la cámara
-	 */
-	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-		try {
-			cam.setPreviewDisplay(surfaceholder);
-		} catch (IOException e) {
-		}
-		cam.startPreview();
-	}
-
-	public void surfaceCreated(SurfaceHolder holder) {
-	}
-
-	public void surfaceDestroyed(SurfaceHolder holder) {
-	}
 
 }
