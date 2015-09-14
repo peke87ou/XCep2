@@ -41,7 +41,7 @@ public class AddMarketActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_new_market);
-		getActionBar().setTitle(R.string.title_action_bar_add_market);
+		getActionBar().setTitle(getString(R.string.title_action_bar_add_market));
 		
 		nameMarket = (EditText) findViewById(R.id.text_name_market);
 		fotomarket = (ImageView) findViewById(R.id.image_view_market);
@@ -64,7 +64,7 @@ public class AddMarketActivity extends Activity{
 				
 				if(bitmap == null){ //Se comprueba imagen del supermercado
 					
-					Toast.makeText(getApplicationContext(), R.string.non_se_obtuvo_foto, Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), getString(R.string.non_se_obtuvo_foto), Toast.LENGTH_SHORT).show();
 					return;
 				}else{ //Compruebase o nome do supermercado
 					
@@ -90,10 +90,10 @@ public class AddMarketActivity extends Activity{
 	
 	private void startDialog() {
 	    AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
-	    myAlertDialog.setTitle(R.string.adxuntar_foto);
-	    myAlertDialog.setMessage(R.string.seleccione_onde_buscar_foto);
+	    myAlertDialog.setTitle(getString(R.string.adxuntar_foto));
+	    myAlertDialog.setMessage(getString(R.string.seleccione_onde_buscar_foto));
 
-	    myAlertDialog.setPositiveButton(R.string.galery,
+	    myAlertDialog.setPositiveButton(getString(R.string.galery),
 	            new DialogInterface.OnClickListener() {
 	                public void onClick(DialogInterface arg0, int arg1) {
 	                    pictureActionIntent = new Intent(
@@ -105,7 +105,7 @@ public class AddMarketActivity extends Activity{
 	                }
 	            });
 
-	    myAlertDialog.setNegativeButton(R.string.camara,
+	    myAlertDialog.setNegativeButton(getString(R.string.camara),
 	            new DialogInterface.OnClickListener() {
 	                public void onClick(DialogInterface arg0, int arg1) {
 	                    pictureActionIntent = new Intent(
@@ -128,11 +128,11 @@ public class AddMarketActivity extends Activity{
                     fotomarket.setImageURI(data.getData());
                     bitmap =  ((BitmapDrawable)fotomarket.getDrawable()).getBitmap();
 	            } else {
-	                Toast.makeText(getApplicationContext(), R.string.cancelouse,
+	                Toast.makeText(getApplicationContext(), getString(R.string.cancelouse),
 	                        Toast.LENGTH_SHORT).show();
 	            }
 	        } else if (resultCode == RESULT_CANCELED) {
-	            Toast.makeText(getApplicationContext(), R.string.cancelouse,
+	            Toast.makeText(getApplicationContext(), getString(R.string.cancelouse),
 	                    Toast.LENGTH_SHORT).show();
 	        }
 	    } else if (requestCode == CAMERA_REQUEST) {
@@ -147,13 +147,13 @@ public class AddMarketActivity extends Activity{
 	            } else if (data.getExtras() == null) {
 
 	                Toast.makeText(getApplicationContext(),
-	                        R.string.non_se_obtuvo_foto, Toast.LENGTH_SHORT)
+	                		getString(R.string.non_se_obtuvo_foto), Toast.LENGTH_SHORT)
 	                        .show();
 
 	            }
 
 	        } else if (resultCode == RESULT_CANCELED) {
-	            Toast.makeText(getApplicationContext(), R.string.cancelouse_foto,
+	            Toast.makeText(getApplicationContext(), getString(R.string.cancelouse_foto),
 	                    Toast.LENGTH_SHORT).show();
 	        }
 	    }
@@ -177,7 +177,7 @@ public class AddMarketActivity extends Activity{
 		 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
 		 byte[] byteArray = stream.toByteArray();
 		 if(byteArray == null){
-			 Toast.makeText(this, R.string.erro_o_adxuntar_imaxen, Toast.LENGTH_SHORT).show();
+			 Toast.makeText(this, getString(R.string.erro_o_adxuntar_imaxen), Toast.LENGTH_SHORT).show();
 			 return;
 		 }
 		 //FIXME Error en imagenes al rotar
@@ -193,14 +193,14 @@ public class AddMarketActivity extends Activity{
 			public void done(ParseException arg0) {
 				if (arg0 == null) {
 					Toast.makeText(AddMarketActivity.this,
-							R.string.engadimos_o_supermercado_a_bd_,
+							getString(R.string.engadimos_o_supermercado_a_bd_),
 							Toast.LENGTH_SHORT).show();
 					Log.i("market", getString(R.string.engadimos_o_supermercado_a_bd_));
 					finish();
 
 				} else {
 					Toast.makeText(AddMarketActivity.this,
-							R.string.error_add_list + " " + arg0.getMessage(),
+							getString(R.string.error_add_list) + " " + arg0.getMessage(),
 							Toast.LENGTH_SHORT).show();
 					Log.e("market", getString(R.string.erro_o_engadir_na_bd));
 				}

@@ -147,7 +147,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		tabHost.addTab(spec);
 		
 		tabHost.setCurrentTab(0);
-		getActivity().getActionBar().setTitle(R.string.title_action_bar_Shopping_car);
+		getActivity().getActionBar().setTitle(res.getString(R.string.title_action_bar_Shopping_car));
 
 		TextView txtNameList = (TextView) home.findViewById(R.id.idNameMarket);
 		nameList = ((MenuActivity)getActivity()).mNameList;
@@ -179,12 +179,12 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				switch (tabId) {
 				
 				case "Lista da compra":
-					getActivity().getActionBar().setTitle(R.string.title_action_bar_Shopping_car);
+					getActivity().getActionBar().setTitle(getString(R.string.title_action_bar_Shopping_car));
 					cargarProdutosLista();
 					break;
 
 				case "Catálogo":
-					getActivity().getActionBar().setTitle(R.string.catalog);
+					getActivity().getActionBar().setTitle(getString(R.string.catalog));
 					actualizarCatalogo();
 					if(tagList.size() == 0){
 						getTags();
@@ -192,7 +192,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					break;
 					
 				default:
-					getActivity().getActionBar().setTitle(R.string.scan);
+					getActivity().getActionBar().setTitle(getString(R.string.scan));
 					break;
 				}
 				
@@ -229,7 +229,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
        		 
 		        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		 
-		        builder.setTitle(R.string.que_desexa_facer)
+		        builder.setTitle(getString(R.string.que_desexa_facer))
 		           .setItems(items, new DialogInterface.OnClickListener() {
 		                public void onClick(DialogInterface dialog, int item) {
 		                    Log.i("Dialogos", "Opción elexida: " + items[item]);
@@ -307,7 +307,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			public boolean onQueryTextChange(String query) {
 				
 	        	AdapterProductsCatalog adapter = (AdapterProductsCatalog)catalogoListView.getAdapter();
-	            adapter.getFilter().filter(query);
+	        	if(adapter!=null){
+	        		adapter.getFilter().filter(query);
+	        	}
 		        return true;
 			}
 		});
@@ -326,7 +328,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		productosListaListView.setAdapter(adapterUnidadesCarrito);
 		
 		if(mListaSelected.getAIdUnits().size() == 0){
-			Toast.makeText(getActivity(), R.string.empty_list, Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), getString(R.string.empty_list), Toast.LENGTH_LONG).show();
 		}
 		
 		actualizarPrecios();
@@ -336,11 +338,11 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		AlertDialog.Builder popDialog = new AlertDialog.Builder(getActivity());
 		final LayoutInflater inflater = getActivity().getLayoutInflater();
-		popDialog.setTitle(R.string.cambiar_unidades);
+		popDialog.setTitle(getString(R.string.cambiar_unidades));
 		View vistaDialogo = inflater.inflate(
 				R.layout.activity_dialog_change_units_products, null);
 		popDialog.setView(vistaDialogo);
-		popDialog.setPositiveButton(android.R.string.ok,
+		popDialog.setPositiveButton(getString(android.R.string.ok),
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
@@ -354,9 +356,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 						int newUnitProduct = unitsProductPicker.getValue();
 						
 						if(newUnitProduct == unidadProducto.getNumberUnits().intValue()){
-							Toast.makeText(getActivity(), R.string.seleccionouse_mesma_cantidade, Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), getString(R.string.seleccionouse_mesma_cantidade), Toast.LENGTH_SHORT).show();
 						}else{
-							Toast.makeText(getActivity(), R.string.seleccionouse+newUnitProduct, Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), getString(R.string.seleccionouse+newUnitProduct), Toast.LENGTH_SHORT).show();
 							unidadProducto.setNumberUnits(newUnitProduct);
 							unidadProducto.saveInBackground( new SaveCallback() {
 								
@@ -368,7 +370,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 						}
 						
 					}
-				}).setNegativeButton(R.string.cancelar,
+				}).setNegativeButton(getString(R.string.cancelar),
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
@@ -438,7 +440,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			
 			unidadSeleccionada.addNumberUnits(1);
 			unidadSeleccionada.saveInBackground();
-			Toast.makeText(getActivity(), R.string.engadida_unha_unidade_de+unidadSeleccionada.getProduct().getTitle() + R.string.total+unidadSeleccionada.getNumberUnits(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), getString(R.string.engadida_unha_unidade_de)+unidadSeleccionada.getProduct().getTitle() + getString(R.string.total)+unidadSeleccionada.getNumberUnits(), Toast.LENGTH_SHORT).show();
 			adapterUnidadesCarrito.notifyDataSetChanged();
 		}else{ //Nuevo producto a la lista
 			final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(),
@@ -530,7 +532,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			@Override
 			public void done(List<Lista> objects, ParseException e) {
 				if (e != null) {
-					Toast.makeText(getActivity(), R.string.erro_ao_engadir_produto,
+					Toast.makeText(getActivity(), getString(R.string.erro_ao_engadir_produto),
 							Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
 				}
@@ -551,7 +553,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				if(progressDialog.isShowing()){
 					progressDialog.dismiss();
 				}
-				if(tabHost.getCurrentTabTag().equals(R.string.lista_da_compra)){
+				if(tabHost.getCurrentTabTag().equals(getString(R.string.lista_da_compra))){
 						adapterUnidadesCarrito = new AdapterUnits(getActivity(), mListaSelected, DetailListFragment.this); //FIXME sobran parámetros de entrada
 						productosListaListView.setAdapter(adapterUnidadesCarrito);
 						adapterUnidadesCarrito.notifyDataSetChanged();
@@ -759,7 +761,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			cam.reconnect();
 		} catch (IOException e) {
 			e.printStackTrace();
-			Toast.makeText(getActivity(), R.string.non_se_pudo_acceder_camara, Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), getString(R.string.non_se_pudo_acceder_camara), Toast.LENGTH_LONG).show();
 		}
         
         SurfaceView cameraPreview=(SurfaceView)getActivity().findViewById(R.id.surfaceView1);
@@ -813,7 +815,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		AlertDialog.Builder builderDialogoAgregarProducto = new AlertDialog.Builder(
 				getActivity());
 		builderDialogoAgregarProducto.setCancelable(false);
-		builderDialogoAgregarProducto.setPositiveButton(R.string.engadir_produto,
+		builderDialogoAgregarProducto.setPositiveButton(getString(R.string.engadir_produto),
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 
@@ -842,7 +844,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					}
 				});
 
-		builderDialogoAgregarProducto.setNegativeButton(R.string.pechar,
+		builderDialogoAgregarProducto.setNegativeButton(getString(R.string.pechar),
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						resultadoBarCode = null;
@@ -866,7 +868,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			public void done(List<Produto> objects, ParseException e) {
 				progressDialog.dismiss();
 				if(e!=null){
-					Toast.makeText(getActivity(), R.string.erro_ao_consultar_o_produto, Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), getString(R.string.erro_ao_consultar_o_produto), Toast.LENGTH_SHORT).show();
 				}else{
 					Log.i(TAG,objects.size()+"resultado"+resultadoBarCode);
 					if (objects.size() > 0){
@@ -972,11 +974,11 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		builder.setCancelable(false);
 		final View viewDialog = inflater.inflate(R.layout.activity_dialog_add_price_product_market, null);
 		builder.setView(viewDialog);
-		builder.setPositiveButton(R.string.engadir_prezo, new DialogInterface.OnClickListener() {
+		builder.setPositiveButton(getString(R.string.engadir_prezo), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 
 					}
-		}).setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+		}).setNegativeButton(getString(R.string.cancelar), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
 					}
@@ -988,7 +990,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		if(productBarcode.getAPrice().size() > 0){
 			newPriceEditText.setHint(productBarcode.getAPrice().get(0).getPrice().toString());
 		}else{
-			newPriceEditText.setHint(R.string.prezo);
+			newPriceEditText.setHint(getString(R.string.prezo));
 		}
 		dialogoAgregarPrecio = builder.create();
 		dialogoAgregarPrecio.setTitle(productBarcode.getTitle() + "  "+ productBarcode.getMarca());
@@ -1044,7 +1046,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 						dialogoAgregarPrecio.dismiss();
 					} else {
 						
-						Toast.makeText(getActivity(), R.string.necesario_introducir_un_prezo_valido, Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), getString(R.string.necesario_introducir_un_prezo_valido), Toast.LENGTH_SHORT).show();
 					}
 
 					

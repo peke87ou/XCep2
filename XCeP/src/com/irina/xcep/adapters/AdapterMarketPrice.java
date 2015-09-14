@@ -47,8 +47,9 @@ public class AdapterMarketPrice extends ArrayAdapter<String> {
     		   ((TextView) celdaView.findViewById(R.id.TextViewPrezo)).setTextColor(mContext.getResources().getColor(android.R.color.black));
        }
        
+       
        //Buscar Vista para recheo de datos
-       ((TextView) celdaView.findViewById(R.id.priceProduct)).setText( precioSupermercado + R.string.simbol_euro);
+       ((TextView) celdaView.findViewById(R.id.priceProduct)).setText( precioSupermercado + mContext.getResources().getString(R.string.simbol_euro));
        final ImageView imageView = (ImageView)celdaView.findViewById(R.id.ImageMarket);
        Picasso.with(mContext ).load(urlSupermercado).into(imageView);
 	   

@@ -65,7 +65,7 @@ public class AddProductActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_new_product);
-		getActionBar().setTitle(R.string.title_action_bar_add_product);
+		getActionBar().setTitle(getString(R.string.title_action_bar_add_product));
 		
 		nameLista = (TextView) findViewById(R.id.idNameMarket);
 		String snameLista= getIntent().getExtras().getString("SUPERNAME");
@@ -126,7 +126,7 @@ public class AddProductActivity extends Activity{
 			public void onClick(View v) {
 				
 				if(bitmap == null){ //Se comprueba imagen del supermercado
-					Toast.makeText(getApplicationContext(), R.string.non_se_obtuvo_foto, Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), getString(R.string.non_se_obtuvo_foto), Toast.LENGTH_SHORT).show();
 					return;
 				}else{ //Compruebase o nome do supermercado
 					
@@ -185,7 +185,7 @@ public class AddProductActivity extends Activity{
 		bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
 		byte[] byteArray = stream.toByteArray();
 		if (byteArray == null) {
-			Toast.makeText(this, R.string.erro_o_adxuntar_imaxen, Toast.LENGTH_SHORT)
+			Toast.makeText(this, getString(R.string.erro_o_adxuntar_imaxen), Toast.LENGTH_SHORT)
 					.show();
 			return;
 		}
@@ -223,7 +223,7 @@ public class AddProductActivity extends Activity{
 							if (e != null) {
 								e.printStackTrace();
 								progressDialog.dismiss();
-								Toast.makeText(AddProductActivity.this, R.string.erro_ao_gardar_prezo, Toast.LENGTH_SHORT).show();
+								Toast.makeText(AddProductActivity.this, getString(R.string.erro_ao_gardar_prezo), Toast.LENGTH_SHORT).show();
 							} else {
 								Log.d(TAG, getString(R.string.engadese_o_produto_o_supermercado));
 							}
@@ -231,7 +231,7 @@ public class AddProductActivity extends Activity{
 					});
 				} else {
 					progressDialog.dismiss();
-					Toast.makeText(AddProductActivity.this, R.string.erro_ao_gardar_prezo, Toast.LENGTH_SHORT).show();
+					Toast.makeText(AddProductActivity.this, getString(R.string.erro_ao_gardar_prezo), Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
 				}
 			}
@@ -264,7 +264,7 @@ public class AddProductActivity extends Activity{
 							if (e != null || objects.size() == 0) {
 								Toast.makeText(
 										AddProductActivity.this,
-										R.string.erro_ao_engadir_o_produto_ao_supermercado,
+										getString(R.string.erro_ao_engadir_o_produto_ao_supermercado),
 										Toast.LENGTH_SHORT).show();
 							}
 
@@ -279,7 +279,7 @@ public class AddProductActivity extends Activity{
 										
 										progressDialog.dismiss();
 										Toast.makeText(AddProductActivity.this,
-												R.string.produto_engadido, Toast.LENGTH_SHORT)
+												getString(R.string.produto_engadido), Toast.LENGTH_SHORT)
 												.show();
 										Log.i("Produto", getString(R.string.engadimos_o_produto_a_bd));
 										finish();
@@ -287,7 +287,7 @@ public class AddProductActivity extends Activity{
 									}else{
 										progressDialog.dismiss();
 										Toast.makeText(AddProductActivity.this,
-												R.string.error_add_list + " " + e.getMessage(),
+												getString(R.string.error_add_list) + " " + e.getMessage(),
 												Toast.LENGTH_SHORT).show();
 										Log.e("Produto", getResources().getString(R.string.erro_o_engadir_na_bd));
 									}
@@ -301,7 +301,7 @@ public class AddProductActivity extends Activity{
 					
 					progressDialog.dismiss();
 					Toast.makeText(AddProductActivity.this,
-							R.string.error_add_list + " " + arg0.getMessage(),
+							getString(R.string.error_add_list) + " " + arg0.getMessage(),
 							Toast.LENGTH_SHORT).show();
 					Log.e("Produto", getResources().getString(R.string.erro_o_engadir_na_bd));
 				}
@@ -312,10 +312,10 @@ public class AddProductActivity extends Activity{
 
 	private void startDialog() {
 		AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
-		myAlertDialog.setTitle(R.string.adxuntar_foto);
-		myAlertDialog.setMessage(R.string.seleccione_onde_buscar_foto);
+		myAlertDialog.setTitle(getString(R.string.adxuntar_foto));
+		myAlertDialog.setMessage(getString(R.string.seleccione_onde_buscar_foto));
 
-		myAlertDialog.setPositiveButton(R.string.galery,
+		myAlertDialog.setPositiveButton(getString(R.string.galery),
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface arg0, int arg1) {
 						pictureActionIntent = new Intent(
@@ -327,7 +327,7 @@ public class AddProductActivity extends Activity{
 					}
 				});
 
-		myAlertDialog.setNegativeButton(R.string.camara,
+		myAlertDialog.setNegativeButton(getString(R.string.camara),
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface arg0, int arg1) {
 						pictureActionIntent = new Intent(
@@ -353,11 +353,11 @@ public class AddProductActivity extends Activity{
 							.getBitmap();
 					txtengadirImaxe.setVisibility(View.GONE);
 				} else {
-					Toast.makeText(getApplicationContext(), R.string.cancelouse,
+					Toast.makeText(getApplicationContext(), getString(R.string.cancelouse),
 							Toast.LENGTH_SHORT).show();
 				}
 			} else if (resultCode == RESULT_CANCELED) {
-				Toast.makeText(getApplicationContext(), R.string.cancelouse,
+				Toast.makeText(getApplicationContext(), getString(R.string.cancelouse),
 						Toast.LENGTH_SHORT).show();
 			}
 		} else if (requestCode == CAMERA_REQUEST) {
@@ -372,14 +372,14 @@ public class AddProductActivity extends Activity{
 				} else if (data.getExtras() == null) {
 
 					Toast.makeText(getApplicationContext(),
-							R.string.non_se_obtuvo_foto, Toast.LENGTH_SHORT)
+							getString(R.string.non_se_obtuvo_foto), Toast.LENGTH_SHORT)
 							.show();
 
 				}
 
 			} else if (resultCode == RESULT_CANCELED) {
 				Toast.makeText(getApplicationContext(),
-						R.string.cancelouse_foto, Toast.LENGTH_SHORT).show();
+						getString(R.string.cancelouse_foto), Toast.LENGTH_SHORT).show();
 			}
 		}
 

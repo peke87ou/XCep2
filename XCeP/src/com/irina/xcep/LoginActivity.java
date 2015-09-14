@@ -29,7 +29,7 @@ public class LoginActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		getActionBar().setTitle(R.string.title_action_bar_login);
+		getActionBar().setTitle(getString(R.string.title_action_bar_login));
 		
 		username = (EditText) findViewById(R.id.username);
 		password = (EditText) findViewById(R.id.password);
@@ -54,7 +54,7 @@ public class LoginActivity extends Activity {
 								if (user != null) {
 									Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
 									startActivity(intent);
-									Toast.makeText(getApplicationContext(),	R.string.conect_Ok, Toast.LENGTH_LONG).show();
+									Toast.makeText(getApplicationContext(),	getString(R.string.conect_Ok), Toast.LENGTH_LONG).show();
 									finish();
 								} else {
 									Log.i(getString(R.string.error_login), e.getMessage().intern() +

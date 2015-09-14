@@ -55,13 +55,13 @@ public class MultiSelectionSpinner extends Spinner implements  OnMultiChoiceClic
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMultiChoiceItems(_items, mSelection, this);
         _itemsAtStart = getSelectedItemsAsString();
-        builder.setPositiveButton(R.string.engadir, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getContext().getString(R.string.engadir), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 System.arraycopy(mSelection, 0, mSelectionAtStart, 0, mSelection.length);
             }
         });
-        builder.setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getContext().getString(R.string.cancelar), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 simple_adapter.clear();

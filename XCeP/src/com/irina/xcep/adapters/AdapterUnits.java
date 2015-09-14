@@ -96,10 +96,11 @@ public class AdapterUnits extends ArrayAdapter<Units> {
 			}			
 		}
 		
+		
 		if(precioProducto != null){
-			precioTextView.setText(precioProducto.getPrice().toString() +R.string.simbol_euro);
+			precioTextView.setText(precioProducto.getPrice().toString() +mFragmentLista.getResources().getString(R.string.simbol_euro));
 		}else{
-			precioTextView.setText(R.string.no_d_isponible);
+			precioTextView.setText(mFragmentLista.getResources().getString(R.string.no_d_isponible));
 		}
 		
  		if (productoUnidad.getNumberUnits().intValue() == 1){

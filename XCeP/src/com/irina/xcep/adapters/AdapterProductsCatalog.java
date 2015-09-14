@@ -89,10 +89,12 @@ public class AdapterProductsCatalog extends BaseAdapter implements Filterable{
 			}			
 		}
 		
+		
+		
 		if(precioProducto != null){
-			precioTextView.setText(precioProducto.getPrice().toString()+ R.string.simbol_euro);
+			precioTextView.setText(precioProducto.getPrice().toString()+ mDetailListFragment.getResources().getString(R.string.simbol_euro));
 		}else{
-			precioTextView.setText(R.string.no_d_isponible);
+			precioTextView.setText(mDetailListFragment.getResources().getString(R.string.no_d_isponible));
 		}
 		
 		Bitmap bmp = mImagenes.get(producto.getIcon());

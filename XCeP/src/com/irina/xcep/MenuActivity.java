@@ -198,7 +198,7 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
             	return;
 
          default:
-        	 Toast.makeText(this, R.string.funcionalidade_en_cosntruccion, Toast.LENGTH_LONG).show();
+        	 Toast.makeText(this, getString(R.string.funcionalidade_en_cosntruccion), Toast.LENGTH_LONG).show();
         	 return;
            
         }
@@ -264,13 +264,13 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 		View promptsView = li.inflate(R.layout.dialog, null);
 		alertDialogBuilder.setView(promptsView);
 		
-			alertDialogBuilder.setTitle(R.string.informacion);
+			alertDialogBuilder.setTitle(getString(R.string.informacion));
 
 			// set dialog message
 			alertDialogBuilder
-				.setMessage(R.string.informacion_sobre_a_aplicacion)
+				.setMessage(getString(R.string.informacion_sobre_a_aplicacion))
 				.setCancelable(false)
-				.setPositiveButton(R.string.si,new DialogInterface.OnClickListener() {
+				.setPositiveButton(getString(R.string.si),new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog,int id) {
 						
 					}

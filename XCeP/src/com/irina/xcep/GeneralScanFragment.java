@@ -93,7 +93,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 		surfaceholder.addCallback(this);
 		surfaceChanged(surfaceholder, 0, 0, 0);
 		
-		getActivity().getActionBar().setTitle(R.string.scan_total); //FIXME se está cambiando el texto
+		getActivity().getActionBar().setTitle(getString(R.string.scan_total)); //FIXME se está cambiando el texto
 		return layout;
 	}
 
@@ -190,8 +190,11 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 
 							Log.e("valor de resultado", resultado.getText());
 							
-							if(dialogoAgregarProductoCarrito.isShowing() || dialogoAgregarProductoSistema.isShowing()
-									|| dialogoAgregarProductoSupermercado.isShowing()){
+							if(dialogoAgregarProductoCarrito.isShowing() || dialogoAgregarProductoSistema.isShowing()){
+								return;
+							}
+							
+							if(dialogoAgregarProductoSupermercado!=null && dialogoAgregarProductoSupermercado.isShowing()){
 								return;
 							}
 							
@@ -202,8 +205,10 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 							}
 
 						} catch (Exception e) {
+							e.printStackTrace();
 						}
 					} catch (Exception e) {
+						e.printStackTrace();
 					}
 
 				}
@@ -214,7 +219,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 			cam.reconnect();
 		} catch (IOException e) {
 			e.printStackTrace();
-			Toast.makeText(getActivity(), R.string.non_se_pudo_acceder_camara, Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), getString(R.string.non_se_pudo_acceder_camara), Toast.LENGTH_LONG).show();
 		}
 
 	}
@@ -276,7 +281,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 		
 		AlertDialog.Builder builderDialogoAgregarProducto = new AlertDialog.Builder(getActivity());
 		builderDialogoAgregarProducto.setCancelable(false);
-		builderDialogoAgregarProducto.setPositiveButton(R.string.ver_detalle_do_produto, new DialogInterface.OnClickListener() {
+		builderDialogoAgregarProducto.setPositiveButton(getString(R.string.ver_detalle_do_produto), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 
 				barcode = resultadoBarCode;
@@ -285,7 +290,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 			}
 		});
 
-		builderDialogoAgregarProducto.setNegativeButton(R.string.pechar, new DialogInterface.OnClickListener() {
+		builderDialogoAgregarProducto.setNegativeButton(getString(R.string.pechar), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				resultadoBarCode = null;
 			}
@@ -331,8 +336,9 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 							
 							progressDialog.dismiss();
 							
-							if(e==null && objects != null){
+							if(e==null && objects != null && objects.size() > 0){
 								mSupermercados = (ArrayList<Supermercado>) objects;
+								showDialogoListaSupermercado(mSupermercados);
 							}else{
 								Toast.makeText(getActivity(), "Non se puido calcular a lista de supermercados", Toast.LENGTH_SHORT).show();
 							}
@@ -344,7 +350,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 			}
 		});
 
-		builderDialogoAgregarProductoSistema.setNegativeButton(R.string.pechar, new DialogInterface.OnClickListener() {
+		builderDialogoAgregarProductoSistema.setNegativeButton(getString(R.string.pechar), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				resultadoBarCode = null;
 			}
@@ -362,8 +368,14 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 	 */
 	public void showDialogoListaSupermercado(final ArrayList<Supermercado> supermercados){
 		
+		List<String> nombresSupermercados= new ArrayList<>();
+		
+		for(Supermercado supermercado:supermercados){
+			nombresSupermercados.add(supermercado.getName());
+		}
+		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle("Supermercados").setItems((String[]) supermercados.toArray(new String[supermercados.size()]), 
+		builder.setTitle("Supermercados").setItems((String[]) nombresSupermercados.toArray(new String[nombresSupermercados.size()]), 
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int nSupermercado) {
 
@@ -400,7 +412,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 			public void done(List<Produto> objects, ParseException e) {
 				progressDialog.dismiss();
 				if (e != null) {
-					Toast.makeText(getActivity(), R.string.erro_ao_consultar_o_produto, Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), getString(R.string.erro_ao_consultar_o_produto), Toast.LENGTH_SHORT).show();
 				} else {
 					Log.i(TAG, objects.size() + "resultado" + resultadoBarCode);
 					if (objects.size() > 0) {
@@ -441,7 +453,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 
 		if (HomeFragment.misListas == null || HomeFragment.misListas.size() == 0) {
 
-			Toast.makeText(getActivity(), R.string.non_posee_ningunha_lista + HomeFragment.misListas.size(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), getString(R.string.non_posee_ningunha_lista) + HomeFragment.misListas.size(), Toast.LENGTH_SHORT).show();
 			return;
 		}
 
@@ -459,7 +471,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 				nombresSupermercadosCompatibles += precioSupermercado.getPidMarket().getName() + ", ";
 			}
 
-			Toast.makeText(getActivity(), R.string.ningunha_lista_compatible + "\n" + nombresSupermercadosCompatibles, Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), getString(R.string.ningunha_lista_compatible) + "\n" + nombresSupermercadosCompatibles, Toast.LENGTH_LONG).show();
 
 		} else {
 
@@ -472,14 +484,14 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-			builder.setTitle(getResources().getString(R.string.engadir) + producto.getTitle() + R.string.a_lista).setItems(
+			builder.setTitle(getResources().getString(R.string.engadir) + producto.getTitle() + getString(R.string.a_lista)).setItems(
 					(String[]) listaNombres.toArray(new String[listaNombres.size()]), new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int nLista) {
 							try {
 								addProductToList(listaSupermercadosCompatibles.get(nLista), producto);
 
 							} catch (IllegalStateException e) {
-								Toast.makeText(getActivity(), R.string.erro_ao_engadir_o_produto + HomeFragment.misListas.get(nLista).getName(),
+								Toast.makeText(getActivity(), getString(R.string.erro_ao_engadir_o_produto) + HomeFragment.misListas.get(nLista).getName(),
 										Toast.LENGTH_SHORT).show();
 
 							}
@@ -550,7 +562,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 		
 		if(producto == null){
 			
-			Toast.makeText(getActivity(), R.string.produto_non_valido, Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), getString(R.string.produto_non_valido), Toast.LENGTH_SHORT).show();
 			return;
 		}
 		
@@ -573,7 +585,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 			
 			unidadSeleccionada.addNumberUnits(1);
 			unidadSeleccionada.saveInBackground();
-			Toast.makeText(getActivity(), R.string.engadida_unha_unidade_de +unidadSeleccionada.getProduct().getTitle() + R.string.total+unidadSeleccionada.getNumberUnits(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), getString(R.string.engadida_unha_unidade_de) +unidadSeleccionada.getProduct().getTitle() + getString(R.string.total)+unidadSeleccionada.getNumberUnits(), Toast.LENGTH_SHORT).show();
 		
 		}else{ //Nuevo producto a la lista
 			
@@ -597,11 +609,11 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 								
 								if(e!= null){
 									e.printStackTrace();
-									Toast.makeText(getActivity(), R.string.erro_ao_gardar_a_lista, Toast.LENGTH_SHORT).show();
+									Toast.makeText(getActivity(), getString(R.string.erro_ao_gardar_a_lista), Toast.LENGTH_SHORT).show();
 									
 								}else{
 
-									Toast.makeText(getActivity(), R.string.engadiuse_o_novo_produto, Toast.LENGTH_SHORT).show();
+									Toast.makeText(getActivity(), getString(R.string.engadiuse_o_novo_produto), Toast.LENGTH_SHORT).show();
 								}
 								
 								progress.dismiss();

@@ -229,7 +229,7 @@ public class ShareSocialMediaActivity extends Activity {
 		}
 
 		private void showResult(String title, String alertMessage) {
-			new AlertDialog.Builder(ShareSocialMediaActivity.this).setTitle(title).setMessage(alertMessage).setPositiveButton(R.string.aceptar, null).show();
+			new AlertDialog.Builder(ShareSocialMediaActivity.this).setTitle(title).setMessage(alertMessage).setPositiveButton(getString(R.string.aceptar), null).show();
 		}
 	};
 
@@ -267,7 +267,7 @@ public class ShareSocialMediaActivity extends Activity {
 
 	private void showAlert() {
 		Log.d(TAG, "Erro. Ir a ShowAlert");
-		new AlertDialog.Builder(ShareSocialMediaActivity.this).setTitle(R.string.erro).setMessage(R.string.erro_en_permisos).setPositiveButton(R.string.aceptar, null).show();
+		new AlertDialog.Builder(ShareSocialMediaActivity.this).setTitle(getString(R.string.erro)).setMessage(R.string.erro_en_permisos).setPositiveButton(R.string.aceptar, null).show();
 	}
 
 }

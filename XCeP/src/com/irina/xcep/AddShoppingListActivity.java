@@ -42,7 +42,7 @@ public class AddShoppingListActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_add_shopping_list);
-		getActionBar().setTitle(R.string.title_action_bar_add_shopping_list);
+		getActionBar().setTitle(getString(R.string.title_action_bar_add_shopping_list));
 		
 		btncancel = (ButtonRectangle) findViewById(R.id.cancelar_new_list);
 		btncancel.setOnClickListener(new OnClickListener() {
@@ -130,7 +130,7 @@ public class AddShoppingListActivity extends Activity{
 		//Id supermercado seleccionado
 		if (supermercadoNuevaLista == null ){
 			
-			Toast.makeText(AddShoppingListActivity.this, R.string.non_seleccionou_super, Toast.LENGTH_SHORT).show();
+			Toast.makeText(AddShoppingListActivity.this, getString(R.string.non_seleccionou_super), Toast.LENGTH_SHORT).show();
 		}else{
 			novaLista.setSupermercado(supermercadoNuevaLista);
 			novaLista.setIdUser(ParseUser.getCurrentUser());
@@ -140,10 +140,10 @@ public class AddShoppingListActivity extends Activity{
 				@Override
 				public void done(ParseException arg0) {
 					if (arg0 == null){
-						Toast.makeText(AddShoppingListActivity.this, R.string.engadimos_a_nova_lista + nameListtxt, Toast.LENGTH_SHORT).show();
+						Toast.makeText(AddShoppingListActivity.this, getString(R.string.engadimos_a_nova_lista) + nameListtxt, Toast.LENGTH_SHORT).show();
 						finish();
 					}else{
-						Toast.makeText(AddShoppingListActivity.this, R.string.error_add_list+" " + nameListtxt, Toast.LENGTH_SHORT).show();
+						Toast.makeText(AddShoppingListActivity.this, getString(R.string.error_add_list)+" " + nameListtxt, Toast.LENGTH_SHORT).show();
 
 					}
 				}

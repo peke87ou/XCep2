@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment {
 
 		Log.d(TAG, "OncreateView");
 		RelativeLayout home = (RelativeLayout) inflater.inflate(R.layout.fragment_home, container, false);
-		getActivity().getActionBar().setTitle(R.string.app_name);
+		getActivity().getActionBar().setTitle(getString(R.string.app_name));
 
 		// Convertir currentUser en String
 		String struser = currentUser.getUsername().toString();
@@ -153,7 +153,7 @@ public class HomeFragment extends Fragment {
 			@Override
 			public void done(List<Lista> objects, ParseException e) {
 				if (e != null) {
-					Toast.makeText(getActivity(), R.string.erro_na_actualizacion_de_listas, Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), getString(R.string.erro_na_actualizacion_de_listas), Toast.LENGTH_SHORT).show();
 				}
 
 				misListas = (ArrayList<Lista>) objects;
@@ -185,9 +185,9 @@ public class HomeFragment extends Fragment {
 	public void showDialogoModificarLista() {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(R.string.modificacions_da_lista);
-		builder.setMessage(R.string.que_desexa_facer);
-		builder.setPositiveButton(R.string.eliminar_a_lista, new DialogInterface.OnClickListener() {
+		builder.setTitle(getString(R.string.modificacions_da_lista));
+		builder.setMessage(getString(R.string.que_desexa_facer));
+		builder.setPositiveButton(getString(R.string.eliminar_a_lista), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				Utils.hideSoftKeyboard(getActivity());
 				final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), getActivity().getString(R.string.eliminando_lista));
@@ -208,22 +208,22 @@ public class HomeFragment extends Fragment {
 							reloadUserShoppingLists();
 						} else {
 							progress.dismiss();
-							Toast.makeText(getActivity(), R.string.erro_no_borrado, Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), getString(R.string.erro_no_borrado), Toast.LENGTH_SHORT).show();
 						}
 					}
 				});
 			}
 		});
-		builder.setNeutralButton(R.string.cambiar_nome, new DialogInterface.OnClickListener() {
+		builder.setNeutralButton(getString(R.string.cambiar_nome), new DialogInterface.OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				AlertDialog.Builder popDialog = new AlertDialog.Builder(getActivity());
 				final LayoutInflater inflater = getActivity().getLayoutInflater();
 
-				popDialog.setTitle(R.string.cambiar_o_nome_da_lista);
+				popDialog.setTitle(getString(R.string.cambiar_o_nome_da_lista));
 				popDialog.setView(inflater.inflate(R.layout.activity_dialog_change_name_list, null))
-						.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+						.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int id) {
 
@@ -244,7 +244,7 @@ public class HomeFragment extends Fragment {
 
 											if (e != null) {
 												progress.dismiss();
-												Toast.makeText(getActivity(), R.string.produciuse_un_erro + e.getMessage(), Toast.LENGTH_SHORT).show();
+												Toast.makeText(getActivity(), getString(R.string.produciuse_un_erro) + e.getMessage(), Toast.LENGTH_SHORT).show();
 												return;
 											}
 
@@ -256,7 +256,7 @@ public class HomeFragment extends Fragment {
 													public void done(ParseException e) {
 														progress.dismiss();
 														if (e != null) {
-															Toast.makeText(getActivity(), R.string.produciuse_un_erro + e.getMessage(), Toast.LENGTH_SHORT).show();
+															Toast.makeText(getActivity(), getString(R.string.produciuse_un_erro) + e.getMessage(), Toast.LENGTH_SHORT).show();
 														} else {
 															reloadUserShoppingLists();
 														}
@@ -269,11 +269,11 @@ public class HomeFragment extends Fragment {
 
 								} else {
 
-									Toast.makeText(getActivity(), R.string.necesario_encher_o_campo_nome, Toast.LENGTH_SHORT).show();
+									Toast.makeText(getActivity(), getString(R.string.necesario_encher_o_campo_nome), Toast.LENGTH_SHORT).show();
 								}
 
 							}
-						}).setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+						}).setNegativeButton(getString(R.string.cancelar), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dialog.cancel();
 							}
@@ -285,7 +285,7 @@ public class HomeFragment extends Fragment {
 			}
 		});
 
-		builder.setNegativeButton(R.string.pechar, new DialogInterface.OnClickListener() {
+		builder.setNegativeButton(getString(R.string.pechar), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				dialog.dismiss();
 			}

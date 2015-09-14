@@ -189,7 +189,7 @@ public class GeneralCatalogFragment extends Fragment {
 		
 		if(HomeFragment.misListas == null || HomeFragment.misListas.size() == 0){
 			
-			Toast.makeText(getActivity(), R.string.non_posee_ningunha_lista+HomeFragment.misListas.size(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), getString(R.string.non_posee_ningunha_lista)+HomeFragment.misListas.size(), Toast.LENGTH_SHORT).show();
 			return;
 		}
 		
@@ -207,7 +207,7 @@ public class GeneralCatalogFragment extends Fragment {
 				nombresSupermercadosCompatibles += precioSupermercado.getPidMarket().getName() + ", ";
 			}
 			
-			Toast.makeText(getActivity(), R.string.ningunha_lista_compatible+ "\n"+nombresSupermercadosCompatibles, Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), getString(R.string.ningunha_lista_compatible)+ "\n"+nombresSupermercadosCompatibles, Toast.LENGTH_LONG).show();
 
 		}else{
 
@@ -221,14 +221,14 @@ public class GeneralCatalogFragment extends Fragment {
 			
 	        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 	 
-	        builder.setTitle(getResources().getString(R.string.engadir)+producto.getTitle() +R.string.a_lista)
+	        builder.setTitle(getResources().getString(R.string.engadir)+producto.getTitle() +getString(R.string.a_lista))
 	           .setItems((String[])listaNombres.toArray(new String[listaNombres.size()]), new DialogInterface.OnClickListener() {
 	                public void onClick(DialogInterface dialog, int nLista) {
 	                    try{
 	                    	addProductToList(listaSupermercadosCompatibles.get(nLista), producto);
 	                    	
 	                    }catch(IllegalStateException e){
-	                    	Toast.makeText(getActivity(), R.string.erro_ao_engadir_o_produto+HomeFragment.misListas.get(nLista).getName(), Toast.LENGTH_SHORT).show();
+	                    	Toast.makeText(getActivity(), getString(R.string.erro_ao_engadir_o_produto)+HomeFragment.misListas.get(nLista).getName(), Toast.LENGTH_SHORT).show();
 
 	                    }
 	                }
@@ -286,7 +286,7 @@ public class GeneralCatalogFragment extends Fragment {
 	
 	public void actualizarCatalogoGeneral() {
 		
-		getActivity().getActionBar().setTitle(R.string.catalog_total);
+		getActivity().getActionBar().setTitle(getString(R.string.catalog_total));
 		
 		if(productCatalogList.size() > 0){
 			
@@ -312,7 +312,7 @@ public class GeneralCatalogFragment extends Fragment {
 				@Override
 				public void done(List<Produto> objects, ParseException e) {
 					if (e != null) {
-						Toast.makeText(getActivity(), R.string.erro_na_actualizacion_dos_produtos, Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), getString(R.string.erro_na_actualizacion_dos_produtos), Toast.LENGTH_SHORT).show();
 					}
 
 					productCatalogList = (ArrayList<Produto>) objects;
@@ -408,7 +408,7 @@ public class GeneralCatalogFragment extends Fragment {
 		
 		if(producto == null){
 			
-			Toast.makeText(getActivity(), R.string.produto_non_valido, Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), getString(R.string.produto_non_valido), Toast.LENGTH_SHORT).show();
 			return;
 		}
 		
@@ -431,7 +431,7 @@ public class GeneralCatalogFragment extends Fragment {
 			
 			unidadSeleccionada.addNumberUnits(1);
 			unidadSeleccionada.saveInBackground();
-			Toast.makeText(getActivity(), R.string.engadida_unha_unidade_de +unidadSeleccionada.getProduct().getTitle() + R.string.total+unidadSeleccionada.getNumberUnits(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), getString(R.string.engadida_unha_unidade_de) +unidadSeleccionada.getProduct().getTitle() + getString(R.string.total)+unidadSeleccionada.getNumberUnits(), Toast.LENGTH_SHORT).show();
 		
 		}else{ //Nuevo producto a la lista
 			
@@ -455,11 +455,11 @@ public class GeneralCatalogFragment extends Fragment {
 								
 								if(e!= null){
 									e.printStackTrace();
-									Toast.makeText(getActivity(), R.string.erro_ao_gardar_a_lista, Toast.LENGTH_SHORT).show();
+									Toast.makeText(getActivity(), getString(R.string.erro_ao_gardar_a_lista), Toast.LENGTH_SHORT).show();
 									
 								}else{
 
-									Toast.makeText(getActivity(), R.string.engadiuse_o_novo_produto, Toast.LENGTH_SHORT).show();
+									Toast.makeText(getActivity(), getString(R.string.engadiuse_o_novo_produto), Toast.LENGTH_SHORT).show();
 								}
 								
 								progress.dismiss();
