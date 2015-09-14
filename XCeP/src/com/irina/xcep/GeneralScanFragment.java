@@ -65,7 +65,6 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 	ArrayList<Supermercado> mSupermercados;
 
 	// Agregar producto
-	public static ArrayList<Lista> misListas = new ArrayList<Lista>();
 	ParseUser currentUser = ParseUser.getCurrentUser();
 	AlertDialog dialogoAgregarProductoCarrito, dialogoAgregarProductoSistema, dialogoAgregarProductoSupermercado;
 
@@ -106,10 +105,11 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 			
 		}else if ((requestCode == AddProductActivity.requestCode) && (resultCode == AddProductActivity.resultCodeAdd)){
 		
-			Toast.makeText(getActivity(), "Produto agregado ao supermercado", Toast.LENGTH_SHORT).show();
+			reloadUserShoppingLists();
 		}
 	}
-
+	
+	
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -625,5 +625,42 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 		}	
 	}
 
+	/**
+	 * Recárganse as listas, para actualizar cando se agrega un novo produto a un supermercado
+	 * @category especifica
+	 */
 
+	public  void reloadUserShoppingLists() {
+
+		final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(), getActivity().getString(R.string.actualizando_listas));
+		progress.show();
+		ParseQuery<Lista> query = ParseQuery.getQuery(Lista.class);
+
+		query.include("PidMarket");
+		query.include("PidMarket.AProduct");
+		query.include("PidMarket.AProduct.APrice");
+		query.include("PidMarket.AProduct.Atags");
+		query.include("PidMarket.AProduct.APrice.PidMarket");
+
+		query.include("AidUnits");
+		query.include("AidUnits.PidProduct");
+		query.include("AidUnits.PidProduct.APrice");
+		query.include("AidUnits.PidProduct.Atags");
+		query.include("AidUnits.PidProduct.APrice.PidMarket");
+
+		// Filtramos as lista para cada usuario logueado na app
+		// query.include("User");
+		query.whereEqualTo("idUser", currentUser);
+		query.findInBackground(new FindCallback<Lista>() {
+			@Override
+			public void done(List<Lista> objects, ParseException e) {
+				if (e != null) {
+					Toast.makeText(getActivity(), getString(R.string.erro_na_actualizacion_de_listas), Toast.LENGTH_SHORT).show();
+				}
+
+				HomeFragment.misListas = (ArrayList<Lista>) objects;
+				progress.dismiss();
+			}
+		});
+	}
 }

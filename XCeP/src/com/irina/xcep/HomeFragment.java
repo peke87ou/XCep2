@@ -125,7 +125,7 @@ public class HomeFragment extends Fragment {
 		return home;
 	}
 
-	public void reloadUserShoppingLists() {
+	public  void reloadUserShoppingLists() {
 		// Recreamos o conxunto de listas de compra do usuario
 		listasListView.setAdapter(adapter);
 		Log.d(TAG, "reloadUserShoppingLists");
