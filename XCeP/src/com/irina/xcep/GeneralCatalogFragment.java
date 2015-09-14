@@ -87,7 +87,7 @@ public class GeneralCatalogFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				mCheckboxTag = (CheckBox) view.findViewById(R.id.checkBoxTag);
 				mCheckboxTag.setChecked(!mCheckboxTag.isChecked());
-				actualizarCatalogoGeneral();
+				actualizarCatalogoGeneral(false);
 			}
 
 		});
@@ -132,7 +132,7 @@ public class GeneralCatalogFragment extends Fragment {
 		});
 
 		
-		actualizarCatalogoGeneral();
+		actualizarCatalogoGeneral(false);
 
 		getTags();
 		
@@ -152,11 +152,7 @@ public class GeneralCatalogFragment extends Fragment {
 			
 		}else if (requestCode == AddProductActivity.requestCode){
 		
-			/*final ProgressDialog progressDialog = Utils.crearDialogoEspera(getActivity(),
-					"Recargando catálogo del supermercado "+mMarketSelected.getName());
-			progressDialog.show();	
-			reloadUserShoppingList(progressDialog, true);*/
-
+			actualizarCatalogoGeneral(true);
 		}
 	}
 
@@ -284,11 +280,11 @@ public class GeneralCatalogFragment extends Fragment {
 	}
 
 	
-	public void actualizarCatalogoGeneral() {
+	public void actualizarCatalogoGeneral(boolean forzarRecarga) {
 		
 		getActivity().getActionBar().setTitle(getString(R.string.catalog_total));
 		
-		if(productCatalogList.size() > 0){
+		if(productCatalogList.size() > 0 && (!forzarRecarga)){
 			
 			ArrayList<Produto> productosSistema= new ArrayList<Produto>();
 			productosSistema = (ArrayList<Produto>)filtrarProductos(productCatalogList);
@@ -319,7 +315,7 @@ public class GeneralCatalogFragment extends Fragment {
 
 					if (productCatalogList != null && productCatalogList.size() > 0) {
 
-						actualizarCatalogoGeneral();
+						actualizarCatalogoGeneral(false);
 					}
 
 					progress.dismiss();

@@ -72,7 +72,7 @@ public class AdapterTags extends ArrayAdapter<Tag> {
 			
 		       if(isGeneral){
 		    	   
-		    	   mGeneralCatalogFragment.actualizarCatalogoGeneral();
+		    	   mGeneralCatalogFragment.actualizarCatalogoGeneral(false);
 		    	   
 		       }else{
 		    	   mFragmentDetalleLista.actualizarCatalogo();
