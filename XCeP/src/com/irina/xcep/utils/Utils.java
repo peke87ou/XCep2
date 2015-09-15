@@ -36,11 +36,4 @@ public class Utils {
 	    inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
 	}
 	
-	
-	public static void shareFacebook(String subject){
-		
-		
-		
-		
-	}
 }
