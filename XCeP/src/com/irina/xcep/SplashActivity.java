@@ -12,6 +12,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.parse.ParseAnonymousUtils;
@@ -90,8 +91,14 @@ public class SplashActivity extends Activity implements OnClickListener {
 		final String[] idiomas = {"Español", "Galego"};
 		final String[] idiomasCodigo = {"es", "gl"};
 		
+		TextView titleDialogo = new TextView(this);
+		titleDialogo.setText("Idioma");
+		titleDialogo.setTextColor(getResources().getColor(R.color.verde_oscuro));
+		titleDialogo.setTextSize(26);
+		titleDialogo.setPadding(20, 10, 0, 10);
+		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Idioma").setItems(idiomas, 
+		builder.setCustomTitle(titleDialogo).setItems(idiomas, 
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int nLenguaje) {
 

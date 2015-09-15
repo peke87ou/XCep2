@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.irina.xcep.adapters.MenuAdapter;
@@ -297,9 +298,14 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 			
 		}
         
+		TextView titleDialogo = new TextView(this);
+		titleDialogo.setText("Idioma");
+		titleDialogo.setTextColor(getResources().getColor(R.color.verde_oscuro));
+		titleDialogo.setTextSize(26);
+		titleDialogo.setPadding(20, 10, 0, 10);
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Idioma").setItems(idiomas, 
+		builder.setCustomTitle(titleDialogo).setItems(idiomas, 
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int nLenguaje) {
 
@@ -315,6 +321,7 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 					}
 				});
 
+		builder.setIcon(R.drawable.comments);
 		AlertDialog dialogoIdioma = builder.create();
 		dialogoIdioma.show();
 	}
