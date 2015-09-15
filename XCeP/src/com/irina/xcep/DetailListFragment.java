@@ -324,6 +324,10 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 	
 	private void cargarProdutosLista() {
 		
+		if(mListaSelected == null){
+			return;
+		}
+		
 		adapterUnidadesCarrito = new AdapterUnits(getActivity(), mListaSelected, this);
 		productosListaListView.setAdapter(adapterUnidadesCarrito);
 		adapterUnidadesCarrito.notifyDataSetChanged();

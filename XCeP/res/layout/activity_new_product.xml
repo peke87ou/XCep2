@@ -8,7 +8,7 @@
     
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:gravity="center" >
 
                 <TextView
@@ -17,7 +17,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.36"
                     android:gravity="center_vertical|center_horizontal"
-                    android:text="Lista a engadir"
                     android:textSize="25sp" />
 
                 <ImageView
@@ -86,7 +85,7 @@
         <EditText
             android:id="@+id/text_description_product"
             android:layout_width="match_parent"
-            android:layout_height="130dp"
+            android:layout_height="70dp"
             style="@style/ParseLoginUI.EditText"
             android:ems="10"
             android:maxLength="150" />
