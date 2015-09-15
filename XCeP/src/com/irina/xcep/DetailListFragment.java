@@ -359,7 +359,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 						if(newUnitProduct == unidadProducto.getNumberUnits().intValue()){
 							Toast.makeText(getActivity(), getString(R.string.seleccionouse_mesma_cantidade), Toast.LENGTH_SHORT).show();
 						}else{
-							Toast.makeText(getActivity(), getString(R.string.seleccionouse+newUnitProduct), Toast.LENGTH_SHORT).show();
 							unidadProducto.setNumberUnits(newUnitProduct);
 							unidadProducto.saveInBackground( new SaveCallback() {
 								
@@ -442,8 +441,10 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			unidadSeleccionada.addNumberUnits(1);
 			unidadSeleccionada.saveInBackground();
 			Toast.makeText(getActivity(), getString(R.string.engadida_unha_unidade_de)+unidadSeleccionada.getProduct().getTitle() + getString(R.string.total)+unidadSeleccionada.getNumberUnits(), Toast.LENGTH_SHORT).show();
-			adapterUnidadesCarrito.notifyDataSetChanged();
+			cargarProdutosLista();
+			
 		}else{ //Nuevo producto a la lista
+			
 			final ProgressDialog progress = Utils.crearDialogoEspera(getActivity(),
 					getActivity().getString(R.string.engadindo_produto_novo_a_lista));
 			progress.show();
@@ -556,13 +557,12 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					progressDialog.dismiss();
 				}
 				
-				if(tabHost.getCurrentTabTag().equals(getString(R.string.lista_da_compra))){
-						adapterUnidadesCarrito = new AdapterUnits(getActivity(), mListaSelected, DetailListFragment.this); //FIXME sobran parámetros de entrada
+				/*if(tabHost.getCurrentTabTag().equals(getString(R.string.lista_da_compra))){
+						adapterUnidadesCarrito = new AdapterUnits(getActivity(), mListaSelected, DetailListFragment.this);
 						productosListaListView.setAdapter(adapterUnidadesCarrito);
 						adapterUnidadesCarrito.notifyDataSetChanged();
-						//Actualizar precio parcial y total
 						actualizarPrecios();
-				}
+				}*/
 				
 				cargarProdutosLista();
 				
