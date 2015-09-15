@@ -272,7 +272,7 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 	public void sendEmail() {
 		Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "irinaourense@gmail.com", null));
 		intent.putExtra(Intent.EXTRA_TEXT, "\n\n\n\nEnviado desde XceP.");
-		startActivity(Intent.createChooser(intent, "Enviar suxerencia"));
+		startActivity(Intent.createChooser(intent, getString(R.string.enviar_suxestion)));
 	}
 
 	

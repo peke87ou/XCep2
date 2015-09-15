@@ -170,4 +170,5 @@
  	<string name="prezo_lista">Prezo Lista</string>
  	<string name="enfoque_o_codigo_de_barras_do_produto">Enfoque o código de barras do produto</string>
  	<string name="creando_lista">Creando lista da compra</string>
+ 	<string name="enviar_suxestion">Enviar suxestión</string>
 </resources>
