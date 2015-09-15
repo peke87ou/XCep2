@@ -40,7 +40,7 @@
  	<string name="setting">Axustes</string>
  	<string name="facebook">Facebook</string>
  	<string name="twitter">Twitter</string>
- 	<string name="sugerencias">Suxerencias</string>
+ 	<string name="sugerencias">Suxestións</string>
  	<string name="language">Idioma</string>
  	<string name="reset_bd">Reiniciar Datos</string>
  	<string name="help">Acerca de XCeP</string>
@@ -169,4 +169,5 @@
  	<string name="cero_euros">0,0 €</string>
  	<string name="prezo_lista">Prezo Lista</string>
  	<string name="enfoque_o_codigo_de_barras_do_produto">Enfoque o código de barras do produto</string>
+ 	<string name="creando_lista">Creando lista da compra</string>
 </resources>

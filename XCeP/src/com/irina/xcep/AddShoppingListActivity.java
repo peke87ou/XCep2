@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -132,6 +133,11 @@ public class AddShoppingListActivity extends Activity{
 			
 			Toast.makeText(AddShoppingListActivity.this, getString(R.string.non_seleccionou_super), Toast.LENGTH_SHORT).show();
 		}else{
+			
+			final ProgressDialog progress = Utils.crearDialogoEspera(this,
+					getResources().getString(R.string.creando_lista));
+			progress.show();
+			
 			novaLista.setSupermercado(supermercadoNuevaLista);
 			novaLista.setIdUser(ParseUser.getCurrentUser());
 			novaLista.setSupermercado(ParseObject.createWithoutData("Market", supermercadoNuevaLista.getObjectId()));
@@ -144,8 +150,9 @@ public class AddShoppingListActivity extends Activity{
 						finish();
 					}else{
 						Toast.makeText(AddShoppingListActivity.this, getString(R.string.error_add_list)+" " + nameListtxt, Toast.LENGTH_SHORT).show();
-
 					}
+					
+					progress.dismiss();
 				}
 			});
 		}

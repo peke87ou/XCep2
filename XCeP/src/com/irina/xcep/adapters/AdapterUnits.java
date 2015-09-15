@@ -113,5 +113,5 @@ public class AdapterUnits extends ArrayAdapter<Units> {
  		Picasso.with(getContext()).load(producto.getIcon().getUrl()).into(productoImageView);
 		return celdaView;
 	}
-
+	
 }

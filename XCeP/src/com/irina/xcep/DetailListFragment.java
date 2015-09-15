@@ -326,6 +326,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 		
 		adapterUnidadesCarrito = new AdapterUnits(getActivity(), mListaSelected, this);
 		productosListaListView.setAdapter(adapterUnidadesCarrito);
+		adapterUnidadesCarrito.notifyDataSetChanged();
 		
 		if(mListaSelected.getAIdUnits().size() == 0){
 			Toast.makeText(getActivity(), getString(R.string.empty_list), Toast.LENGTH_LONG).show();
@@ -463,6 +464,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 								
 								if(e!= null){
 									e.printStackTrace();
+									Toast.makeText(getActivity(), R.string.erro_ao_engadir_produto, Toast.LENGTH_SHORT).show();
 									progress.dismiss();
 								}else{
 									reloadUserShoppingList(progress, false);
@@ -553,6 +555,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 				if(progressDialog.isShowing()){
 					progressDialog.dismiss();
 				}
+				
 				if(tabHost.getCurrentTabTag().equals(getString(R.string.lista_da_compra))){
 						adapterUnidadesCarrito = new AdapterUnits(getActivity(), mListaSelected, DetailListFragment.this); //FIXME sobran parámetros de entrada
 						productosListaListView.setAdapter(adapterUnidadesCarrito);
@@ -560,6 +563,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 						//Actualizar precio parcial y total
 						actualizarPrecios();
 				}
+				
+				cargarProdutosLista();
 				
 				if(reloadCatalogo){
 					actualizarCatalogo();

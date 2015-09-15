@@ -169,4 +169,5 @@
  	<string name="cero_euros">0,0 €</string>
  	<string name="prezo_lista">Precio Lista</string>
  	<string name="enfoque_o_codigo_de_barras_do_produto">Enfoque el código de barras del produto</string>
+ 	<string name="creando_lista">Creando lista de la compra</string>
 </resources>

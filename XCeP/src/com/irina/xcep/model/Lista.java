@@ -53,7 +53,12 @@ public class Lista extends ParseObject {
 
 	@SuppressWarnings("unchecked")
 	public ArrayList<Units> getAIdUnits() {
-		return (ArrayList<Units>)get("AidUnits");
+		
+		if(get("AidUnits") == null){
+			return new ArrayList<Units>();
+		}else{
+			return (ArrayList<Units>)get("AidUnits");
+		}
 	}
 
 	public void addAidUnits(String objectId) {
