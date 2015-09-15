@@ -79,6 +79,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 
 	private Supermercado mMarketSelected;
 	private Lista mListaSelected;
+	private List<Units> listaChecked = new ArrayList<Units>();
 	Camera cam;
 	SurfaceHolder surfaceholder;
 	String previewImagePath;
@@ -429,6 +430,8 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			return;
 		
 		//Comprobar si existe en la lista, si existe sumar una unidad más.
+		listaChecked.clear();
+		listaChecked.addAll(mListaSelected.getAIdUnits());
 		
 		boolean isProductoAlreadyAdd=false;
 		Units unidadSeleccionada=null;
@@ -552,7 +555,7 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					
 					for(Lista lista:objects){
 						if(lista.getObjectId().equals(mListaSelected.getObjectId())){
-							mListaSelected = lista;
+							mListaSelected = setLocalCheck(lista);
 							break;
 						}
 					}
@@ -565,13 +568,6 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					progressDialog.dismiss();
 				}
 				
-				/*if(tabHost.getCurrentTabTag().equals(getString(R.string.lista_da_compra))){
-						adapterUnidadesCarrito = new AdapterUnits(getActivity(), mListaSelected, DetailListFragment.this);
-						productosListaListView.setAdapter(adapterUnidadesCarrito);
-						adapterUnidadesCarrito.notifyDataSetChanged();
-						actualizarPrecios();
-				}*/
-				
 				cargarProdutosLista();
 				
 				if(reloadCatalogo){
@@ -581,6 +577,32 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			}
 		});
 
+	}
+	
+	/**
+	 * Se pasan los elementos seleccionados por el usuario a la nueva lista recibida desde servidor
+	 * @param lista lista que se recibe desde el servidor
+	 * @return Devuelde la lista con los checked actualizados
+	 */
+	private Lista setLocalCheck(Lista lista){
+		
+		Lista listaTemp = lista;
+		
+		if(listaChecked.size() == 0){
+			return lista;
+		}else{
+		
+			for(Units unidadProductoLocal:listaChecked){
+				for(Units unidadProductoServidor:listaTemp.getAIdUnits()){		
+					if(unidadProductoLocal.getObjectId().equals(unidadProductoServidor.getObjectId())){
+						unidadProductoServidor.setChecked(unidadProductoLocal.isChecked());
+						break;
+					}
+				}
+			}
+		}
+		
+		return listaTemp;
 	}
 	
 	private void iniciarPararScan(String tabId){
