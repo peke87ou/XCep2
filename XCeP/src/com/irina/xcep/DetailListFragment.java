@@ -368,7 +368,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 								
 								@Override
 								public void done(ParseException e) {
-									reloadUserShoppingList(progress, false); //Recargamos la lista seleccionada por el usuario
+									//reloadUserShoppingList(progress, false);
+									cargarProdutosLista();
+									progress.dismiss();
 								}
 							});
 						}
@@ -501,7 +503,9 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 					@Override
 					public void done(ParseException e) {
 						
-						reloadUserShoppingList(progress, false); //Recargamos a lista seleccionada polo usuario
+						//reloadUserShoppingList(progress, false); //Recargamos a lista seleccionada polo usuario
+						cargarProdutosLista();
+						progress.dismiss();
 					}
 				});
 			}
