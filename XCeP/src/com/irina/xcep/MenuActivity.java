@@ -256,7 +256,15 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 	public void showHelp() {
 
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		
+		TextView titleDialogo = new TextView(this);
+		titleDialogo.setText(R.string.app_name);
+		titleDialogo.setTextColor(getResources().getColor(R.color.verde_oscuro));
+		titleDialogo.setTextSize(26);
+		titleDialogo.setPadding(20, 10, 0, 10);
+		
 
+		
 		LayoutInflater li = LayoutInflater.from(this);
 		View promptsView = li.inflate(R.layout.dialog_about, null);
 		alertDialogBuilder.setView(promptsView);
