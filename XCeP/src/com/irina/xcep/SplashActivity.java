@@ -1,8 +1,14 @@
 package com.irina.xcep;
 
 
+import java.util.Locale;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,6 +19,9 @@ import com.parse.ParseUser;
 
 
 public class SplashActivity extends Activity implements OnClickListener {
+	
+	public static final String NAME_PREFERENCES = "Xcep_preferencias";
+	public static final String NAME_LANGUAGE = "language";
 
 	ButtonRectangle btnLogin;
 	ButtonRectangle btnSignUp;
@@ -52,5 +61,57 @@ public class SplashActivity extends Activity implements OnClickListener {
 				break;
 		}
 		startActivity(i);
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		
+		if(!isSetLanguage()){
+			showLanguage();
+		}
+	}
+
+	public boolean isSetLanguage(){
+		
+		SharedPreferences prefs = getSharedPreferences(NAME_PREFERENCES, MODE_PRIVATE); 
+		String language = prefs.getString(NAME_LANGUAGE, null);
+		
+		if (language != null) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+
+	public void showLanguage(){
+		
+		final String[] idiomas = {"Español", "Galego"};
+		final String[] idiomasCodigo = {"es", "gl"};
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Idioma").setItems(idiomas, 
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int nLenguaje) {
+
+						Locale locale = new Locale(idiomasCodigo[nLenguaje]); 
+			            Locale.setDefault(locale);
+			            Configuration config = new Configuration();
+			            config.locale = locale;
+			            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+			            
+			            SharedPreferences.Editor editor = getSharedPreferences(NAME_PREFERENCES, MODE_PRIVATE).edit();
+			            editor.putString(NAME_LANGUAGE, idiomasCodigo[nLenguaje]);
+			            editor.commit();
+			            
+			            Intent intent = getIntent();
+			            finish();
+			            startActivity(intent);
+					}
+				});
+
+		AlertDialog dialogoIdioma = builder.create();
+		dialogoIdioma.show();
 	}
 }

@@ -1,11 +1,14 @@
 package com.irina.xcep;
 
+import java.util.Locale;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -188,6 +191,10 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 		case HELP:
 			showHelp();
 			return;
+			
+		case LANGUAGE:
+			showLanguage();
+			return;	
 
 		default:
 			Toast.makeText(this, getString(R.string.funcionalidade_en_cosntruccion), Toast.LENGTH_LONG).show();
@@ -267,4 +274,48 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 		startActivity(Intent.createChooser(intent, "Enviar suxerencia"));
 	}
 
+	
+	public void showLanguage(){
+		
+		String[] idiomas = {"Español", "Galego"};
+		final String[] idiomasCodigo = {"es", "gl"};
+		
+		Configuration config = getBaseContext().getResources().getConfiguration();
+		if(config.locale != null){
+			switch (config.locale.getLanguage()) {
+				case "es":
+					idiomas[0] = "Español*";
+				break;
+			
+				case "gl":
+					idiomas[1]= "Galego*";
+				break;
+				
+				default:
+				break;
+			}
+			
+		}
+        
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Idioma").setItems(idiomas, 
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int nLenguaje) {
+
+						Locale locale = new Locale(idiomasCodigo[nLenguaje]); 
+			            Locale.setDefault(locale);
+			            Configuration config = new Configuration();
+			            config.locale = locale;
+			            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
+			            Intent intent = getIntent();
+			            finish();
+			            startActivity(intent);
+					}
+				});
+
+		AlertDialog dialogoIdioma = builder.create();
+		dialogoIdioma.show();
+	}
 }
