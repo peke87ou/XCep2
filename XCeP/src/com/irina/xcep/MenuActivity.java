@@ -280,19 +280,21 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 		
 		String[] idiomas = {"Español", "Galego"};
 		final String[] idiomasCodigo = {"es", "gl"};
+		int nLenguajeSeleccionado = 0;
 		
 		Configuration config = getBaseContext().getResources().getConfiguration();
 		if(config.locale != null){
 			switch (config.locale.getLanguage()) {
 				case "es":
-					idiomas[0] = "Español*";
+					nLenguajeSeleccionado = 0;
 				break;
 			
 				case "gl":
-					idiomas[1]= "Galego*";
+					nLenguajeSeleccionado = 1;
 				break;
 				
 				default:
+					nLenguajeSeleccionado = -1;
 				break;
 			}
 			
@@ -305,7 +307,7 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 		titleDialogo.setPadding(20, 10, 0, 10);
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setCustomTitle(titleDialogo).setItems(idiomas, 
+		builder.setCustomTitle(titleDialogo).setSingleChoiceItems(idiomas,nLenguajeSeleccionado, 
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int nLenguaje) {
 
@@ -323,6 +325,7 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 
 		builder.setIcon(R.drawable.comments);
 		AlertDialog dialogoIdioma = builder.create();
+		dialogoIdioma.getListView().setItemChecked(0, true);
 		dialogoIdioma.show();
 	}
 }
