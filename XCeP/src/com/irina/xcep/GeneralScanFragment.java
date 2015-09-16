@@ -109,7 +109,6 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 		}
 	}
 	
-	
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -132,7 +131,6 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 		super.onStop();
 		paraScan();
 	}
-
 
 	/**
 	 * Inicializa a configuración da cámara ea detección de códigos 
@@ -258,7 +256,6 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 	 */
 	public void surfaceDestroyed(SurfaceHolder holder) {
 	}
-	
 	
 	/**
 	 * Dialogos da actividade xunto coas funcións asociadas a cada diálogo
@@ -439,7 +436,6 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 
 	}
 
-	
 	/**
 	 * Comprueba las listas compatibles con el producto seleccionado por el usuario
 	 * @param producto Producto seleccionado polo usuario
@@ -548,7 +544,6 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 
 		startActivityForResult(intent, DetailProductActivity.requestCode);
 	}
-
 
 	/**
 	 * Engadese un produto a lista. Se xa está na lista, engadese unha unidade.
