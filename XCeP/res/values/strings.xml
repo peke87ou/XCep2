@@ -20,7 +20,7 @@
     <string name="title_action_bar_add_shopping_list">Nova Lista</string>
     <string name="text_name_add_shopping_list">Nome da lista:</string>
     <string name="text_adapter_list_market">Supermercado encontrado</string>
-    <string name="text_login_home_user">Has iniciado sesión como  </string>
+    <string name="text_login_home_user">Iniciouse sesión como  </string>
     <string name="empty_list">Listas baleira</string>
     <string name="error_add_list">Erro o engadir a nova lista</string>
     <string name="conect_Ok">Conectado Exitosamente </string>
