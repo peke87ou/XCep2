@@ -26,7 +26,7 @@ public class Utils {
         mProgressDialog.setMessage(mensaje);
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgressDialog.setCancelable(true);
+        mProgressDialog.setCancelable(false);
         mProgressDialog.show();
         return mProgressDialog;
 	}

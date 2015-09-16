@@ -634,9 +634,12 @@ public class DetailListFragment extends Fragment implements SurfaceHolder.Callba
 			productCatalogList.addAll(productosSupermercado);
 		}
 		
+		
 		adapterProductoCatalog = new AdapterProductsCatalog(getActivity(), productCatalogList, mMarketSelected, this);
-    	adapterProductoCatalog.getFilter().filter(mSearchView.getQuery());
+	    adapterProductoCatalog.getFilter().filter(mSearchView.getQuery());
 		catalogoListView.setAdapter(adapterProductoCatalog);
+		
+		
 	}
 	
 	private void getTags(){
