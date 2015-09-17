@@ -477,7 +477,7 @@ public class GeneralScanFragment extends Fragment implements SurfaceHolder.Callb
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-			builder.setTitle(getResources().getString(R.string.engadir) + producto.getTitle() + getString(R.string.a_lista)).setItems(
+			builder.setTitle(getResources().getString(R.string.engadir) +" " + producto.getTitle() + getString(R.string.a_lista)).setItems(
 					(String[]) listaNombres.toArray(new String[listaNombres.size()]), new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int nLista) {
 							try {
