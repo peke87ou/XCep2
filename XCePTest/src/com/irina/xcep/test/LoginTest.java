@@ -9,7 +9,6 @@ import com.gc.materialdesign.views.ButtonRectangle;
 import com.irina.xcep.LoginActivity;
 import com.irina.xcep.R;
 import com.irina.xcep.test.enums.LoginEnum;
-import com.irina.xcep.test.enums.SignUpEnum;
 import com.robotium.solo.Solo;
 
 public class LoginTest extends ActivityInstrumentationTestCase2<LoginActivity> {
@@ -67,15 +66,15 @@ public class LoginTest extends ActivityInstrumentationTestCase2<LoginActivity> {
 		solo.enterText(username, helper.getUser());
 		solo.enterText(password, helper.getPass());
 		solo.clickOnView(buttonlogin);
-		solo.searchText("As credecnciales son inválidas, se non está auténticado no sistema, por favor rexistrese");
+		solo.searchText("As credenciales son inválidas, se non está auténticado no sistema, por favor rexistrese");
 	}
 	
-	public void testLoginFailedEmpty() {
+	public void testLoginEmptyName() {
 		
-		helper.setSignData(SignUpEnum.INCORRECTO_EMPTY);
+		helper.setLoginData(LoginEnum.INCORRECTO_EMPTY_NAME);
 		
-		solo.enterText(username, helper.getUserSign());
-		solo.enterText(password, helper.getPassSing());
+		solo.enterText(username, helper.getUser());
+		solo.enterText(password, helper.getPass());
 		solo.clickOnView(buttonlogin);
 		
 		//Utilizado para esperar por el retardo de las vistas en mostrar el error al estar vacias
@@ -86,7 +85,23 @@ public class LoginTest extends ActivityInstrumentationTestCase2<LoginActivity> {
 		}
 		
 		assertEquals(true, !TextUtils.isEmpty(username.getError().toString()) && username.getError().toString().equalsIgnoreCase("É necesario encher o campo seleccionado"));
-		assertEquals(true, !TextUtils.isEmpty(password.getError().toString()) && password.getError().toString().equalsIgnoreCase("É necesario encher o campo seleccionado"));
+	}
+
+	public void testLoginEmptyPass() {
 		
+		helper.setLoginData(LoginEnum.INCORRECTO_EMPTY_PASS);
+		
+		solo.enterText(username, helper.getUser());
+		solo.enterText(password, helper.getPass());
+		solo.clickOnView(buttonlogin);
+		
+		//Utilizado para esperar por el retardo de las vistas en mostrar el error al estar vacias
+		try {
+			Thread.sleep(2500);
+		} catch (InterruptedException e) {
+			Log.e(SignUpTest.class.getName(),"Interrupted Exception");
+		}
+		
+		assertEquals(true, !TextUtils.isEmpty(password.getError().toString()) && password.getError().toString().equalsIgnoreCase("É necesario encher o campo seleccionado"));
 	}
 }

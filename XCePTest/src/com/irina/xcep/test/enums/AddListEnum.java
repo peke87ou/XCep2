@@ -3,14 +3,14 @@ package com.irina.xcep.test.enums;
 public enum AddListEnum {
 
 	
-	CORRECTO(
+	tesAddListOk(
 					"Compra"
 				),
-	INCORRECTO_NOT_NAME	(
-					""
+	testAddListNotMarket(
+					"Compra"
 				),
 	
-	INCORRECTO_EMPTY	(
+	testAddListNotName(
 					""
 	);
 	

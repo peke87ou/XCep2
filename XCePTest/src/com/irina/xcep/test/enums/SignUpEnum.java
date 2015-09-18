@@ -6,8 +6,8 @@ public enum SignUpEnum {
 	
 		CORRECTO(
 						System.currentTimeMillis()+"",
-						"prueba",
-						"prueba",
+						"proba",
+						"proba",
 						System.currentTimeMillis()+"@gmail.com"
 					),
 		INCORRECTO_EXISTE_USER	(
@@ -16,30 +16,64 @@ public enum SignUpEnum {
 						"irina",
 						"irina@gmail.com"
 					),
-		INCORRECTO_MAIL	(
-						"pruebaMailIn",
-						"prueba",
-						"prueba",
-						"k@l.c"
-			),
-		INCORRECTO_MAIL_EXISTE	(
-					"pruebaMail",
-					"prueba",
-					"prueba",
-					"prueba@gmail.com"
-		),
 		INCORRECTO_PASS	(
-						"pruebaPass",
+						"xcep",
 						"pass",
 						"passmal",
-						"prueba@gmail.com"
-				),
+						"xcep@gmail.com"
+					),
+		
+		INCORRECTO_MAIL_EXISTE	(
+					"xcepProba",
+					"proba",
+					"proba",
+					"xcep@gmail.com"
+					),
+	
+		testSignupEmptyName(
+				"",
+				"irina",
+				"irina",
+				"irina@gmail.com"
+					),
+		testSignupEmptyPass1(
+				"irina",
+				"",
+				"irina",
+				"irina@gmail.com"
+					),
+		testSignupEmptyPass2(
+				"irina",
+				"irina",
+				"",
+				"irina@gmail.com"
+					),
+		testSignupMailOk(
+				System.currentTimeMillis()+"",
+				"proba",
+				"proba",
+				System.currentTimeMillis()+"@gmail.com"
+					),
+		INCORRECTO_MAIL	(
+				"probaMailIncorrecta",
+				"proba",
+				"proba",
+				"k@l"
+		),
+		testSignupEmptyMail(
+				"irina",
+				"irina",
+				"irina",
+				""
+		), 
 		INCORRECTO_EMPTY	(
-						"",
-						"",
-						"",
-						""
+				"",
+				"",
+				"",
+				""
 		);
+		
+		
 		
 		private String user;
 		private String pass;
@@ -52,8 +86,7 @@ public enum SignUpEnum {
 			this.repass=repass;
 			this.mail=mail;
 		}
-		
-		
+				
 		public String getUser(){
 			return user;
 		}
@@ -62,7 +95,6 @@ public enum SignUpEnum {
 			return pass;
 		}
 
-
 		public String getRepass() {
 			return repass;
 		}
@@ -70,6 +102,4 @@ public enum SignUpEnum {
 		public String getMail() {
 			return mail;
 		}
-
-
 }

@@ -10,8 +10,12 @@ public enum LoginEnum {
 						"NonUsuario",
 						"passmal"
 					),
-		INCORRECTO_EMPTY	(
+		INCORRECTO_EMPTY_NAME	(
 				"",
+				"pass"
+		),
+		INCORRECTO_EMPTY_PASS	(
+				"xcep",
 				""
 		);
 		

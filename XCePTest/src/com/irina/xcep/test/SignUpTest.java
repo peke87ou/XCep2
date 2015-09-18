@@ -69,7 +69,6 @@ public class SignUpTest extends ActivityInstrumentationTestCase2<SignupActivity>
 
 	}
 	
-	
 	public void testSingupFailedUser() {
 		
 		helper.setSignData(SignUpEnum.INCORRECTO_EXISTE_USER);
@@ -80,30 +79,6 @@ public class SignUpTest extends ActivityInstrumentationTestCase2<SignupActivity>
 		solo.enterText(email, helper.getEmailSign());
 		solo.clickOnView(buttonsign);
 		solo.searchText("O usuario que intenta rexistrar xa existe, Loguese!");
-	}
-	
-	public void testSingupFailedMailFormat() {
-		
-		helper.setSignData(SignUpEnum.INCORRECTO_MAIL);
-	
-		solo.enterText(username, helper.getUserSign());
-		solo.enterText(password, helper.getPassSing());
-		solo.enterText(repassword, helper.getRePassSign());
-		solo.enterText(email, helper.getEmailSign());
-		solo.clickOnView(buttonsign);
-		solo.searchText("O seu enderezo electrónico é inválido");
-	}
-	
-	public void testSingupFailedMailExist() {
-		
-		helper.setSignData(SignUpEnum.INCORRECTO_MAIL_EXISTE);
-	
-		solo.enterText(username, helper.getUserSign());
-		solo.enterText(password, helper.getPassSing());
-		solo.enterText(repassword, helper.getRePassSign());
-		solo.enterText(email, helper.getEmailSign());
-		solo.clickOnView(buttonsign);
-		solo.searchText("O email que intenta rexistrar xa existe");
 	}
 	
 	public void testSingupFailedNotEqualPass() {
@@ -117,10 +92,22 @@ public class SignUpTest extends ActivityInstrumentationTestCase2<SignupActivity>
 		solo.clickOnView(buttonsign);
 		solo.searchText("As contrasinais non coinciden");
 	}
-	
-	public void testSingupFailedEmpty() {
+
+	public void testSingupFailedMailExist() {
 		
-		helper.setSignData(SignUpEnum.INCORRECTO_EMPTY);
+		helper.setSignData(SignUpEnum.INCORRECTO_MAIL_EXISTE);
+	
+		solo.enterText(username, helper.getUserSign());
+		solo.enterText(password, helper.getPassSing());
+		solo.enterText(repassword, helper.getRePassSign());
+		solo.enterText(email, helper.getEmailSign());
+		solo.clickOnView(buttonsign);
+		solo.searchText("O email que intenta rexistrar xa existe");
+	}
+
+	public void testSignupEmptyName() {
+		
+		helper.setSignData(SignUpEnum.testSignupEmptyName);
 		
 		solo.enterText(username, helper.getUserSign());
 		solo.enterText(password, helper.getPassSing());
@@ -136,9 +123,99 @@ public class SignUpTest extends ActivityInstrumentationTestCase2<SignupActivity>
 		}
 		
 		assertEquals(true, !TextUtils.isEmpty(username.getError().toString()) && username.getError().toString().equalsIgnoreCase("É necesario encher o campo seleccionado"));
-		assertEquals(true, !TextUtils.isEmpty(password.getError().toString()) && password.getError().toString().equalsIgnoreCase("É necesario encher o campo seleccionado"));
-		assertEquals(true, !TextUtils.isEmpty(repassword.getError().toString()) && repassword.getError().toString().equalsIgnoreCase("É necesario encher o campo seleccionado"));
-		assertEquals(true, !TextUtils.isEmpty(email.getError().toString()) && email.getError().toString().equalsIgnoreCase("É necesario encher o campo seleccionado"));
-		
 	}
+
+	public void testSignupEmptyPass1() {
+		
+		helper.setSignData(SignUpEnum.testSignupEmptyPass1);
+		
+		solo.enterText(username, helper.getUserSign());
+		solo.enterText(password, helper.getPassSing());
+		solo.enterText(repassword, helper.getRePassSign());
+		solo.enterText(email, helper.getEmailSign());
+		solo.clickOnView(buttonsign);
+		
+		//Utilizado para esperar por el retardo de las vistas en mostrar el error al estar vacias
+		try {
+			Thread.sleep(2500);
+		} catch (InterruptedException e) {
+			Log.e(SignUpTest.class.getName(),"Interrupted Exception");
+		}
+		
+		assertEquals(true, !TextUtils.isEmpty(password.getError().toString()) && password.getError().toString().equalsIgnoreCase("É necesario encher o campo seleccionado"));
+	}
+	
+	public void testSignupEmptyPass2() {
+	
+		helper.setSignData(SignUpEnum.testSignupEmptyPass2);
+		
+		solo.enterText(username, helper.getUserSign());
+		solo.enterText(password, helper.getPassSing());
+		solo.enterText(repassword, helper.getRePassSign());
+		solo.enterText(email, helper.getEmailSign());
+		solo.clickOnView(buttonsign);
+		
+		//Utilizado para esperar por el retardo de las vistas en mostrar el error al estar vacias
+		try {
+			Thread.sleep(2500);
+		} catch (InterruptedException e) {
+			Log.e(SignUpTest.class.getName(),"Interrupted Exception");
+		}
+		
+		assertEquals(true, !TextUtils.isEmpty(repassword.getError().toString()) && repassword.getError().toString().equalsIgnoreCase("É necesario encher o campo seleccionado"));
+
+	}
+
+	public void testSignupMailOk() {
+	
+		helper.setSignData(SignUpEnum.testSignupMailOk);
+		
+		solo.enterText(username, helper.getUserSign());
+		solo.enterText(password, helper.getPassSing());
+		solo.enterText(repassword, helper.getRePassSign());
+		solo.enterText(email, helper.getEmailSign());
+		solo.clickOnView(buttonsign);
+		
+		//Utilizado para esperar por el retardo de las vistas en mostrar el error al estar vacias
+				try {
+					Thread.sleep(2500);
+				} catch (InterruptedException e) {
+					Log.e(SignUpTest.class.getName(),"Interrupted Exception");
+				}
+//				solo.assertCurrentActivity("Actividad incorrecta", HomeActivity.class);
+				helper.logout();
+	}
+	public void testSignupEmptyMail() {
+		
+		helper.setSignData(SignUpEnum.testSignupEmptyMail);
+		
+		solo.enterText(username, helper.getUserSign());
+		solo.enterText(password, helper.getPassSing());
+		solo.enterText(repassword, helper.getRePassSign());
+		solo.enterText(email, helper.getEmailSign());
+		solo.clickOnView(buttonsign);
+		
+		//Utilizado para esperar por el retardo de las vistas en mostrar el error al estar vacias
+		try {
+			Thread.sleep(2500);
+		} catch (InterruptedException e) {
+			Log.e(SignUpTest.class.getName(),"Interrupted Exception");
+		}
+		
+		assertEquals(true, !TextUtils.isEmpty(email.getError().toString()) && email.getError().toString().equalsIgnoreCase("É necesario encher o campo seleccionado"));
+	}
+	
+	public void testSingupFailedMailFormat() {
+		
+		helper.setSignData(SignUpEnum.INCORRECTO_MAIL);
+	
+		solo.enterText(username, helper.getUserSign());
+		solo.enterText(password, helper.getPassSing());
+		solo.enterText(repassword, helper.getRePassSign());
+		solo.enterText(email, helper.getEmailSign());
+		solo.clickOnView(buttonsign);
+		solo.searchText("O seu enderezo electrónico é inválido");
+	}
+	
+	
 }

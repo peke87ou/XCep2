@@ -30,7 +30,7 @@ public class AllTests extends ActivityInstrumentationTestCase2<Activity> {
         suite.addTestSuite(SignUpTest.class);
         suite.addTestSuite(LoginTest.class);
         suite.addTestSuite(HomeTest.class);
-        suite.addTestSuite(AddListTestmal.class);
+      
         return suite;
     }
 }
