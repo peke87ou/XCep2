@@ -164,7 +164,19 @@ public class HomeFragment extends Fragment {
 					adapter.addAll(misListas);
 				}
 
-				progress.dismiss();
+				try {
+			        if ((progress != null) && progress.isShowing()) {
+			            progress.dismiss();
+			        }
+			    } catch (final IllegalArgumentException e2) {
+			        // Handle or log or ignore
+			    } catch (final Exception e2) {
+			        // Handle or log or ignore
+			    } finally {
+			        //progress = null;
+			    }  
+				
+				//progress.dismiss();
 			}
 		});
 

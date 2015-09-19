@@ -1,47 +1,31 @@
 package com.irina.xcep.test;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.text.TextUtils;
-import android.util.Log;
-import android.widget.EditText;
-import android.widget.GridView;
-
-import com.gc.materialdesign.views.ButtonRectangle;
-import com.irina.xcep.AddShoppingListActivity;
-import com.irina.xcep.LoginActivity;
-import com.irina.xcep.R;
-import com.irina.xcep.test.enums.AddListEnum;
-import com.irina.xcep.test.enums.LoginEnum;
-import com.irina.xcep.test.enums.SignUpEnum;
+import com.irina.xcep.SplashActivity;
 import com.robotium.solo.Solo;
+import com.robotium.solo.Timeout;
 
-public class AddListTest extends ActivityInstrumentationTestCase2<AddShoppingListActivity> {
+public class AddListTest extends ActivityInstrumentationTestCase2<SplashActivity> {
 	
 	private Solo solo;
-	private AddShoppingListActivity addlist;
-	private TestHelper helper;
-	private EditText namelist;
-	private GridView gridSupermercados;
-	private ButtonRectangle buttonCrear;
-	
+	TestHelper helper;
 	static int TIME_OUT_LOGIN = 30000;
 
-	public AddListTest(Class<AddShoppingListActivity> activityClass) {
+	public AddListTest(Class<SplashActivity> activityClass) {
 		super(activityClass);
 	}
 
 	public AddListTest() {
-		this(AddShoppingListActivity.class);
+		this(SplashActivity.class);
 	}
+	
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		solo= new Solo(getInstrumentation(), getActivity());
-		addlist = (AddShoppingListActivity) solo.getCurrentActivity();
-		helper = new TestHelper(solo);
+		solo = new Solo(getInstrumentation());
+		getActivity();
 		
-		namelist  = (EditText) addlist.findViewById(R.id.name_list);
-		buttonCrear = (ButtonRectangle) addlist.findViewById(R.id.crear_new_list);
+		helper = new TestHelper(solo);
 	}
 	
 	@Override
@@ -50,40 +34,62 @@ public class AddListTest extends ActivityInstrumentationTestCase2<AddShoppingLis
     }
 	
 	
-	public void testAddListOk() {
+	public void testAddListOk(){
 		
-		helper.setAddListData(AddListEnum.tesAddListOk);
+		solo.waitForActivity(com.irina.xcep.SplashActivity.class, 2000);
+		assertTrue("com.irina.xcep.MenuActivity is not found!", solo.waitForActivity(com.irina.xcep.MenuActivity.class));
+		Timeout.setSmallTimeout(14559);
 		
-		solo.enterText(namelist, helper.getNameList());
-		solo.clickOnView(buttonCrear);
+		solo.clickOnView(solo.getView(com.irina.xcep.R.id.add_list));
+		assertTrue("com.irina.xcep.AddShoppingListActivity is not found!", solo.waitForActivity(com.irina.xcep.AddShoppingListActivity.class));
 		
-		try {
-			Thread.sleep(2500);
-		} catch (InterruptedException e) {
-			Log.e(SignUpTest.class.getName(),"Interrupted Exception");
-		}
+		Timeout.setSmallTimeout(15669);
+		solo.clearEditText((android.widget.EditText) solo.getView(com.irina.xcep.R.id.text_name_list));
+		solo.enterText((android.widget.EditText) solo.getView(com.irina.xcep.R.id.text_name_list), "Lista de proba");
+		Timeout.setSmallTimeout(15669);
+		solo.clickInList(1, 0);
+		solo.clickOnView(solo.getView(com.irina.xcep.R.id.crear_new_list));
 		
+		helper.logout();
+	}
+	
+	public void testAddListNotMarket(){
 
+		solo.waitForActivity(com.irina.xcep.SplashActivity.class, 2000);
+		assertTrue("com.irina.xcep.MenuActivity is not found!", solo.waitForActivity(com.irina.xcep.MenuActivity.class));
+		
+		Timeout.setSmallTimeout(14559);
+		solo.clickOnView(solo.getView(com.irina.xcep.R.id.add_list));
+		assertTrue("com.irina.xcep.AddShoppingListActivity is not found!", solo.waitForActivity(com.irina.xcep.AddShoppingListActivity.class));
+		
+		Timeout.setSmallTimeout(15669);
+		solo.clearEditText((android.widget.EditText) solo.getView(com.irina.xcep.R.id.text_name_list));
+		solo.enterText((android.widget.EditText) solo.getView(com.irina.xcep.R.id.text_name_list), "lista ejemplo");
+		Timeout.setSmallTimeout(15669);
+		solo.clickOnView(solo.getView(com.irina.xcep.R.id.crear_new_list));
+		solo.searchText("Non seleccionou ningún supermercado");
+		
+		helper.logout();
 	}
 	
 	
-//	public void testAddListNotName() {
-//		
-//		helper.setLoginData(LoginEnum.INCORRECTO);
-//		
-//		solo.enterText(username, helper.getUser());
-//		solo.enterText(password, helper.getPass());
-//		solo.clickOnView(buttonlogin);
-//		solo.searchText("As credenciales son inválidas, se non está auténticado no sistema, por favor rexistrese");
-//	}
-//	public void testAddListNotMarket() {
-//		
-//		helper.setLoginData(LoginEnum.INCORRECTO);
-//		
-//		solo.enterText(username, helper.getUser());
-//		solo.enterText(password, helper.getPass());
-//		solo.clickOnView(buttonlogin);
-//		solo.searchText("As credecnciales son inválidas, se non está auténticado no sistema, por favor rexistrese");
-//	}
+	public void testAddListNotName(){
+		
+		solo.waitForActivity(com.irina.xcep.SplashActivity.class, 2000);
+		assertTrue("com.irina.xcep.MenuActivity is not found!", solo.waitForActivity(com.irina.xcep.MenuActivity.class));
+		
+		Timeout.setSmallTimeout(14559);
+		solo.clickOnView(solo.getView(com.irina.xcep.R.id.add_list));
+		assertTrue("com.irina.xcep.AddShoppingListActivity is not found!", solo.waitForActivity(com.irina.xcep.AddShoppingListActivity.class));
+
+		Timeout.setSmallTimeout(15669);
+		solo.clearEditText((android.widget.EditText) solo.getView(com.irina.xcep.R.id.text_name_list));
+		Timeout.setSmallTimeout(15669);
+		solo.clickInList(1, 0);
+		solo.clickOnView(solo.getView(com.irina.xcep.R.id.crear_new_list));
+		solo.searchText("É necesario encher o campo seleccionado");
+		
+		helper.logout();
+	}
 
 }

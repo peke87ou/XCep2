@@ -324,7 +324,8 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 			            Configuration config = new Configuration();
 			            config.locale = locale;
 			            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-
+			            //FIXME se pierde el lenguaje al matar la aplicación
+			            
 			            Intent intent = getIntent();
 			            finish();
 			            startActivity(intent);
