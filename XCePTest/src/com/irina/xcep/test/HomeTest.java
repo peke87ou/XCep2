@@ -11,7 +11,6 @@ import com.robotium.solo.Solo;
 public class HomeTest extends ActivityInstrumentationTestCase2<MenuActivity> {
 	
 	private Solo solo;
-//	private HomeFragment home;
 	static int TIME_OUT_LOGIN = 30000;
 	Fragment fragment;
 
@@ -26,8 +25,6 @@ public class HomeTest extends ActivityInstrumentationTestCase2<MenuActivity> {
 	protected void setUp() throws Exception {
 		super.setUp();
 		solo= new Solo(getInstrumentation(), getActivity());
-		//home = (HomeFragment) solo.getCurrentActivity();
-		//fragment = solo.getCurrentActivity().getFragmentManager();
 	}
 	
 	@Override
@@ -39,10 +36,6 @@ public class HomeTest extends ActivityInstrumentationTestCase2<MenuActivity> {
 	public void testDesconectar() {
 		//Fragment 
 		fragment = solo.getCurrentActivity().getFragmentManager().findFragmentById(R.id.username);
-		
-
 	}
-	
-	
 	
 }

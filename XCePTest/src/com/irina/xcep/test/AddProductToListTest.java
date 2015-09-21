@@ -7,12 +7,12 @@ import android.view.ViewGroup;
 import com.irina.xcep.SplashActivity;
 import com.robotium.solo.Solo;
 
-public class AddProductToListTest extends ActivityInstrumentationTestCase2<SplashActivity> {
+/**
+ * 1.	testAddProductListCatalogOk:  Para esta proba comprobamos que o usuario pode engadir produto a lista dende o catalogo, facendo clic na icona  , é o test é correcto.
+ * 2.	testAddProductListDetailOk:  Para esta proba comprobamos que o usuario pode engadir un produto a lista dende o detalle de produto, facendo clic no botón “Engadir”, é o test é correcto.
+ */
 
-	/**
-	 * 1.	testAddProductListCatalogOk:  Para esta proba comprobamos que o usuario pode engadir produto a lista dende o catalogo, facendo clic na icona  , é o test é correcto.
-	 * 2.	testAddProductListDetailOk:  Para esta proba comprobamos que o usuario pode engadir un produto a lista dende o detalle de produto, facendo clic no botón “Engadir”, é o test é correcto.
-	 */
+public class AddProductToListTest extends ActivityInstrumentationTestCase2<SplashActivity> {
 	
 	private Solo solo;
 	TestHelper helper;
@@ -58,8 +58,8 @@ public class AddProductToListTest extends ActivityInstrumentationTestCase2<Splas
 		solo.sleep(2000);
 		// Click on Agua 0.28  
 		//solo.clickInList(1, 1);
-		
 	}
+	
 	public void testAddProductListDetailOk(){
 		
 		solo.waitForActivity(com.irina.xcep.SplashActivity.class, 2000);

@@ -7,12 +7,13 @@ import android.view.ViewGroup;
 import com.irina.xcep.SplashActivity;
 import com.robotium.solo.Solo;
 
+/**
+ * 1.	testSearchWordsOk:  Para esta proba comprobamos que o buscar por unha palabra, devólvenos ningún , un o varios resultados dos produtos coincidente coa búsquea, para elo introducimos como palabra ”Fanta”, devolvéndonos resultados positivos da búsquea.
+ * 2.	testSearchTagsOk:  Para esta proba comprobamos que o buscar por tag, devólvenos ningún , un o varios resultados dos produtos coincidente coa búsquea, para elo introducimos como tag ”Bebidas”, devolvéndonos resultados positivos da búsquea.
+ */
+
 public class CatalogTest extends ActivityInstrumentationTestCase2<SplashActivity>{
 
-	/**
-	 * 1.	testSearchWordsOk:  Para esta proba comprobamos que o buscar por unha palabra, devólvenos ningún , un o varios resultados dos produtos coincidente coa búsquea, para elo introducimos como palabra ”Fanta”, devolvéndonos resultados positivos da búsquea.
-	 * 2.	testSearchTagsOk:  Para esta proba comprobamos que o buscar por tag, devólvenos ningún , un o varios resultados dos produtos coincidente coa búsquea, para elo introducimos como tag ”Bebidas”, devolvéndonos resultados positivos da búsquea.
-	 */
 	
 	private Solo solo;
 	TestHelper helper;

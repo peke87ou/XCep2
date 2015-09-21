@@ -5,11 +5,12 @@ import android.test.ActivityInstrumentationTestCase2;
 import com.irina.xcep.SplashActivity;
 import com.robotium.solo.Solo;
 
+/**
+ * 1.	testDeleteProductListOk:  Para esta proba comprobamos que o usuario pode acceder a  eliminación do produto da lista que seleccionou, 
+ * 		facendo clic na opción “Eliminar o Produto”, é o test é correcto.*/
+
 public class DeleteProductListTest extends ActivityInstrumentationTestCase2<SplashActivity>{
 
-	/**
-	 * 1.	testDeleteProductListOk:  Para esta proba comprobamos que o usuario pode acceder a 
-	 * eliminación do produto da lista que seleccionou, facendo clic na opción “Eliminar o Produto”, é o test é correcto.*/
 	private Solo solo;
 	TestHelper helper;
 	static int TIME_OUT_LOGIN = 30000;
