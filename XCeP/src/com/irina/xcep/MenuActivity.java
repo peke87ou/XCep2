@@ -8,6 +8,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
@@ -45,6 +46,9 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 	public static final int LANGUAGE = 203;
 	public static final int EMAIL = 206;
 	public static final int HELP = 205;
+	
+	public static final String NAME_PREFERENCES = "Xcep_preferencias";
+	public static final String NAME_LANGUAGE = "language";
 
 	public int mCurrentFragmentIndex;
 	private static final String CURRENT_FRAGMENT_INDEX = "current_fragment";
@@ -57,9 +61,16 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 	public String mNameList = "";
 	public Lista mListSelected = null;
 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		String language = getLanguage();
+		if(language != null){
+			loadLanguage(language);
+		}
+		
 		setContentView(R.layout.activity_menu);
 
 		mTitle = this.mDrawerTitle = getTitle();
@@ -324,7 +335,10 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 			            Configuration config = new Configuration();
 			            config.locale = locale;
 			            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-			            //FIXME se pierde el lenguaje al matar la aplicación
+			            
+			            SharedPreferences.Editor editor = getSharedPreferences(NAME_PREFERENCES, MODE_PRIVATE).edit();
+			            editor.putString(NAME_LANGUAGE, idiomasCodigo[nLenguaje]);
+			            editor.apply();
 			            
 			            Intent intent = getIntent();
 			            finish();
@@ -336,5 +350,26 @@ public class MenuActivity extends ShareSocialMediaActivity implements MenuAdapte
 		AlertDialog dialogoIdioma = builder.create();
 		dialogoIdioma.getListView().setItemChecked(0, true);
 		dialogoIdioma.show();
+	}
+	
+	private void loadLanguage(String languageCode){
+		
+		Locale locale = new Locale(languageCode); 
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+	}
+	
+	public String getLanguage(){
+		
+		SharedPreferences prefs = getSharedPreferences(NAME_PREFERENCES, MODE_PRIVATE); 
+		String language = prefs.getString(NAME_LANGUAGE, null);
+		
+		if (language != null) {
+			return language;
+		}else{
+			return null;
+		}
 	}
 }

@@ -31,6 +31,7 @@ public class SplashActivity extends Activity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        
 
         //Determine se o usuario actual non é un usuario anónimo
 		if (!ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())) {
@@ -68,20 +69,23 @@ public class SplashActivity extends Activity implements OnClickListener {
 	protected void onStart() {
 		super.onStart();
 		
-		if(!isSetLanguage()){
+		String language = getLanguage();
+		if(language == null){
 			showLanguage();
+		}else{
+			loadLanguage(language);
 		}
 	}
 
-	public boolean isSetLanguage(){
+	public String getLanguage(){
 		
 		SharedPreferences prefs = getSharedPreferences(NAME_PREFERENCES, MODE_PRIVATE); 
 		String language = prefs.getString(NAME_LANGUAGE, null);
 		
 		if (language != null) {
-			return true;
+			return language;
 		}else{
-			return false;
+			return null;
 		}
 	}
 
@@ -110,7 +114,7 @@ public class SplashActivity extends Activity implements OnClickListener {
 			            
 			            SharedPreferences.Editor editor = getSharedPreferences(NAME_PREFERENCES, MODE_PRIVATE).edit();
 			            editor.putString(NAME_LANGUAGE, idiomasCodigo[nLenguaje]);
-			            editor.commit();
+			            editor.apply();
 			            
 			            Intent intent = getIntent();
 			            finish();
@@ -120,5 +124,14 @@ public class SplashActivity extends Activity implements OnClickListener {
 
 		AlertDialog dialogoIdioma = builder.create();
 		dialogoIdioma.show();
+	}
+	
+	private void loadLanguage(String languageCode){
+		
+		Locale locale = new Locale(languageCode); 
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 	}
 }
