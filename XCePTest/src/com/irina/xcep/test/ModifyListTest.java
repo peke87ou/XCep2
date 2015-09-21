@@ -8,8 +8,7 @@ import com.robotium.solo.Solo;
 
 /**
  * 1.	testChangeNameListOk:  Para esta proba comprobamos que o engadir un nome “nova lista”, permítenos cambiar renomear a lista e o test é correcto.
- * testChangeNotNameList
- * 
+ * 2.   testChangeNotNameList
  * */
 
 public class ModifyListTest extends ActivityInstrumentationTestCase2<SplashActivity> {
@@ -62,6 +61,27 @@ public class ModifyListTest extends ActivityInstrumentationTestCase2<SplashActiv
 		solo.waitForDialogToClose();
 		solo.waitForDialogToClose();
 		solo.sleep(4000);
+	}
+	
+	public void testChangeNotNameList(){
+		
+		solo.waitForActivity(com.irina.xcep.SplashActivity.class, 2000);
+		assertTrue("com.irina.xcep.MenuActivity is not found!", solo.waitForActivity(com.irina.xcep.MenuActivity.class));
+		solo.waitForDialogToClose();
+		
+		
+		solo.clickLongInList(0);
+		solo.waitForDialogToOpen();
+		solo.clickOnText("Cambiar Nombre");
+		
+		solo.waitForDialogToOpen();
+		solo.sleep(1000);
+		solo.clearEditText(0);
+		solo.sleep(1000);
+		solo.clickOnText("Aceptar");
+		
+		solo.searchText("Es necesario completar el campo nombre");
+		solo.sleep(2000);
 	}
 
 }
