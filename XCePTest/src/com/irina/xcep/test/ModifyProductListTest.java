@@ -5,12 +5,13 @@ import com.robotium.solo.Solo;
 
 import android.test.ActivityInstrumentationTestCase2;
 
+/**
+ * 1.	testChangeUnitsProductListOk:  Para esta proba comprobamos que o cambiar as unidades mediante o selector numérico,
+ * permítenos cambiar as unidades dun produto concreto dunha lista e o test é correcto.
+ * */
+
 public class ModifyProductListTest extends ActivityInstrumentationTestCase2<SplashActivity> {
 
-	/**
-	 * 1.	testChangeUnitsProductListOk:  Para esta proba comprobamos que o cambiar as unidades mediante o selector numérico,
-	 * permítenos cambiar as unidades dun produto concreto dunha lista e o test é correcto.
-	 * */
 	
 	private Solo solo;
 	TestHelper helper;

@@ -5,16 +5,17 @@ import android.test.ActivityInstrumentationTestCase2;
 import com.irina.xcep.SplashActivity;
 import com.robotium.solo.Solo;
 
+/**
+ * 1. 	testCkeckProductListOk: Para esta proba comprobamos que o usuario pode seleccionar 
+ * o cadro do check do produto da lista, facendo clic nun produto deseleccionado, 
+ * é o test é correcto.
+ *  
+ * 2.	testNotCkeckProductListOk: Para esta proba comprobamos que o usuario pode
+ * desseleccionar o cadro do check do produto da lista, facendo clic nun
+ * produto seleccionado, é o test é correcto.
+ */
+
 public class ShoppingCarTest extends ActivityInstrumentationTestCase2<SplashActivity>{
-	
-	/**
-	 * 1. testCkeckProductListOk: Para esta proba comprobamos que o usuario pode seleccionar 
-	 * o cadro do check do produto da lista, facendo clic nun produto deseleccionado, 
-	 * é o test é correcto. 
-	 * 2.testNotCkeckProductListOk: Para esta proba comprobamos que o usuario pode
-	 * desseleccionar o cadro do check do produto da lista, facendo clic nun
-	 * produto seleccionado, é o test é correcto.
-	 */
 	
 	private Solo solo;
 	TestHelper helper;
