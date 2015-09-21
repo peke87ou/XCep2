@@ -1,11 +1,8 @@
 package com.irina.xcep.test;
 
-import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.irina.xcep.SplashActivity;
 import com.robotium.solo.Solo;
