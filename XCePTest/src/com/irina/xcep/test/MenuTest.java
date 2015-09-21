@@ -60,7 +60,7 @@ public class MenuTest extends ActivityInstrumentationTestCase2<SplashActivity> {
 		
 		//Catálogo
 		solo.clickOnActionBarHomeButton();
-		solo.clickInList(3, 1);
+		solo.clickOnText("Catálogo");
 		solo.sleep(2000);
 		
 		
