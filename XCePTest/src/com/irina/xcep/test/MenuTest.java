@@ -4,7 +4,14 @@ import android.test.ActivityInstrumentationTestCase2;
 
 import com.irina.xcep.SplashActivity;
 import com.robotium.solo.Solo;
-import com.robotium.solo.Timeout;
+
+/**
+ * 
+ * 
+ * testMenuOk:  Para esta proba comprobamos que o usuario pode acceder a cada unha das opcións do menú, 
+ * facendo clic en cada unha delas, é o test é correcto.
+ * 
+ * */
 
 public class MenuTest extends ActivityInstrumentationTestCase2<SplashActivity> {
 	
@@ -38,66 +45,53 @@ public class MenuTest extends ActivityInstrumentationTestCase2<SplashActivity> {
 		
 		solo.waitForActivity(com.irina.xcep.SplashActivity.class, 2000);
 		assertTrue("com.irina.xcep.MenuActivity is not found!", solo.waitForActivity(com.irina.xcep.MenuActivity.class));
-		Timeout.setSmallTimeout(14559);
 		
-		// Click on HomeView XCeP 
+		
+		//As miñas listas
+		solo.waitForDialogToClose();
 		solo.clickOnActionBarHomeButton();
-		// Click on As miñas listas
 		solo.clickInList(2, 1);
-		solo.sleep(2000);
-		Timeout.setSmallTimeout(14559);
-		// Click on HomeView XCeP 
+
+		//Escáner
+		solo.sleep(3000);
 		solo.clickOnActionBarHomeButton();
-		Timeout.setSmallTimeout(14559);
-		// Click on Catálogo
+		solo.clickOnText("Escaner");
+		solo.sleep(3000);
+		
+		//Catálogo
+		solo.clickOnActionBarHomeButton();
 		solo.clickInList(3, 1);
 		solo.sleep(2000);
-		// Click on HomeView Catálogo Xeral 
+		
+		
+		//Language 
+		solo.waitForDialogToClose();
 		solo.clickOnActionBarHomeButton();
-		// Click on Escaner
-		solo.clickInList(4, 2);
-		// Click on HomeView XCeP 
-		solo.clickOnActionBarHomeButton();
-		// Click on Idioma
-		solo.clickInList(9, 0);
-		// Wait for dialog
+		solo.clickOnText("Idioma");
 		solo.waitForDialogToOpen(5000);
 		// Click on Español
 		solo.clickOnView(solo.getView(android.R.id.text1));
-		// Wait for activity: 'com.irina.xcep.MenuActivity'
 		assertTrue("com.irina.xcep.MenuActivity is not found!", solo.waitForActivity(com.irina.xcep.MenuActivity.class));
-		// Click on HomeView XCeP 
+		solo.waitForDialogToClose();
 		solo.clickOnActionBarHomeButton();
-		// Click on Idioma
-		solo.clickInList(9, 1);
-		// Wait for dialog
+		solo.clickOnText("Idioma");
 		solo.waitForDialogToOpen(5000);
 		// Click on Galego
 		solo.clickOnView(solo.getView(android.R.id.text1, 1));
-		// Wait for activity: 'com.irina.xcep.MenuActivity'
 		assertTrue("com.irina.xcep.MenuActivity is not found!", solo.waitForActivity(com.irina.xcep.MenuActivity.class));
-		// Click on HomeView XCeP 
+		
+		//Acerca de...
+		solo.waitForDialogToClose();
+		solo.sleep(5000);
 		solo.clickOnActionBarHomeButton();
-		// Click on Acerca de XCeP
-		solo.clickInList(10, 1);
-		// Wait for dialog
-		solo.waitForDialogToOpen(5000);
-		// Click on Pechar
-		helper.logout();
-	}
-	
-	/*
-	 * 
-	 * 
-	 * testMenuOk:  
-	 * Para esta proba comprobamos que o usuario 
-	 * pode acceder a cada unha das opcións do menú, 
-	 * facendo clic en cada unha delas, 
-	 * é o test é correcto.
-	 * 
-	 * 
-	 * */
-	
-	
+		solo.clickOnText("Acerca de XCeP");
+		//solo.clickOnActionBarItem(com.irina.xcep.MenuActivity.HELP);
+		solo.waitForDialogToOpen();
+		solo.clickOnButton("Pechar");
+		solo.waitForDialogToClose();
+		
+		//Cerrar Robotium
+		solo.sleep(1000);
+	}	
 	
 }
